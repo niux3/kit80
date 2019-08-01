@@ -1,0 +1,23 @@
+a {
+    color: map-get($color-primary, default);
+    text-decoration: underline;
+    transition: color $speed;
+    &:active, &:focus{
+        outline: .1rem dotted map-get($color-primary, hover);
+    }
+    @include breakpoints(medium-screen, min){
+        &:hover {
+            color: map-get($color-primary, hover);
+            text-decoration: none;
+        }
+    }
+
+    img{
+        border: none;
+    }
+
+    &.btn, &.button{
+        text-decoration: none;
+        outline-width: 0 !important;
+    }
+}

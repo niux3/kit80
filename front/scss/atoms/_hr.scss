@@ -1,0 +1,6 @@
+hr {
+    margin-top: 3rem;
+    margin-bottom: 3.5rem;
+    border-width: 0;
+    border-top: .1rem solid #{map-get($colors, black12)};
+}

@@ -1,0 +1,17 @@
+blockquote{
+    margin:0 0 2.5rem;
+    position: relative;
+    padding-left: 4.8rem;
+    min-height: 2em;
+
+    &:before{
+        content: "\201C";
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 13rem;
+        height: .4em;
+        line-height: .9;
+        color: #{map-get($colors, silver)};
+    }
+}

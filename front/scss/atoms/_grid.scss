@@ -1,0 +1,97 @@
+$tiny: map-get($breakpoints, tiny-plus-screen) !default;
+$medium: map-get($breakpoints, small-plus-screen) !default;
+$cols: 12 !default;
+
+// classic Grid
+[class*=" grid-"],
+[class^="grid-"] {
+  @media (min-width: $tiny) {
+    display: grid;
+    grid-auto-flow: dense;
+
+    $gutter: ( '': 1rem, '-l': 2rem, '-xl': 4rem );
+    @each $affix, $size in $gutter {
+      &.has-gutter#{$affix} {
+        grid-gap: $size;
+      }
+    }
+  }
+}
+
+// autogrid
+.autogrid,
+.grid {
+  @media (min-width: $tiny) {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+
+    // gutters
+    $gutter: ( '': 1rem, '-l': 2rem, '-xl': 4rem );
+    @each $affix, $size in $gutter {
+      &.has-gutter#{$affix} {
+        grid-column-gap: $size;
+      }
+    }
+  }
+}
+
+// grid constructor (.grid-2 to .grid-$cols)
+@for $i from 2 through $cols {
+  [class*="grid-#{$i}"] {
+    grid-template-columns: repeat(#{$i}, 1fr);
+  }
+}
+
+// grid items constructor (.col-1 to .col-$cols, .row-1 to .row-$cols)
+@for $i from 1 through $cols {
+  [class*="col-#{$i}"] {
+    grid-column: auto / span #{$i};
+  }
+
+  [class*="row-#{$i}"] {
+    grid-row: auto / span #{$i};
+  }
+}
+
+/* intermediate breakpoints */
+// -small-X suffix means "X columns when < medium screen"
+// example : .grid-4-small-2 will be 1 column (< tiny) then 2 columns (< medium) then 4 columns
+@media (min-width: $tiny) and (max-width: ($medium - 1)) {
+   @for $i from 1 through 4{
+    [class*="grid-"][class*="-small-#{$i}"] {
+      grid-template-columns: repeat(#{$i}, 1fr);
+    }
+
+    [class*="col-"][class*="-small-#{$i}"] {
+      grid-column: auto / span #{$i};
+    }
+  }
+
+  [class*="-small-all"] {
+    grid-column: 1 / -1;
+  }
+}
+
+// grid order
+.item-first {
+  order: -1;
+}
+
+.item-last {
+  order: 1;
+}
+
+// grid offset
+.grid-offset {
+  visibility: hidden;
+}
+
+// spanning all columns or rows
+.col-all {
+  grid-column: 1 / -1;
+}
+
+.row-all {
+  grid-row: 1 / -1;
+}

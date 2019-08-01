@@ -1,0 +1,25 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+{{ book.title }}
+{% endblock %}
+
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<div class="grid has-gutter">
+    <div class="col-4">
+        <img src="{{ book.url }}" alt="{{ book.title }}" style="display:block; width:100%;">
+    </div>
+    <div class="col-8">
+        <p><strong>auteur</strong> : <a href="/catalogue/auteur/{{ book.author_id }}">{{ book.firstname }} {{ book.lastname }}</a></p>
+        <p><strong>genre</strong> : <em>{{ book.categorie }}</em></p>
+        <p><strong><abbr title="isbn">isbn</abbr></strong> : {{ book.isbn }}</p>
+        <p>
+            <a href="/catalogue/livre/editer/{{book.book_id}}" class="button alert">éditer</a>&nbsp;
+            <a href="/catalogue/livre/supprimer/{{book.book_id}}" onclick="return confirm('voulez vous vraiment supprimer ce livre ?')" class="button danger">supprimer</a>
+        </p>
+    </div>
+</div>
+<div class="resume" style="margin-top:2.5rem">{{ book.summary }}</div>
+{% endblock %}

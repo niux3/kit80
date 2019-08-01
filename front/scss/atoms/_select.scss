@@ -1,0 +1,48 @@
+select{
+    cursor:pointer;
+    padding: .8rem 2rem .8rem 1.5rem;
+    border: .1rem solid map-get($colors, black12);
+    border-radius: $border-radius;
+    transition: all $speed;
+    @include prefxr(appearance, none);
+    background-color: $background-color-base;
+    outline-width: 0 !important;
+    color: rgba(0,0,0,0);
+    text-shadow: 0 0 0 #000;
+    background-image: url('data:image/svg+xml,%3C%3Fxml version%3D"1.0" standalone%3D"no"%3F%3E%3Csvg xmlns%3D"http%3A//www.w3.org/2000/svg" xmlns%3Axlink%3D"http%3A//www.w3.org/1999/xlink" style%3D"isolation%3Aisolate" viewBox%3D"0 0 20 20" width%3D"20" height%3D"20"%3E%3Cpath d%3D" M 9.96 11.966 L 3.523 5.589 C 2.464 4.627 0.495 6.842 1.505 7.771 L 1.505 7.771 L 8.494 14.763 C 9.138 15.35 10.655 15.369 11.29 14.763 L 11.29 14.763 L 18.49 7.771 C 19.557 6.752 17.364 4.68 16.262 5.725 L 16.262 5.725 L 9.96 11.966 Z " fill%3D"inherit"/%3E%3C/svg%3E');
+    background-position: right .6rem center;
+    background-repeat: no-repeat;
+    background-size: 1.2rem;
+    cursor:pointer;
+
+
+    &:focus, &:hover{
+        outline-width: 0 !important;
+        border-color: map-get($color-primary, default) !important;
+        cursor: default;
+         &:hover{
+             cursor: pointer;
+         }
+    }
+
+    &:disabled{
+        background-color: darken($background-color-base, 1%);
+        cursor: not-allowed !important;
+    }
+
+    &.error{
+        border-color: map-get($color-danger, default);
+    }
+
+    &.success{
+        border-color: map-get($color-success, default);
+        background-color: $background-color-base;
+
+        &:hover{
+            background-color: $background-color-base;
+        }
+    }
+
+    option{
+    }
+}

@@ -1,0 +1,47 @@
+textarea{
+    @include prefxr(appearance, none);
+    padding: .8rem 1.5rem;
+    background-color: $background-color-base;
+    border: .1rem solid map-get($colors, black12);
+    border-radius: $border-radius;
+    transition: border-color $speed;
+    width: 100%;
+    resize: vertical;
+    cursor:pointer;
+    scrollbar-color: $color-ghost $color-ghost;
+    scrollbar-width: thin;
+
+    &::placeholder{
+        font-style: italic;
+        color: darken(map-get($colors, black12), 25%);
+    }
+
+    &:focus, &:active{
+        border-color: map-get($color-primary, default) !important;
+        cursor:text;
+        scrollbar-color: $color-ghost $color-base;
+    }
+
+    &:hover{
+        scrollbar-color: $color-ghost $color-base;
+        border-color: map-get($color-primary, default) !important;
+    }
+
+    &:disabled{
+        cursor: not-allowed;
+        background-color: darken($background-color-base, 1%);
+    }
+
+    &.error{
+        border-color: map-get($color-danger, default);
+    }
+
+    &.success{
+        border-color: map-get($color-success, default);
+        background-color: $background-color-base;
+
+        &:hover{
+            background-color: $background-color-base;
+        }
+    }
+}

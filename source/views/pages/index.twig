@@ -1,0 +1,17 @@
+{% extends '../layout/default.twig' %}
+
+{% block title %}
+index du catalogue
+{% endblock %}
+
+
+{% block content %}
+<h1>Bibliothèques</h1>
+<p>Une application basique avec <a href="https://nodejs.org/en/" target="_blank">NodeJS</a>, <a href="https://expressjs.com/fr/" target="_blank">ExpressJS</a>, <a href="https://twig.symfony.com/" target="_blank">Twig</a>, <a href="https://www.sqlite.org/index.html" target="_blank">SQLite 3</a></p>
+<p>La bibliothèque contient au total : </p>
+<ul>
+    <li><strong>livres</strong> : {{ books }}</li>
+    <li><strong>auteurs</strong> : {{ authors }}</li>
+    <li><strong>categorie</strong> : {{ categories }}</li>
+</ul>
+{% endblock %}

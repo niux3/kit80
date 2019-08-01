@@ -1,0 +1,23 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+rechercher un livre par catégorie
+{% endblock %}
+
+
+{% block content %}
+<h1>liste des catégories</h1>
+<ul style="list-style:none;" class="grid-2 has-gutter">
+    {% for categorie in categories %}
+    <li style="text-align:center">
+        <span>{{ categorie.name }}</span>
+        <ul style="list-style:none;">
+            <li>
+                <a href="/catalogue/categories/editer/{{ categorie.id }}" class="button">éditer</a>
+                <a href="/catalogue/categories/supprimer/{{ categorie.id }}" class="button danger" onclick="return confirm('voulez vous vraiment supprimer cette catégorie ?')">supprimer</a>
+            </li>
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

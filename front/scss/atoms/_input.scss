@@ -1,0 +1,109 @@
+input{
+    @include prefxr(appearance, none);
+    &[type=text],
+    &[type=search],
+    &[type=email],
+    &[type=number],
+    &[type=password]{
+        cursor:pointer;
+        padding: .8rem 1.5rem;
+        border: .1rem solid map-get($colors, black12);
+        border-radius: $border-radius;
+        transition: all $speed;
+
+        &::placeholder{
+            font-style: italic;
+            color: darken(map-get($colors, black12), 25%);
+        }
+
+        &:focus, &:active{
+            border-color: map-get($color-primary, default) !important;
+            cursor: text;
+        }
+        &:hover{
+            border-color: map-get($color-primary, default) !important;
+        }
+
+        &:disabled{
+            background-color: darken($background-color-base, 1%);
+            cursor: not-allowed;
+        }
+
+        &.error{
+            border-color: map-get($color-danger, default);
+        }
+
+        &.success{
+            border-color: map-get($color-success, default);
+            background-color: $background-color-base;
+        }
+    }
+
+    &[type=radio]{
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid #bbb;
+        border-radius: 100%;
+        background-color: $background-color-base;
+
+        &:checked{
+            background-image: url('data:image/svg+xml,%3C%3Fxml version%3D"1.0" standalone%3D"no"%3F%3E%3Csvg version%3D"1.1" width%3D"100" height%3D"100"%0AviewBox%3D"0 0 80 80" xmlns%3D"http%3A//www.w3.org/2000/svg"%3E%3Ccircle cx%3D"40" cy%3D"40" r%3D"24" style%3D"fill%23bbbbbb"/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 85%;
+        }
+
+        &:focus, &:active, &:hover{
+            outline-width: 0 !important;
+            border-color: map-get($color-primary, default) !important;
+
+            &:checked{
+                background-image: url('data:image/svg+xml,%3C%3Fxml version%3D"1.0" standalone%3D"no"%3F%3E%3Csvg version%3D"1.1" width%3D"100" height%3D"100"%0AviewBox%3D"0 0 80 80" xmlns%3D"http%3A//www.w3.org/2000/svg"%3E%3Ccircle cx%3D"40" cy%3D"40" r%3D"24" style%3D"fill%3A%3498db"/%3E%3C/svg%3E');
+
+            }
+        }
+
+        &.error{
+            border-color: map-get($color-danger, default);
+        }
+
+        &.success{
+            border-color: map-get($color-success, default);
+            background-color: $background-color-base;
+        }
+    }
+
+    &[type=checkbox]{
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid #bbb;
+        border-radius: $border-radius;
+        background-color: $background-color-base;
+
+        &:checked{
+            background-image: url('data:image/svg+xml,%3C%3Fxml version%3D"1.0" encoding%3D"utf-8"%3F%3E%0A%3Csvg version%3D"1.1" xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" xmlns%3Axlink%3D"http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink" x%3D"0" y%3D"0" viewBox%3D"0 0 8 8" enable-background%3D"new 0 0 8 8" xml%3Aspace%3D"preserve"%3E %3Cpath fill%3D"%23222" d%3D"M6.4%2C1L5.7%2C1.7L2.9%2C4.5L2.1%2C3.7L1.4%2C3L0%2C4.4l0.7%2C0.7l1.5%2C1.5l0.7%2C0.7l0.7-0.7l3.5-3.5l0.7-0.7L6.4%2C1L6.4%2C1z" %2F%3E%0A%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 85%;
+        }
+
+        &:focus, &:active, &:hover{
+            outline-width: 0 !important;
+            border-color: map-get($color-primary, default) !important;
+
+            &:checked{
+                background-image: url('data:image/svg+xml,%3C%3Fxml version%3D"1.0" encoding%3D"utf-8"%3F%3E%0A%3Csvg version%3D"1.1" xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" xmlns%3Axlink%3D"http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink" x%3D"0" y%3D"0" viewBox%3D"0 0 8 8" enable-background%3D"new 0 0 8 8" xml%3Aspace%3D"preserve"%3E %3Cpath fill%3D"%233498db" d%3D"M6.4%2C1L5.7%2C1.7L2.9%2C4.5L2.1%2C3.7L1.4%2C3L0%2C4.4l0.7%2C0.7l1.5%2C1.5l0.7%2C0.7l0.7-0.7l3.5-3.5l0.7-0.7L6.4%2C1L6.4%2C1z" %2F%3E%0A%3C%2Fsvg%3E');
+            }
+        }
+
+
+        &.error{
+            border-color: map-get($color-danger, default);
+        }
+
+        &.success{
+            border-color: map-get($color-success, default);
+            background-color: $background-color-base;
+        }
+    }
+}

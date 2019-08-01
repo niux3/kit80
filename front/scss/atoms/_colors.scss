@@ -1,0 +1,12 @@
+@each $k, $v in $basics-colors{
+    .#{$k}{
+        background-color: #{map-get($v, default)};
+        transition: background-color $speed;
+        @include breakpoints(medium-screen, min){
+            &:hover{
+                background-color: #{map-get($v, hover)};
+            }
+
+        }
+    }
+}

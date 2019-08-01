@@ -1,0 +1,22 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+liste des auteurs
+{% endblock %}
+
+
+{% block content %}
+<h1>liste des auteurs</h1>
+<div class="grid-3 has-gutter">
+    {% for author in authors %}
+    <a href="/catalogue/auteur/{{ author.id }}">
+        <figure>
+            <div style="position:relative;overflow:hidden;min-height:25rem;">
+                <img src="{{ author.url }}" alt="" style="position:absolute; left:50%; top:50%; transform:translate(-50%, -50%)">
+            </div>
+            <figcaption style="text-align:center; margin-top:1.5rem">{{ author.firstname }}&nbsp;{{ author.lastname }}</figcaption>
+        </figure>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

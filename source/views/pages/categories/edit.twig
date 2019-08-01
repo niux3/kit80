@@ -1,0 +1,43 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+{% if data.categories_id %}
+éditer
+{% else %}
+ajouter
+{% endif %}
+une catégorie
+{% endblock %}
+
+
+{% block content %}
+<h1>
+    {% if data.categories_id %}
+    éditer
+    {% else %}
+    ajouter
+    {% endif %}
+    une catégorie
+</h1>
+<form action="/catalogue/categories/{% if data.categories_id %}editer{% else %}ajouter{% endif %}" method="post">
+    {% if data.categories_id %}
+    <input type="hidden" name="categories_id" value="{{ data.categories_id }}">
+    {% endif %}
+    <div class="input text">
+        <label for="name">nom de la catégorie</label>
+        <input type="text" name="name" id="name"{% if data.name %} value="{{ data.name }}"{% endif %}{% if error.name %} class="error"{% endif %}>
+        {% if error.name %}
+        <span class="error">{{ error.name }}</span>
+        {% endif %}
+    </div>
+    <div class="input submit">
+        <button class="primary" type="submit">
+            {% if data.categories_id %}
+            éditer
+            {% else %}
+            ajouter
+            {% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}

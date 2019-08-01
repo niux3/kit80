@@ -1,0 +1,90 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+{% if data.book_id %}
+éditer
+{% else %}
+ajouter
+{% endif %}
+un livre
+{% endblock %}
+
+
+{% block content %}
+<h1>
+    {% if data.book_id %}
+    éditer
+    {% else %}
+    ajouter
+    {% endif %}
+    un livre
+</h1>
+<form action="/catalogue/livre/{% if data.book_id %}editer{% else %}ajouter{% endif %}" method="post">
+    {% if data.book_id %}
+    <input type="hidden" name="book_id" value="{{ data.book_id }}">
+    {% endif %}
+    <div class="input text">
+        <label for="title">titre</label>
+        <input type="text" name="title" id="title"{% if data.title %} value="{{ data.title }}"{% endif %}{% if error.title %} class="error"{% endif %}>
+        {% if error.title %}
+        <span class="error">{{ error.title }}</span>
+        {% endif %}
+    </div>
+    <div class="input text">
+        <label for="isbn">isbn</label>
+        <input type="text" name="isbn" id="isbn"{% if data.isbn %} value="{{ data.isbn }}"{% endif %}{% if error.isbn %} class="error"{% endif %}>
+        {% if error.isbn %}
+        <span class="error">{{ error.isbn }}</span>
+        {% endif %}
+    </div>
+    <div class="grid-2 has-gutter">
+        <div class="input select">
+            <label for="categories_id">catégorie</label>
+            <select name="categories_id" id="categories_id"{% if error.categories_id %} class="error"{% endif %}>
+                <option value="">choisir une catégorie</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}"{% if data.categories_id == category.id %} selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            {% if error.categories_id %}
+            <span class="error">{{ error.categories_id }}</span>
+            {% endif %}
+        </div>
+        <div class="input select">
+            <label for="authors_id">auteur</label>
+            <select name="authors_id" id="authors_id"{% if error.authors_id %} class="error"{% endif %}>
+                <option value="">choisir un auteur</option>
+                {% for author in authors %}
+                <option value="{{ author.id }}"{% if data.authors_id == author.id %} selected{% endif %}>{{ author.firstname }} {{ author.lastname }}</option>
+                {% endfor %}
+            </select>
+            {% if error.authors_id %}
+            <span class="error">{{ error.authors_id }}</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="input text">
+        <label for="url">url photo</label>
+        <input type="text" name="url" id="url"{% if data.url %} value="{{ data.url }}"{% endif %}{% if error.url %} class="error"{% endif %}>
+        {% if error.url %}
+        <span class="error">{{ error.url }}</span>
+        {% endif %}
+    </div>
+    <div class="input textarea">
+        <label for="summary">résumé</label>
+        <textarea name="summary" id="summary"{% if error.summary %} class="error"{% endif %}>{% if data.summary %}{{ data.summary }}{% endif %}</textarea>
+        {% if error.summary %}
+        <span class="error">{{ error.summary }}</span>
+        {% endif %}
+    </div>
+    <div class="input submit">
+        <button class="primary" type="submit">
+            {% if data.book_id %}
+            éditer
+            {% else %}
+            ajouter
+            {% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}

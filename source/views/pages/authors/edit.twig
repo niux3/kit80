@@ -1,0 +1,60 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+{% if data.authors_id %}
+éditer
+{% else %}
+ajouter
+{% endif %}
+un auteur
+{% endblock %}
+
+
+{% block content %}
+<h1>
+    {% if data.authors_id %}
+    éditer
+    {% else %}
+    ajouter
+    {% endif %}
+    un auteur
+</h1>
+<form action="/catalogue/auteurs/{% if data.authors_id %}editer{% else %}ajouter{% endif %}" method="post">
+    {% if data.authors_id %}
+    <input type="hidden" name="authors_id" value="{{ data.authors_id }}">
+    {% endif %}
+    <div class="input text">
+        <label for="url">url</label>
+        <input type="text" name="url" id="url"{% if data.url %} value="{{ data.url }}"{% endif %}{% if error.url %} class="error"{% endif %}>
+        {% if error.url %}
+        <span class="error">{{ error.url }}</span>
+        {% endif %}
+    </div>
+    <div class="grid-2 has-gutter">
+        <div class="input text">
+            <label for="firstname">firstname</label>
+            <input type="text" name="firstname" id="firstname"{% if data.firstname %} value="{{ data.firstname }}"{% endif %}{% if error.firstname %} class="error"{% endif %}>
+            {% if error.firstname %}
+            <span class="error">{{ error.firstname }}</span>
+            {% endif %}
+        </div>
+        <div class="input text">
+            <label for="lastname">lastname</label>
+            <input type="text" name="lastname" id="lastname"{% if data.lastname %} value="{{ data.lastname }}"{% endif %}{% if error.lastname %} class="error"{% endif %}>
+            {% if error.lastname %}
+            <span class="error">{{ error.lastname }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="input submit">
+        <button class="primary" type="submit">
+            {% if data.authors_id %}
+            éditer
+            {% else %}
+            ajouter
+            {% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}

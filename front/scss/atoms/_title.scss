@@ -1,0 +1,12 @@
+@for $i from 1 through 6{
+    h#{$i}, .h#{$i}{
+        font-family: $font-family-title;
+        font-weight: $weight-regular;
+        @include font-size(h#{$i});
+        margin-top: 0;
+        margin-bottom: 2rem;
+        @include breakpoints(small-less-screen){
+            line-height: map-get($line-height-title, h#{$i});
+        }
+    }
+}

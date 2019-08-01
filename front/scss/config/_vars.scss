@@ -1,0 +1,186 @@
+$colors : (
+    white           : #fff,
+    black5          : #f1f1f1,
+    black12         : #e1e1e1,
+    black87         : #222,
+    black           : #000,
+    turquoise       : #1abc9c,
+    green-sea       : #16a085,
+    emerald         : #2ecc71,
+    nephritis       : #27ae60,
+    peter-river     : #3498db,
+    belize-hole     : #2980b9,
+    amethist        : #9b59b6,
+    wisteria        : #8e44ad,
+    wet-asphalt     : #34495e,
+    midnight-blue   : #2c3e50,
+    sun-flower      : #f1c40f,
+    orange          : #f39c12,
+    carrot          : #e67e22,
+    pumpkin         : #d35400,
+    alizarin        : #e74c3c,
+    pomegranate     : #c0392b,
+    clouds          : #ecf0f1,
+    silver          : #bdc3c7,
+    concrete        : #95a5a6,
+    asbetos         : #7f8c8d,
+) !default;
+
+// Semantic colors
+$basics-colors : (
+    primary : (
+        default   : map-get($colors, peter-river),
+        hover     : map-get($colors, belize-hole),
+    ),
+    secondary : (
+        default   : map-get($colors, concrete),
+        hover     : map-get($colors, asbetos),
+    ),
+    success : (
+        default   : map-get($colors, emerald),
+        hover     : map-get($colors, nephritis),
+    ),
+    info : (
+        default   : map-get($colors, turquoise),
+        hover     : map-get($colors, green-sea),
+    ),
+    warning : (
+        default   : map-get($colors, carrot),
+        hover     : map-get($colors, pumpkin),
+    ),
+    danger : (
+        default   : map-get($colors, alizarin),
+        hover     : map-get($colors, pomegranate),
+    ),
+)!default;
+$color-base             : map-get($colors, black87) !default;
+$background-color-base  : map-get($colors, white) !default;
+$color-ghost            : transparent !default;
+
+// return map !!
+$color-primary          : map-get($basics-colors, primary);
+$color-success          : map-get($basics-colors, success);
+$color-info             : map-get($basics-colors, info);
+$color-warning          : map-get($basics-colors, warning);
+$color-danger           : map-get($basics-colors, danger);
+
+$breakpoints: (
+    tiny-screen           : 320px,
+    tiny-plus-screen      : 480px,
+    small-less-screen     : 600px,
+    small-screen          : 640px,
+    small-plus-screen     : 768px,
+    medium-less-screen    : 800px,
+    medium-screen         : 960px,
+    medium-plus-screen    : 1024px,
+    large-screen          : 1280px,
+    large-plus-screen     : 1440px,
+    extra-large-screen    : 1600px,
+    ultra-large-screen    : 1920px
+) !default;
+
+$fonts : (
+    materialicons     : materialicons-regular,
+    light             : raleway-light-webfont,
+    lightitalic       : raleway-lightitalic-webfont,
+    regular           : raleway-regular-webfont,
+    italic            : raleway-regularitalic-webfont,
+    bold              : raleway-bold-webfont,
+    bolditalic        : raleway-bolditalic-webfont,
+) !default;
+
+$font-family-base : "regular", Helvetica, Arial, sans-serif !default;
+$font-family-title : "light", Helvetica, Arial, sans-serif !default;
+$font-family-monospace : consolas, monaco, courier, monospace !default;
+
+$font-size-base : 1.5rem !default;
+$font-sizes: (
+    base: (
+        mobile  : 1.4rem,
+        desktop : $font-size-base
+    ),
+    h1: (
+        mobile  : 4rem,
+        desktop : 5rem
+    ),
+    h2: (
+        mobile  : 3.6rem,
+        desktop : 4.2rem
+    ),
+    h3: (
+        mobile  : 3rem,
+        desktop : 3.6rem
+    ),
+    h4: (
+        mobile  : 2.4rem,
+        desktop : 3rem
+    ),
+    h5: (
+        mobile  : 1.8rem,
+        desktop : 2.4rem
+    ),
+    h6: (
+        mobile  : 1.5rem,
+        desktop : 1.5rem
+    )
+) !default;
+
+// Font weights
+$weight-light   : 200 !default;
+$weight-book    : 300 !default;
+$weight-regular : 400 !default;
+$weight-medium  : 500 !default;
+$weight-bold    : 600 !default;
+
+// Line heights
+$line-height-base : 1.6 !default;
+$line-height-title : (
+    h1 : 1.2,
+    h2 : 1.25,
+    h3 : 1.3,
+    h4 : 1.35,
+    h5 : 1.5,
+    h6 : $line-height-base,
+);
+
+// ------------
+// Spacing zone
+// ------------
+
+// Number of grid-columns
+$cols: 12 !default;
+
+// Grid gutters (for .has-gutter-* classes)
+$grid-gutters: (
+  '': 1rem,
+  '-l': 2rem,
+  '-xl': 4rem
+) !default;
+
+// Spacings
+$spacer-tiny             : .5rem  !default;
+$spacer-tiny-plus        : .7rem !default;
+$spacer-small            : 1rem !default;
+$spacer-small-plus       : 1.5rem !default;
+$spacer-medium           : 2rem !default;
+$spacer-medium-plus      : 3rem !default;
+$spacer-large            : 4rem !default;
+$spacer-large-plus       : 6rem !default;
+$spacer-extra-large      : 8rem !default;
+$spacer-extra-large-plus : 12rem !default;
+$spacer-ultra-large      : 16rem !default;
+$spacer-ultra-large-plus : 20rem !default;
+
+// z-indexes
+$zindex-navigation   : 1000 !default;
+$zindex-dropdown     : 2000 !default;
+$zindex-popover      : 3000 !default;
+$zindex-tooltip      : 4000 !default;
+$zindex-modal        : 5000 !default;
+$zindex-notification : 6000 !default;
+$zindex-debug        : 7000 !default;
+
+// misc
+$border-radius : .4rem;
+$speed : 400ms !default;
+$easin : cubic-bezier(0.770, 0.000, 0.175, 1.000) !default;

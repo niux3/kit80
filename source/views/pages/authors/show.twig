@@ -1,0 +1,34 @@
+{% extends '../../layout/default.twig' %}
+
+{% block title %}
+{{ author.firstname }} {{ author.lastname }}
+{% endblock %}
+
+
+{% block content %}
+<h1>{{ author.firstname }} {{ author.lastname }}</h1>
+<div style="text-align:center">
+    <img src="{{ author.url }}" alt="">
+</div>
+<div class="grid-2 has-gutter" style="margin-top:1.5rem">
+    <div style="text-align:right">
+        <a href="/catalogue/auteurs/editer/{{ author.id }}" class="button">éditer</a>
+    </div>
+    <div>
+        <a href="/catalogue/auteurs/supprimer/{{ author.id }}" class="button danger" onclick="return confirm('Voulez vous vraiment supprimer cet auteur ?')">supprimer</a>
+    </div>
+</div>
+{% if books %}
+<h2>liste de ses livres</h2>
+<div class="grid-3 has-gutter">
+    {% for book in books %}
+    <a href="/catalogue/livre/{{ book.bid }}">
+        <firgure>
+            <img src="{{ book.burl }}" alt="" style="display:block;width:100%">
+            <figcaption style="text-align:center; margin-top:1.5rem">{{ book.btitle }}</figcaption>
+        </firgure>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

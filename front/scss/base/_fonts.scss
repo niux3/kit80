@@ -1,0 +1,12 @@
+@each $k, $v in $fonts{
+    @font-face {
+        font-family: #{$k};
+        src: url('fonts/#{$v}.eot');
+        src: url('fonts/#{$v}.eot?#iefix') format('embedded-opentype'),
+             url('fonts/#{$v}.woff') format('woff'),
+             url('fonts/#{$v}.ttf') format('truetype'),
+             url('fonts/#{$v}.svg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
