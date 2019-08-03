@@ -9,7 +9,7 @@ liste des auteurs
 <h1>liste des auteurs</h1>
 <div class="grid-3 has-gutter">
     {% for author in authors %}
-    <a href="/catalogue/auteur/{{ author.id }}">
+    <a href="{{ url('author_detail', {'id' : author.id }) }}">
         <figure>
             <div style="position:relative;overflow:hidden;min-height:25rem;">
                 <img src="{{ author.url }}" alt="" style="position:absolute; left:50%; top:50%; transform:translate(-50%, -50%)">

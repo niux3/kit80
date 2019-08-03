@@ -19,9 +19,13 @@ une catégorie
     {% endif %}
     une catégorie
 </h1>
-<form action="/catalogue/categories/{% if data.categories_id %}editer{% else %}ajouter{% endif %}" method="post">
-    {% if data.categories_id %}
+{% if data.categories_id %}
+<form action="{{ url('categorie_update_post') }}" method="post">
     <input type="hidden" name="categories_id" value="{{ data.categories_id }}">
+{% else %}
+<form action="{{ url('categorie_create_post') }}" method="post">
+{% endif %}
+    {% if data.categories_id %}
     {% endif %}
     <div class="input text">
         <label for="name">nom de la catégorie</label>

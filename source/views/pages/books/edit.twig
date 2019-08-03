@@ -19,10 +19,12 @@ un livre
     {% endif %}
     un livre
 </h1>
-<form action="/catalogue/livre/{% if data.book_id %}editer{% else %}ajouter{% endif %}" method="post">
-    {% if data.book_id %}
+{% if data.book_id %}
+<form action="{{ url('book_update_post') }}" method="POST">
     <input type="hidden" name="book_id" value="{{ data.book_id }}">
-    {% endif %}
+{% else %}
+<form action="{{ url('book_create_post') }}" method="POST">
+{% endif %}
     <div class="input text">
         <label for="title">titre</label>
         <input type="text" name="title" id="title"{% if data.title %} value="{{ data.title }}"{% endif %}{% if error.title %} class="error"{% endif %}>

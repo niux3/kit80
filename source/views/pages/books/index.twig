@@ -9,7 +9,7 @@ liste des livres
 <h1>liste des livres</h1>
 <ul>
     {% for book in books %}
-    <li><a href="/catalogue/livre/{{ book.book_id }}">{{ book.book_title }}</a>&nbsp;({{ book.author_firstname }}&nbsp;{{ book.author_lastname }})</li>
+    <li><a href="{{ url('book_detail', {id : book.book_id }) }}">{{ book.book_title }}</a>&nbsp;({{ book.author_firstname }}&nbsp;{{ book.author_lastname }})</li>
     {% endfor %}
 </ul>
 {% endblock %}

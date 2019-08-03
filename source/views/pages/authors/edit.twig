@@ -19,10 +19,12 @@ un auteur
     {% endif %}
     un auteur
 </h1>
-<form action="/catalogue/auteurs/{% if data.authors_id %}editer{% else %}ajouter{% endif %}" method="post">
-    {% if data.authors_id %}
+{% if data.authors_id %}
+<form action="{{ url('author_update_post') }}" method="post">
     <input type="hidden" name="authors_id" value="{{ data.authors_id }}">
-    {% endif %}
+{% else %}
+<form action="{{ url('author_create_post') }}" method="post">
+{% endif %}
     <div class="input text">
         <label for="url">url</label>
         <input type="text" name="url" id="url"{% if data.url %} value="{{ data.url }}"{% endif %}{% if error.url %} class="error"{% endif %}>

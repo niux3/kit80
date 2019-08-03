@@ -59,7 +59,7 @@ exports.categorie_create_post = function(req, res) {
 
 
 exports.categorie_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete GET');
+    res.send(`>>>> categories delete GET : ${req.params.id }`);
 };
 
 

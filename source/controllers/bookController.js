@@ -3,7 +3,7 @@ var sqlite3 = require('sqlite3').verbose(),
     dbPath = path.resolve(__dirname, '../data/database.db'),
     db = new sqlite3.Database(dbPath);
 
-exports.api = (req, res) => {
+exports.api = (req, res)=>{
     let context = {},
         sql = `
             SELECT
@@ -232,35 +232,34 @@ exports.book_delete_get = (req, res) => {
 
 exports.book_update_get = (req, res) => {
     let context = {},
-        params = {
-            ':id' : parseInt(req.params.id, 10)
-        },
-        sql = `
-            SELECT
-                b.id AS book_id,
-                b.title AS title,
-                b.isbn AS isbn,
-                b.url AS url,
-                b.summary AS summary,
-                c.id AS categories_id,
-                a.id AS authors_id
-            FROM
-                books AS b,
-                authors AS a,
-                authors_books AS ab,
-                categories AS c
-            WHERE
-                b.id = ab.books_id
-            AND
-                a.id = ab.authors_id
-            AND
-                c.id = b.categories_id
-            AND
-                b.id = :id
-
-        `,
-        categories = [],
-        authors = [];
+    params = {
+        ':id' : parseInt(req.params.id, 10)
+    },
+    sql = `
+        SELECT
+            b.id AS book_id,
+            b.title AS title,
+            b.isbn AS isbn,
+            b.url AS url,
+            b.summary AS summary,
+            c.id AS categories_id,
+            a.id AS authors_id
+        FROM
+            books AS b,
+            authors AS a,
+            authors_books AS ab,
+            categories AS c
+        WHERE
+            b.id = ab.books_id
+        AND
+            a.id = ab.authors_id
+        AND
+            c.id = b.categories_id
+        AND
+            b.id = :id
+    `,
+    categories = [],
+    authors = [];
     db.each(sql, params, (err, row)=>{
         context['data'] = row;
     }, ()=>{

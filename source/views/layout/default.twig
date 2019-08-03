@@ -7,16 +7,16 @@
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="/css/min.css">
     </head>
-<body>
-    <main class="grid has-gutter-xl">
-        <aside class="col-4">
-            {% include 'elements/nav.twig' %}
-        </aside>
-        <section class="col-8">
-            {% block content %}{% endblock %}
-        </section>
-    </main>
+    <body>
+        <main class="grid has-gutter-xl">
+            <aside class="col-4">
+                {% include 'elements/nav.twig' %}
+            </aside>
+            <section class="col-8">
+                {% block content %}{% endblock %}
+            </section>
+        </main>
 
-    <script src="/js/min.js"></script>
-</body>
+        <script src="/js/min.js"></script>
+    </body>
 </html>
