@@ -3,6 +3,7 @@ var sqlite3 = require('sqlite3').verbose(),
     dbPath = path.resolve(__dirname, '../data/database.db'),
     db = new sqlite3.Database(dbPath);
 
+
 exports.api = (req, res)=>{
     let context = {},
         sql = `

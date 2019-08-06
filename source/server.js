@@ -62,6 +62,7 @@ module.exports = class Server{
             // routes
             let routes = this.express.Router(),
                 setRoute = (url, method, routes)=>{
+                    url.view = require('./controllers/controllerFactory')(url.view);
                     switch(method.trim().toLowerCase()){
                         case 'post':
                             routes.post(url.path, url.view);
@@ -78,7 +79,7 @@ module.exports = class Server{
 
             for(let i in this.urls){
                 let url = this.urls[ i ];
-                if(url.method.indexOf(',')){
+                if(url.method.indexOf(',') !== -1){
                     let methods = url.method.split(',')
                     for(let j = 0; j < methods.length; j++){
                         routes = setRoute(url,methods[j], routes);
