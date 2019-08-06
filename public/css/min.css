@@ -780,6 +780,8 @@ select {
     background-color: #fff; }
     select.success:hover {
       background-color: #fff; }
+  select option {
+    color: #f1f1f1; }
 
 strike, .strike {
   text-decoration: line-through; }

@@ -1,7 +1,7 @@
 {
-    "name": "connect_4",
+    "name": "kit80",
     "version": "0.1.1",
-    "description": "simple game with nodejs",
+    "description": "simple framework with nodejs",
     "main": "index.js",
     "scripts": {
         "dev": "NODE_ENV=dev webpack",
