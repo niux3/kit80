@@ -8,8 +8,8 @@ textarea{
     width: 100%;
     resize: vertical;
     cursor:pointer;
-    scrollbar-color: $color-ghost $color-ghost;
-    scrollbar-width: thin;
+    // scrollbar-color: $color-ghost $color-ghost;
+    // scrollbar-width: thin;
 
     &::placeholder{
         font-style: italic;
@@ -19,11 +19,11 @@ textarea{
     &:focus, &:active{
         border-color: map-get($color-primary, default) !important;
         cursor:text;
-        scrollbar-color: $color-ghost $color-base;
+        //scrollbar-color: $color-ghost $color-base;
     }
 
     &:hover{
-        scrollbar-color: $color-ghost $color-base;
+        //scrollbar-color: $color-ghost $color-base;
         border-color: map-get($color-primary, default) !important;
     }
 

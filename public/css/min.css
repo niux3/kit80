@@ -810,18 +810,14 @@ textarea {
   transition: border-color 400ms;
   width: 100%;
   resize: vertical;
-  cursor: pointer;
-  scrollbar-color: transparent transparent;
-  scrollbar-width: thin; }
+  cursor: pointer; }
   textarea::placeholder {
     font-style: italic;
     color: #a1a1a1; }
   textarea:focus, textarea:active {
     border-color: #3498db !important;
-    cursor: text;
-    scrollbar-color: transparent #222; }
+    cursor: text; }
   textarea:hover {
-    scrollbar-color: transparent #222;
     border-color: #3498db !important; }
   textarea:disabled {
     cursor: not-allowed;
