@@ -5,7 +5,6 @@ let sqlite3 = require('sqlite3').verbose(),
 
 module.exports = {
 
-
     api(req, res){
         let context = {},
             sql = `
@@ -286,7 +285,7 @@ module.exports = {
         });
     },
 
-    
+
     book_update_post(req, res){
         let data = req.body,
             err = {};

@@ -1,4 +1,4 @@
-module.exports = class Server{
+class Server{
     constructor(){
         //dependances
         let Twig = require("twig");
@@ -6,10 +6,11 @@ module.exports = class Server{
         this.path = require('path');
         this.Twig = Twig;
         this.express = require('express');
+        this.session = require('express-session'); 
         this.cookieParser = require('cookie-parser');
         this.logger = require('morgan');
         this.app = this.express();
-        this.urls = require('./configuration/urls');
+        this.urls = require('./configuration/routes');
     }
 
     run(){
@@ -58,6 +59,21 @@ module.exports = class Server{
             this.app.use(this.express.urlencoded({ extended: false }));
             this.app.use(this.cookieParser());
             this.app.use(this.express.static('public'));
+
+            //session
+            let sess = {
+                secret: 'keyboard cat',
+                cookie: {},
+                resave: false,
+                saveUninitialized: false,
+            };
+
+            if (this.app.get('env') && this.app.get('env') === 'production') {
+                this.app.set('trust proxy', 1) // trust first proxy
+                sess.cookie.secure = true // serve secure cookies
+                sess.saveUninitialized = true;
+            }
+            this.app.use(require('express-session')(sess));
 
             // routes
             let routes = this.express.Router(),
@@ -114,9 +130,13 @@ module.exports = class Server{
             });
 
             //execute
-            this.app.listen(PORT);
+            this.app.listen(PORT, ()=>{
+                console.log(`Server is listening on port ${PORT}`);
+                console.log(`http://localhost:${PORT}`);
+            });
         }catch(err){
             console.error('error system ====> ', err);
         }
     }
 }
+new Server().run();

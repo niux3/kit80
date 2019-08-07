@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "NODE_ENV=dev webpack",
         "prod": "webpack",
-        "start": "nodemon ./public/index.js",
+        "start": "nodemon ./source/server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "renaudbourdeau@gmail.com",
@@ -22,6 +22,7 @@
         "cookie-parser": "^1.4.4",
         "css-loader": "^0.28.4",
         "express": "^4.16.4",
+        "express-session": "^1.16.2",
         "extract-text-webpack-plugin": "^3.0.0",
         "file-loader": "^0.11.2",
         "http-errors": "^1.7.3",
