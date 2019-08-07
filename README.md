@@ -1,6 +1,6 @@
 <div style="max-width:960px; margin:0 auto">
-<h1 style="text-align:center; margin-bottom:25px;">![kit80](./public/img/logo.svg)</h1>
-
+<h1 style="text-align:center; margin-bottom:0px;">![kit80](./public/img/logo.png)</h1>
+<p style="text-align:center; margin:15px 0 25px;">kit 80</p>
 <div style="text-align:center; margin-bottom:25px;">framework web en nodejs</div>
 
 ## configuration requise :
