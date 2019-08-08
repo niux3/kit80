@@ -1,6 +1,6 @@
 (()=>{
     try{
-        let Twig = require("twig"),
+        let twig = require("twig"),
             path = require('path'),
             express = require('express'),
             session = require('express-session'),
@@ -22,7 +22,7 @@
 
         //bad bug twig extension (2 loops ??) !
         let counter = 0;
-        Twig.extendFunction("url", (name, params)=> {
+        twig.extendFunction("url", (name, params)=> {
             if(counter === 0){
                 let urlCatch = urls.filter((url)=>{
                     if(url.name === name){
@@ -47,12 +47,15 @@
 
         app.set("views", ROOT_PATH + '/source/views');
 
+
         //middleware
         app.use(logger('dev'));
         app.use(express.json());
         app.use(express.urlencoded({ extended: false }));
         app.use(cookieParser());
         app.use(express.static('public'));
+        //get general var
+        app.locals.context = require('./controllers/context_vars');
 
         //session
         let sess = {
@@ -126,9 +129,6 @@
             console.log(`Welcome on kit 80 - node js framework`);
             console.log(`Server is listening on port ${PORT}`);
             console.log(`goto http://localhost:${PORT}`);
-            // setTimeout(()=>{
-            //     require('open')(`http://localhost:${PORT}`);
-            // }, 2000)
         });
     }catch(err){
         console.error('error system ====> ', err);

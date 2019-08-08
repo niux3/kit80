@@ -1,19 +1,13 @@
 <nav>
     <ul>
-        <li><a href="{{ url('index') }}">Accueil</a></li>
-        <li><a href="{{ url('book_list') }}">livres</a></li>
-        <li><a href="{{ url('author_list') }}">auteurs</a></li>
-        <li><a href="{{ url('categorie_list') }}">catégories</a></li>
-        <li><a href="">rechercher</a></li>
+        {% for url in context.front_nav %}
+        <li><a href="{{ url( url.name ) }}">{{ url.text }}</a></li>
+        {% endfor %}
     </ul>
     <hr>
     <ul>
-        <li><a href="{{ url('api') }}">API</a></li>
-    </ul>
-    <hr>
-    <ul>
-        <li><a href="{{ url('author_create_get') }}">Nouvel auteur</a></li>
-        <li><a href="{{ url('book_create_get') }}">Nouveau livre</a></li>
-        <li><a href="{{ url('categorie_create_get') }}">Nouvelle categorie</a></li>
+        {% for url in context.admin_nav %}
+        <li><a href="{{ url( url.name ) }}">{{ url.text }}</a></li>
+        {% endfor %}
     </ul>
 </nav>
