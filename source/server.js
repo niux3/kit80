@@ -60,6 +60,9 @@
         let routes = express.Router(),
             setRoute = (url, method, routes)=>{
                 let action = require('./controllers/controllerFactory')(url.view);
+                if(action === undefined){
+                    throw(`method doesn't exist (method name is ${url.view} and the path name is ${url.name}). go to see configuration/routes`)
+                }
                 switch(method.trim().toLowerCase()){
                     case 'post':
                         routes.post(url.path, action);
@@ -93,20 +96,20 @@
         });
 
         // error handler
-        app.use(function(err, req, res, next) {
-            // set locals, only providing error in development
-            res.locals.message = err.message;
-            //res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-            // render the error page
-            let statusErr = err.status || 500,
-                view = "404";
-            res.status(statusErr);
-            if(statusErr >= 500){
-                view = "500"
-            }
-            res.render(`errors/${view}.twig`);
-        });
+        // app.use(function(err, req, res, next) {
+        //     // set locals, only providing error in development
+        //     res.locals.message = err.message;
+        //     //res.locals.error = req.app.get('env') === 'development' ? err : {};
+        //
+        //     // render the error page
+        //     let statusErr = err.status || 500,
+        //         view = "404";
+        //     res.status(statusErr);
+        //     if(statusErr >= 500){
+        //         view = "500"
+        //     }
+        //     res.render(`errors/${view}.twig`);
+        // });
 
         //execute
         app.listen(PORT, ()=>{

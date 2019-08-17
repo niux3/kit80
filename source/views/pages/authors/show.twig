@@ -12,7 +12,7 @@
 </div>
 <div class="grid-2 has-gutter" style="margin-top:1.5rem">
     <div style="text-align:right">
-        <a href="{{ url('author_update_get', {'id' : author.id }) }}" class="button">éditer</a>
+        <a href="{{ url('author_update', {'id' : author.id }) }}" class="button">éditer</a>
     </div>
     <div>
         <a href="{{ url('author_delete_get', {'id' : author.id }) }}" class="button danger" onclick="return confirm('Voulez vous vraiment supprimer cet auteur ?')">supprimer</a>

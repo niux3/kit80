@@ -51,7 +51,7 @@ module.exports = {
 
     show(req, res){
         let context = {};
-        db.select('b.id AS book_id', 'b.title AS book_title', 'b.url AS url', 'b.isbn AS isbn', 'b.summary AS summary', 'c.name AS categorie', 'a.firstname AS firstname', 'a.lastname AS lastname', 'a.id AS author_id')
+        db.select('b.id AS book_id', 'b.title AS title', 'b.url AS url', 'b.isbn AS isbn', 'b.summary AS summary', 'c.name AS categorie', 'a.firstname AS firstname', 'a.lastname AS lastname', 'a.id AS author_id')
             .from('books AS b')
             .join('authors_books as ab', 'b.id', 'ab.books_id')
             .join('authors AS a', 'a.id', 'ab.authors_id')
@@ -129,7 +129,7 @@ module.exports = {
             res.redirect(reverseURL('book_list'));
         }
         db('books').where('id', parseInt(req.params.id, 10)).del().then(()=>{
-            db('authors_books').where('id', parseInt(req.params.id, 10)).del().then(()=>{
+            db('authors_books').where('authors_id', parseInt(req.params.id, 10)).del().then(()=>{
                 res.redirect(reverseURL('book_list'));
             })
         });

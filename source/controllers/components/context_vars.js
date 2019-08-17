@@ -27,7 +27,7 @@ module.exports = {
     ],
     'admin_nav' : [
         {
-            'name' : 'author_create_get',
+            'name' : 'author_create',
             'text' : 'Nouvel auteur'
         },
         {

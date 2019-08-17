@@ -20,10 +20,10 @@ un auteur
     un auteur
 </h1>
 {% if data.authors_id %}
-<form action="{{ url('author_update_post') }}" method="post">
+<form action="{{ url('author_update', {id : data.authors_id}) }}" method="post">
     <input type="hidden" name="authors_id" value="{{ data.authors_id }}">
 {% else %}
-<form action="{{ url('author_create_post') }}" method="post">
+<form action="{{ url('author_create') }}" method="post">
 {% endif %}
     <div class="input text">
         <label for="url">url</label>

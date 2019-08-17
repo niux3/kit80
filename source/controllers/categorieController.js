@@ -2,7 +2,7 @@ let db = require('../configuration/database');
 let reverseURL = require('../utils/reverseURL');
 
 module.exports = {
-    
+
 
     index(req, res) {
         let context = {};
@@ -32,15 +32,18 @@ module.exports = {
                     name : value
                 }
                 db.insert(params).into('categories').then(()=>{
-                    res.redirect(reverseURL('book_list')); //bug ??
+                    res.redirect(reverseURL('book_list'));
                 })
+            }else{
+                context = {
+                    'data' : data,
+                    'error' : err
+                };
             }
         }
-        context = {
-            'data' : data,
-            'error' : err
-        };
-        res.render('pages/categories/edit.twig', context);
+        if(req.method === 'GET' || context['error'] !== undefined){
+            res.render('pages/categories/edit.twig', context);
+        }
     },
 
 
