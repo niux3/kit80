@@ -20,10 +20,10 @@ une catégorie
     une catégorie
 </h1>
 {% if data.categories_id %}
-<form action="{{ url('categorie_update_post') }}" method="post">
+<form action="{{ url('categorie_update', {id:data.categories_id}) }}" method="post">
     <input type="hidden" name="categories_id" value="{{ data.categories_id }}">
 {% else %}
-<form action="{{ url('categorie_create_post') }}" method="post">
+<form action="{{ url('categorie_create') }}" method="post">
 {% endif %}
     {% if data.categories_id %}
     {% endif %}

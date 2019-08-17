@@ -16,8 +16,8 @@
         <p><strong>genre</strong> : <em>{{ book.categorie }}</em></p>
         <p><strong><abbr title="isbn">isbn</abbr></strong> : {{ book.isbn }}</p>
         <p>
-            <a href="{{ url('book_update_get', {id : book.book_id }) }}" class="button alert">éditer</a>&nbsp;
-            <a href="{{ url('book_delete_get', {id : book.book_id }) }}" onclick="return confirm('voulez vous vraiment supprimer ce livre ?')" class="button danger">supprimer</a>
+        <a href="{{ url('book_update', {id : book.book_id }) }}" class="button alert">éditer</a>&nbsp;
+        <a href="{{ url('book_delete_get', {id : book.book_id }) }}" onclick="return confirm('voulez vous vraiment supprimer ce livre ?')" class="button danger">supprimer</a>
         </p>
     </div>
 </div>

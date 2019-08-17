@@ -13,8 +13,8 @@ rechercher un livre par catégorie
         <span>{{ categorie.name }}</span>
         <ul style="list-style:none;">
             <li>
-                <a href="{{ url('categorie_update_get', {'id' : categorie.id }) }}" class="button">éditer</a>
-                <a href="{{ url('categorie_delete_get', {'id' : categorie.id }) }}" class="button danger" onclick="return confirm('voulez vous vraiment supprimer cette catégorie ?')">supprimer</a>
+            <a href="{{ url('categorie_update', {'id' : categorie.id }) }}" class="button">éditer</a>
+            <a href="{{ url('categorie_delete', {'id' : categorie.id }) }}" class="button danger" onclick="return confirm('voulez vous vraiment supprimer cette catégorie ?')">supprimer</a>
             </li>
         </ul>
     </li>

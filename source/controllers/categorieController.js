@@ -1,63 +1,46 @@
-let sqlite3 = require('sqlite3').verbose(),
-    path = require('path'),
-    dbPath = path.resolve(__dirname, '../data/database.db'),
-    db = new sqlite3.Database(dbPath);
+let db = require('../configuration/database');
+let reverseURL = require('../utils/reverseURL');
 
 module.exports = {
+    
 
-
-    categorie_list(req, res) {
-        let context = {},
-            sql = `
-                SELECT
-                    id,
-                    name
-                FROM
-                    categories
-                ORDER BY
-                    name
-            `;
-        db.all(sql, (err, rows)=>{
+    index(req, res) {
+        let context = {};
+        db('categories').select('id', 'name').orderBy('name').then((rows)=>{
             context['categories'] = rows;
             res.render('pages/categories/index.twig', context);
         });
     },
 
 
-    categorie_create_get(req, res) {
-        res.render('pages/categories/edit.twig');
-    },
-
-
-    categorie_create_post(req, res) {
-        let data = req.body,
-            value = data['name'].trim(),
-            context = {},
-            params = {':name' : value},
-            err = {},
-            sql = `
-                INSERT INTO
-                    categories(name)
-                VALUES
-                    (:name)
-            `;
-        if(!/^[a-wéèêçàù ']+$/i.test(value)){
-            err['name'] = "une catégorie ne doit pas contenir de chiffre ou de caractères 'spéciaux'";
+    create(req, res){
+        let context = {},
+            data = null,
+            err = null;
+        if(req.method === 'POST'){
+            data = req.body,
+            err = {};
+            let value = data['name'].trim();
+            if(!/^[a-zéèêçàù ']+$/i.test(value)){
+                err['name'] = "une catégorie ne doit pas contenir de chiffre ou de caractères 'spéciaux'";
+            }
+            if(value === ''){
+                err['name'] = "ce champ ne doit pas être vide";
+            }
+            if(Object.keys(err).length === 0){
+                let params = {
+                    name : value
+                }
+                db.insert(params).into('categories').then(()=>{
+                    res.redirect(reverseURL('book_list')); //bug ??
+                })
+            }
         }
-        if(value === ''){
-            err['name'] = "ce champ ne doit pas être vide";
-        }
-        if(Object.keys(err).length === 0){
-            db.run(sql, params, ()=>{
-                res.redirect('/catalogue/livres');
-            });
-        }else{
-            context = {
-                'data' : data,
-                'error' : err
-            };
-            res.render('pages/categories/edit.twig', context);
-        }
+        context = {
+            'data' : data,
+            'error' : err
+        };
+        res.render('pages/categories/edit.twig', context);
     },
 
 
@@ -66,55 +49,33 @@ module.exports = {
     },
 
 
-    categorie_update_get(req, res) {
+    edit(req, res){
         let context = {},
-            params = { ':id' : req.params.id },
-            sql = `
-                SELECT
-                    id AS categories_id,
-                    name
-                FROM
-                    categories
-                WHERE
-                    id = :id
-            `;
-            db.get(sql, params, (err, row)=>{
-                context['data'] = row;
-                res.render('pages/categories/edit.twig', context);
-            });
-    },
-
-
-    categorie_update_post(req, res) {
-        let data = req.body,
-            value = data['name'].trim(),
-            context = {},
-            params = {':name' : value, ':id' : data['categories_id']},
-            err = {},
-            sql = `
-                UPDATE
-                    categories
-                SET
-                    name = :name
-                WHERE
-                    id = :id
-            `;
-        if(!/^[a-wéèêçàù ']+$/i.test(value)){
-            err['name'] = "une catégorie ne doit pas contenir de chiffre ou de caractères 'spéciaux'";
+            data = null,
+            err = null;
+        if(req.method === 'POST'){
+            data = req.body,
+            err = {};
+            let value = data['name'].trim();
+            if(!/^[a-wéèêçàù ']+$/i.test(value)){
+                err['name'] = "une catégorie ne doit pas contenir de chiffre ou de caractères 'spéciaux'";
+            }
+            if(value === ''){
+                err['name'] = "ce champ ne doit pas être vide";
+            }
+            if(Object.keys(err).length === 0){
+                db('categories')
+                    .where('id', parseInt(data['categories_id'].trim(), 10))
+                    .update({name : value, id : data['categories_id']}).then(()=>{
+                        res.redirect(reverseURL('categorie_list'))
+                    });
+            }
         }
-        if(value === ''){
-            err['name'] = "ce champ ne doit pas être vide";
-        }
-        if(Object.keys(err).length === 0){
-            db.run(sql, params, ()=>{
-                res.redirect('/catalogue/categories');
-            });
-        }else{
-            context = {
-                'data' : data,
-                'error' : err
-            };
+        db('categories').select('id AS categories_id', 'name').where('id',req.params.id).then((rows)=>{
+            context['data'] = rows[0];
+            context['error'] = err === null ? {} : err;
+            context['data'] = data === null ? context['data'] : data;
             res.render('pages/categories/edit.twig', context);
-        }
-    }
+        })
+    },
 };

@@ -20,10 +20,10 @@ module.exports = {
             'name' : 'categorie_list',
             'text' : 'Catégories'
         },
-        {
-            'name' : '#',
-            'text' : 'Rechercher'
-        }
+        // {
+        //     'name' : '#',
+        //     'text' : 'Rechercher'
+        // }
     ],
     'admin_nav' : [
         {
@@ -31,11 +31,11 @@ module.exports = {
             'text' : 'Nouvel auteur'
         },
         {
-            'name' : 'book_create_get',
+            'name' : 'book_create',
             'text' : 'Nouveau livre'
         },
         {
-            'name' : 'categorie_create_get',
+            'name' : 'categorie_create',
             'text' : 'Nouvelle categorie'
         }
     ]

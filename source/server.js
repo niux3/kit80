@@ -24,23 +24,7 @@
         let counter = 0;
         twig.extendFunction("url", (name, params)=> {
             if(counter === 0){
-                let urlCatch = urls.filter((url)=>{
-                    if(url.name === name){
-                        return url;
-                    }
-                })[0];
-                if(params === undefined){
-                    return urlCatch.path;
-                }
-                let pattern = /:([a-z0-9]+)/ig,
-                    keywords = urlCatch.path.match(pattern),
-                    len = keywords.length,
-                    url = urlCatch.path;
-                for(let i = 0; i <  len; i++){
-                    let key = keywords[i].substring(1);
-                    url = url.replace(':' + key, params[key]);
-                }
-                return url;
+                return require('./utils/reverseURL')(name, params);
             }
             counter+= 1;
         });
@@ -55,7 +39,7 @@
         app.use(cookieParser());
         app.use(express.static('public'));
         //get general var
-        app.locals.context = require('./controllers/context_vars');
+        app.locals.context = require('./controllers/components/context_vars');
 
         //session
         let sess = {
@@ -75,16 +59,16 @@
         // routes
         let routes = express.Router(),
             setRoute = (url, method, routes)=>{
-                url.view = require('./controllers/controllerFactory')(url.view);
+                let action = require('./controllers/controllerFactory')(url.view);
                 switch(method.trim().toLowerCase()){
                     case 'post':
-                        routes.post(url.path, url.view);
+                        routes.post(url.path, action);
                         break;
                     case 'put':
-                        routes.put(url.path, url.view);
+                        routes.put(url.path, action);
                         break;
                     case 'get':
-                        routes.get(url.path, url.view);
+                        routes.get(url.path, action);
                         break;
                 }
                 return routes;
@@ -92,8 +76,8 @@
 
         for(let i in urls){
             let url = urls[ i ];
-            if(url.method.indexOf(',') !== -1){
-                let methods = url.method.split(',')
+            if(url.method.indexOf(';') !== -1){
+                let methods = url.method.split(';').map((item)=> item.trim());
                 for(let j = 0; j < methods.length; j++){
                     routes = setRoute(url,methods[j], routes);
                 }

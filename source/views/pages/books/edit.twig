@@ -20,10 +20,10 @@ un livre
     un livre
 </h1>
 {% if data.book_id %}
-<form action="{{ url('book_update_post') }}" method="POST">
+<form action="{{ url('book_update', {id : data.book_id}) }}" method="POST">
     <input type="hidden" name="book_id" value="{{ data.book_id }}">
 {% else %}
-<form action="{{ url('book_create_post') }}" method="POST">
+<form action="{{ url('book_create') }}" method="POST">
 {% endif %}
     <div class="input text">
         <label for="title">titre</label>
