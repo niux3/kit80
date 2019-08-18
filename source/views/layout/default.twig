@@ -8,6 +8,13 @@
         <link rel="stylesheet" href="/css/min.css">
     </head>
     <body>
+        {% if messages %}
+        {% for message in messages.flash %}
+        <div class="flash {{ message.type }}">
+            <p class="container">{{ message.txt }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
         <main class="grid has-gutter-xl">
             <aside class="col-4">
                 {% include 'elements/nav.twig' %}

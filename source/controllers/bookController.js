@@ -107,6 +107,7 @@ module.exports = {
                         authors_id : parseInt(data['authors_id'].trim(), 10)
                     };
                     db.insert(values).into('authors_books').then(()=>{
+                        req.flash('flash', {type : 'success', txt : 'Votre livre a bien été ajouté'});
                         res.redirect(reverseURL('book_list'));
                     });
                 });
@@ -117,6 +118,9 @@ module.exports = {
             db.select('id', 'firstname', 'lastname').from('authors').orderBy('lastname').then((rows)=>{
                 context['authors'] = rows;
                 context['error'] = err === null ? {} : err;
+                if(err != null){
+                    req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
+                }
                 context['data'] = data === null ? {} : data;
                 res.render('pages/books/edit.twig', context);
             })
@@ -130,6 +134,7 @@ module.exports = {
         }
         db('books').where('id', parseInt(req.params.id, 10)).del().then(()=>{
             db('authors_books').where('authors_id', parseInt(req.params.id, 10)).del().then(()=>{
+                req.flash('flash', {type : 'success', txt : 'Votre suppression a bien été prise en compte'});
                 res.redirect(reverseURL('book_list'));
             })
         });
@@ -174,6 +179,7 @@ module.exports = {
                     }).then(()=>{
                         // author change ?
                         db('authors_books').select('authors_id').where('books_id', parseInt(data['book_id'].trim(), 10)).then((rows)=>{
+                            req.flash('flash', {type : 'success', txt : 'Votre modification a bien été prise en compte'});
                             if(parseInt(data['authors_id'].trim(), 10) !== parseInt(rows[0].authors_id, 10)){
                                 let params = {
                                     authors_id : parseInt(data['authors_id'].trim(), 10),
@@ -201,6 +207,9 @@ module.exports = {
                     db.select('id', 'firstname', 'lastname').from('authors').then((rows)=>{
                         context['authors'] = rows;
                         context['error'] = err === null ? {} : err;
+                        if(err != null){
+                            req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
+                        }
                         context['data'] = data === null ? context['data'] : data;
                         res.render('pages/books/edit.twig', context);
                     })

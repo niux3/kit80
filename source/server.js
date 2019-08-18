@@ -4,6 +4,7 @@
             path = require('path'),
             express = require('express'),
             session = require('express-session'),
+            flash = require('express-flash'),
             cookieParser = require('cookie-parser'),
             logger = require('morgan'),
             app = express(),
@@ -55,6 +56,7 @@
             sess.saveUninitialized = true;
         }
         app.use(require('express-session')(sess));
+        app.use(flash());
 
         // routes
         let routes = express.Router(),

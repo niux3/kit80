@@ -67,6 +67,7 @@ module.exports = {
                     url : data['url'],
                 };
                 db.insert(params).into('authors').then(()=>{
+                    req.flash('flash', {type : 'success', txt : 'Votre ajout a bien été prise en compte'});
                     res.redirect(reverseURL('author_list'));
                 });
             }else{
@@ -75,6 +76,9 @@ module.exports = {
             }
         }
         if(req.method === 'GET' || context['error'] !== undefined){
+            if(err != null){
+                req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
+            }
             res.render('pages/authors/edit.twig', context);
         }
     },
@@ -91,6 +95,7 @@ module.exports = {
             .join('authors AS a', 'a.id', 'ab.authors_id')
             .join('authors_books AS ab', 'b.id', 'ab.books_id')
             .where('a.id', parseInt(req.params.id, 10)).then((rows)=>{
+                req.flash('flash', {type : 'success', txt : 'Votre suppression a bien été prise en compte'});
                 if(rows.length > 0){
                     db('books').where('id', rows[0].bid).del().then(()=>{
                         //delete authors_books
@@ -139,6 +144,7 @@ module.exports = {
                     id : data['authors_id']
                 }
                 db('authors').where(params).update(set).then(()=>{
+                    req.flash('flash', {type : 'success', txt : 'Votre modification a bien été prise en compte'});
                     res.redirect(reverseURL('author_list'))
                 });
             }else{
@@ -149,6 +155,9 @@ module.exports = {
         if(req.method === 'GET' || context['error'] !== undefined){
             db.select('id AS authors_id', 'firstname', 'lastname', 'url').from('authors').where(params).then((rows)=>{
                 context['data'] = rows[0];
+                if(err != null){
+                    req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
+                }
                 res.render('pages/authors/edit.twig', context);
             });
         }
