@@ -1,7 +1,7 @@
 {% extends '../../layout/default.twig' %}
 
 {% block title %}
-{% if data.categories_id %}
+{% if data.id %}
 éditer
 {% else %}
 ajouter
@@ -12,20 +12,20 @@ une catégorie
 
 {% block content %}
 <h1>
-    {% if data.categories_id %}
+    {% if data.id %}
     éditer
     {% else %}
     ajouter
     {% endif %}
     une catégorie
 </h1>
-{% if data.categories_id %}
-<form action="{{ url('categorie_update', {id:data.categories_id}) }}" method="post">
-    <input type="hidden" name="categories_id" value="{{ data.categories_id }}">
+{% if data.id %}
+<form action="{{ url('categorie_update', {id:data.id}) }}" method="post">
+    <input type="hidden" name="id" value="{{ data.id }}">
 {% else %}
 <form action="{{ url('categorie_create') }}" method="post">
 {% endif %}
-    {% if data.categories_id %}
+    {% if data.id %}
     {% endif %}
     <div class="input text">
         <label for="name">nom de la catégorie</label>
@@ -36,7 +36,7 @@ une catégorie
     </div>
     <div class="input submit">
         <button class="primary" type="submit">
-            {% if data.categories_id %}
+            {% if data.id %}
             éditer
             {% else %}
             ajouter

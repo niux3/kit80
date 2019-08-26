@@ -12,7 +12,7 @@
         <img src="{{ book.url }}" alt="{{ book.title }}" style="display:block; width:100%;">
     </div>
     <div class="col-8">
-        <p><strong>auteur</strong> : <a href="{{ url('author_detail', {id : book.author_id }) }}">{{ book.firstname }} {{ book.lastname }}</a></p>
+        <p><strong>auteur</strong> : <a href="{{ url('author_detail', {id : book.authors_id }) }}">{{ book.firstname }} {{ book.lastname }}</a></p>
         <p><strong>genre</strong> : <em>{{ book.categorie }}</em></p>
         <p><strong><abbr title="isbn">isbn</abbr></strong> : {{ book.isbn }}</p>
         <p>

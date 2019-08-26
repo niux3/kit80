@@ -1,97 +1,47 @@
+let books = require('../models/books');
 let db = require('../configuration/database');
 let reverseURL = require('../utils/reverseURL');
 
 module.exports = {
 
     api(req, res){
-        db.select('b.title AS title', 'b.isbn AS isbn', 'b.url AS book_photo', 'b.summary AS summary', 'c.name AS categorie', 'a.firstname AS firstname', 'a.lastname AS lastname', 'a.url AS authors_photo')
-            .from('books AS b')
-            .join('authors_books as ab', 'b.id', 'ab.books_id')
-            .join('authors AS a', 'a.id', 'ab.authors_id')
-            .join('categories AS c', 'c.id', 'b.categories_id')
-            .orderBy('b.title')
-            .then((rows)=>{
-                res.type('application/json');
-                res.send(rows);
-            });
-    },
-
-
-    home(req, res){
-        let context = {
-            'books' : 0,
-            'authors' : 0,
-            'categories' : 0
-        };
-        db.from('books').count('*', {as: 'books'}).then((rows)=>{
-            context['books'] = rows[0].books;
-            db.from('authors').count('*', {as: 'authors'}).then((rows)=>{
-                context['authors'] = rows[0].authors;
-                db.from('categories').count('*', {as: 'categories'}).then((rows)=>{
-                    context['categories'] = rows[0].categories;
-                    res.render('pages/index.twig', context);
-                });
-            });
+        books.get_api((rows)=>{
+            res.type('application/json');
+            res.send(rows);
         });
     },
 
 
+    home(req, res){
+        books.state((context)=>{
+            res.render('pages/index.twig', context);
+        })
+    },
+
+
     index(req, res){
-        let context = {};
-        db.select('b.id AS book_id', 'b.title AS book_title', 'a.firstname AS author_firstname', 'a.lastname AS author_lastname')
-            .from('books AS b')
-            .join('authors_books as ab', 'b.id', 'ab.books_id')
-            .join('authors AS a', 'a.id', 'ab.authors_id')
-            .orderBy('b.title').then((rows)=>{
-                context['books'] = rows;
-                res.render('pages/books/index.twig', context);
-            });
+        books.findall((context)=>{
+            res.render('pages/books/index.twig', context);
+        });
     },
 
 
     show(req, res){
-        let context = {};
-        db.select('b.id AS book_id', 'b.title AS title', 'b.url AS url', 'b.isbn AS isbn', 'b.summary AS summary', 'c.name AS categorie', 'a.firstname AS firstname', 'a.lastname AS lastname', 'a.id AS author_id')
-            .from('books AS b')
-            .join('authors_books as ab', 'b.id', 'ab.books_id')
-            .join('authors AS a', 'a.id', 'ab.authors_id')
-            .join('categories AS c', 'c.id', 'b.categories_id')
-            .where('b.id', req.params.id).then((rows)=>{
-                context['book'] = rows[0];
-                if(context['book'] === undefined){
-                    res.redirect('/404NotFound');
-                }
-                res.render('pages/books/show.twig', context);
-            });
+        books.findone(req.params.id, (context)=>{
+            if(context['book'] === undefined){
+                res.redirect('/404NotFound');
+            }
+            res.render('pages/books/show.twig', context);
+        });
     },
 
 
     create(req, res){
-        let context = {},
-            data = null,
+        let data = null,
             err = null;
         if(req.method === 'POST'){
-            data = req.body,
-            err = {};
-            for(let k in data){
-                let value = data[k].trim();
-                switch(k){
-                    case 'isbn':
-                        if(!/\d{10}/.test(value)){
-                            err[k] = "ce champ ne doit contenir une série de 10 chiffres";
-                        }
-                        break;
-
-                    case 'url':
-                        if(!/^http.+\.\w{2,4}$/.test(value)){
-                            err[k] = "ce champ doit être une url valide";
-                        }
-                        break;
-                }
-                if(data[k].trim() === ''){
-                    err[k] = "ce champ ne doit pas être vide";
-                }
-            }
+            data = req.body;
+            err = books.is_valid(data);
             if(Object.keys(err).length === 0){
                 let values = {
                     title : data['title'].trim(),
@@ -99,31 +49,21 @@ module.exports = {
                     url : data['url'].trim(),
                     summary : data['summary'].trim(),
                     categories_id : parseInt(data['categories_id'].trim(), 10),
+                    authors_id : parseInt(data['authors_id'].trim(), 10),
                 }
-                db.insert(values, ['id']).into('books').then((item)=>{
-                    let last_insert_id = item[0];
-                    values = {
-                        books_id : last_insert_id,
-                        authors_id : parseInt(data['authors_id'].trim(), 10)
-                    };
-                    db.insert(values).into('authors_books').then(()=>{
-                        req.flash('flash', {type : 'success', txt : 'Votre livre a bien été ajouté'});
-                        res.redirect(reverseURL('book_list'));
-                    });
+                books.insert(values, ()=>{
+                    req.flash('flash', {type : 'success', txt : 'Votre livre a bien été ajouté'});
+                    res.redirect(reverseURL('book_list'));
                 });
             }
         }
-        db.select('id', 'name').from('categories').orderBy('name').then((rows)=>{
-            context['categories'] = rows;
-            db.select('id', 'firstname', 'lastname').from('authors').orderBy('lastname').then((rows)=>{
-                context['authors'] = rows;
-                context['error'] = err === null ? {} : err;
-                if(err != null){
-                    req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
-                }
-                context['data'] = data === null ? {} : data;
-                res.render('pages/books/edit.twig', context);
-            })
+        books.get_authors_categories((context)=>{
+            context['error'] = err === null ? {} : err;
+            if(err != null){
+                req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
+            }
+            context['data'] = data === null ? {} : data;
+            res.render('pages/books/edit.twig', context);
         });
     },
 
@@ -132,12 +72,10 @@ module.exports = {
         if(!/\d+/.test(req.params.id)){
             res.redirect(reverseURL('book_list'));
         }
-        db('books').where('id', parseInt(req.params.id, 10)).del().then(()=>{
-            db('authors_books').where('authors_id', parseInt(req.params.id, 10)).del().then(()=>{
-                req.flash('flash', {type : 'success', txt : 'Votre suppression a bien été prise en compte'});
-                res.redirect(reverseURL('book_list'));
-            })
-        });
+        books.delete(req.params.id, ()=>{
+            req.flash('flash', {type : 'success', txt : 'Votre suppression a bien été prise en compte'});
+            res.redirect(reverseURL('book_list'));
+        })
     },
 
     edit(req, res){
@@ -145,27 +83,8 @@ module.exports = {
         data = null,
         err = null;
         if(req.method === 'POST'){
-            data = req.body,
-            err = {};
-            for(let k in data){
-                let value = data[k].trim();
-                switch(k){
-                    case 'isbn':
-                        if(!/\d{10}/.test(value)){
-                            err[k] = "ce champ ne doit contenir une série de 10 chiffres";
-                        }
-                        break;
-
-                    case 'url':
-                        if(!/^http.+\.\w{2,4}$/.test(value)){
-                            err[k] = "ce champ doit être une url valide";
-                        }
-                        break;
-                }
-                if(data[k].trim() === ''){
-                    err[k] = "ce champ ne doit pas être vide";
-                }
-            }
+            data = req.body;
+            err = books.is_valid(data);
             if(Object.keys(err).length === 0){
                 db('books')
                     .where('id', parseInt(data['book_id'].trim(), 10))
@@ -195,25 +114,28 @@ module.exports = {
                     });
             }
         }
-        db.select('b.id AS book_id', 'b.title AS title', 'b.isbn AS isbn', 'b.url AS url', 'b.summary AS summary', 'c.id AS categories_id', 'a.id AS authors_id')
-            .from('books AS b')
-            .join('authors_books AS ab', 'b.id', 'ab.books_id')
-            .join('authors AS a', 'a.id', 'ab.authors_id')
-            .join('categories AS c', 'c.id', 'b.categories_id')
-            .where('b.id', parseInt(req.params.id, 10)).then((rows)=>{
-                context['data'] = rows[0];
-                db.select('id', 'name').from('categories').then((rows)=>{
-                    context['categories'] = rows;
-                    db.select('id', 'firstname', 'lastname').from('authors').then((rows)=>{
-                        context['authors'] = rows;
-                        context['error'] = err === null ? {} : err;
-                        if(err != null){
-                            req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
-                        }
-                        context['data'] = data === null ? context['data'] : data;
-                        res.render('pages/books/edit.twig', context);
-                    })
+        books.findone(req.params.id, (context)=>{
+            db.select('id', 'name').from('categories').then((rows)=>{
+                context['categories'] = rows;
+                db.select('id', 'firstname', 'lastname').from('authors').then((rows)=>{
+                    context['authors'] = rows;
+                    context['error'] = err === null ? {} : err;
+                    if(err != null){
+                        req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
+                    }
+                    context['data'] = data === null ? context['book'] : data;
+                    res.render('pages/books/edit.twig', context);
                 })
             })
+        })
+        // db.select('b.id AS book_id', 'b.title AS title', 'b.isbn AS isbn', 'b.url AS url', 'b.summary AS summary', 'c.id AS categories_id', 'a.id AS authors_id')
+        //     .from('books AS b')
+        //     .join('authors_books AS ab', 'b.id', 'ab.books_id')
+        //     .join('authors AS a', 'a.id', 'ab.authors_id')
+        //     .join('categories AS c', 'c.id', 'b.categories_id')
+        //     .where('b.id', parseInt(req.params.id, 10)).then((rows)=>{
+        //         context['data'] = rows[0];
+        //
+        //     })
     },
 };

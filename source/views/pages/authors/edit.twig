@@ -1,7 +1,7 @@
 {% extends '../../layout/default.twig' %}
 
 {% block title %}
-{% if data.authors_id %}
+{% if data.id %}
 éditer
 {% else %}
 ajouter
@@ -12,16 +12,16 @@ un auteur
 
 {% block content %}
 <h1>
-    {% if data.authors_id %}
+    {% if data.id %}
     éditer
     {% else %}
     ajouter
     {% endif %}
     un auteur
 </h1>
-{% if data.authors_id %}
-<form action="{{ url('author_update', {id : data.authors_id}) }}" method="post">
-    <input type="hidden" name="authors_id" value="{{ data.authors_id }}">
+{% if data.id %}
+<form action="{{ url('author_update', {id : data.id}) }}" method="post">
+    <input type="hidden" name="id" value="{{ data.id }}">
 {% else %}
 <form action="{{ url('author_create') }}" method="post">
 {% endif %}
@@ -51,7 +51,7 @@ un auteur
 
     <div class="input submit">
         <button class="primary" type="submit">
-            {% if data.authors_id %}
+            {% if data.id %}
             éditer
             {% else %}
             ajouter

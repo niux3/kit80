@@ -14,6 +14,7 @@
         const ROOT_PATH = path.resolve('./');
         const WWW_PATH = ROOT_PATH + '/public';
         const PORT = 3000;
+        const DEBUG = true;
 
         //config app object
         app.set("twig options", {
@@ -98,20 +99,22 @@
         });
 
         // error handler
-        // app.use(function(err, req, res, next) {
-        //     // set locals, only providing error in development
-        //     res.locals.message = err.message;
-        //     //res.locals.error = req.app.get('env') === 'development' ? err : {};
-        //
-        //     // render the error page
-        //     let statusErr = err.status || 500,
-        //         view = "404";
-        //     res.status(statusErr);
-        //     if(statusErr >= 500){
-        //         view = "500"
-        //     }
-        //     res.render(`errors/${view}.twig`);
-        // });
+        if(!DEBUG){
+            app.use(function(err, req, res, next) {
+                // set locals, only providing error in development
+                res.locals.message = err.message;
+                //res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+                // render the error page
+                let statusErr = err.status || 500,
+                view = "404";
+                res.status(statusErr);
+                if(statusErr >= 500){
+                    view = "500"
+                }
+                res.render(`errors/${view}.twig`);
+            });
+        }
 
         //execute
         app.listen(PORT, ()=>{

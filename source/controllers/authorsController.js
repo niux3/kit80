@@ -1,35 +1,29 @@
 let db = require('../configuration/database'),
+    authors = require('../models/authors'),
+    books = require('../models/books'),
     reverseURL = require('../utils/reverseURL');
 
 module.exports = {
 
 
     index(req, res) {
-        let context = {};
-        db.select('id', 'firstname', 'lastname', 'url').from('authors').orderBy('lastname').then((rows)=>{
-            context['authors'] = rows;
+        authors.findall((context)=>{
             res.render('pages/authors/index.twig', context);
         });
     },
 
 
     show(req, res) {
-        let context = {},
-            params = {id : parseInt(req.params.id, 10)}
-        db.select('id', 'firstname', 'lastname', 'url').from('authors').where(params).then((rows)=>{
+        let context = {}
+        authors.findone(req.params.id, (rows)=>{
             if(rows === undefined){
                 res.redirect('/404NotFound');
             }
-            context['author'] = rows[0];
-            params = {}
-            db.select('b.id AS bid', 'b.title AS btitle', 'b.url AS burl')
-                .from('books AS b')
-                .join('authors_books AS ab', 'b.id', 'ab.books_id')
-                .join('authors AS a', 'a.id', 'ab.authors_id')
-                .where({'ab.authors_id' : parseInt(req.params.id, 10)}).then((rows)=>{
-                    context['books'] = rows;
-                    res.render('pages/authors/show.twig', context);
-                })
+            context['author'] = rows['author'];
+            books.findall_by_authors(req.params.id, (rows)=>{
+                context['books'] = rows['books'];
+                res.render('pages/authors/show.twig', context);
+            });
         });
     },
 
@@ -39,39 +33,14 @@ module.exports = {
             data = null,
             err = null;
         if(req.method === 'POST'){
-            data = req.body;
-            err = {};
-            for(let k in data){
-                let value = data[k].trim();
-                switch(k){
-                    case 'firstname':
-                    case 'lastname':
-                        if(/\d+/.test(value)){
-                            err[k] = "Ce champ ne doit pas comporter de nombre";
-                        }
-                        break;
-                        case 'url':
-                            if(!/^http.+\.\w{2,4}$/.test(value)){
-                                err[k] = "ce champ doit être une url valide";
-                            }
-                            break;
-                }
-                if(value === ""){
-                    err[k] = "Ce champ ne doit pas être vide";
-                }
-            }
+            err = authors.is_valid(req.body);
             if(Object.keys(err).length === 0){
-                let params = {
-                    firstname : data['firstname'],
-                    lastname : data['lastname'],
-                    url : data['url'],
-                };
-                db.insert(params).into('authors').then(()=>{
+                authors.save(req.body, ()=>{
                     req.flash('flash', {type : 'success', txt : 'Votre ajout a bien été prise en compte'});
                     res.redirect(reverseURL('author_list'));
                 });
             }else{
-                context['data'] = data;
+                context['data'] = req.body;
                 context['error'] = err;
             }
         }
@@ -111,50 +80,23 @@ module.exports = {
 
     edit(req, res) {
         let context = {},
-            params = {id : req.params.id},
             data = null,
             err = null;
         if(req.method === 'POST'){
-            data = req.body;
-            err = {};
-            for(let k in data){
-                let value = data[k].trim();
-                switch(k){
-                    case 'firstname':
-                    case 'lastname':
-                        if(/\d+/.test(value)){
-                            err[k] = "Ce champ ne doit pas comporter de nombre";
-                        }
-                        break;
-                        case 'url':
-                            if(!/^http.+\.\w{2,4}$/.test(value)){
-                                err[k] = "ce champ doit être une url valide";
-                            }
-                            break;
-                }
-                if(value === ""){
-                    err[k] = "Ce champ ne doit pas être vide";
-                }
-            }
+            err = authors.is_valid(req.body);
             if(Object.keys(err).length === 0){
-                let set = {
-                    firstname : data['firstname'],
-                    lastname : data['lastname'],
-                    url : data['url'],
-                    id : data['authors_id']
-                }
-                db('authors').where(params).update(set).then(()=>{
+                authors.save(req.body, ()=>{
                     req.flash('flash', {type : 'success', txt : 'Votre modification a bien été prise en compte'});
                     res.redirect(reverseURL('author_list'))
                 });
             }else{
-                context['data'] = data;
+                context['data'] = req.body;
                 context['error'] = err;
             }
         }
         if(req.method === 'GET' || context['error'] !== undefined){
-            db.select('id AS authors_id', 'firstname', 'lastname', 'url').from('authors').where(params).then((rows)=>{
-                context['data'] = rows[0];
+            authors.findone(req.params.id, (rows)=>{
+                context['data'] = rows['author'];
                 if(err != null){
                     req.flash('flash', {type : 'danger', txt : 'Il y a une ou plusieurs erreurs dans votre saisie'});
                 }
