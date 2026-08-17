@@ -70,6 +70,10 @@ export class Dispatcher {
             // — dernier filet, sans dépendance à quoi que ce soit d'autre.
             if (this.configuration.debug) {
                 this.appContainer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
+            } else {
+                const instance = await this._resolveController('ErrorsController')
+                const view = await instance.error('500')
+                this._render(view)
             }
         }
     }
