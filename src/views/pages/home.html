@@ -1,9 +1,9 @@
 <p>view: home !!!</p>
             <nav>
-                <a href="#/">accueil</a>
-                <a href="#/about">à propos de nous</a>
-                <a href="#/contact">contact</a>
-                <a href="#/project-1-hello-world">projet 1</a>
+                <a href="[[= helpers.urlFor('home') ]]">accueil</a>
+                <a href="[[= helpers.urlFor('about') ]]">about</a>
+                <a href="[[= helpers.urlFor('contact') ]]">contact</a>
+                <a href="[[= helpers.urlFor('project', id=1, slug='un-slug') ]]">projet 1</a>
             </nav>
             <h1>Accueil</h1>
             <img src="https://picsum.photos/id/10/200/300" width="200" height="300">
