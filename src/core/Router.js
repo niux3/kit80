@@ -18,7 +18,7 @@ export class Router {
         for (const route of this._routes) {
             if ((route.method ?? 'GET') !== method) continue
 
-            const matches = path.match(route.re)
+            const matches = path.match(route.path)
             if (matches) {
                 const [action, controller] = route.action.split('@')
                 return {
