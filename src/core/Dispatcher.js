@@ -18,7 +18,6 @@ export class Dispatcher {
     async _dispatch() {
         try {
             const route = this.router.getMatch()
-            console.log('route', !route)
             if (!route) return await this._errors(new Error('404'))
 
             this._cleanup()

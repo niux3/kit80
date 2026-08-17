@@ -11,6 +11,7 @@ export class View {
 
     async render(template, ctx = {}) {
         const templateContent = await this._loadTemplate(template)
+        console.log(this.templateEngine.render(templateContent, ctx))
         return this.templateEngine.render(templateContent, ctx)
     }
 
@@ -27,14 +28,15 @@ export class View {
         const route = this.routes.find(r => r.name === name)
         if (!route) throw new Error(`Route "${name}" introuvable`)
 
-        if (Object.keys(params).length === 0) return `#/${route.path}`
+        if (Object.keys(params).length === 0) return `#${route.path}`
 
         const path = route.path.replace(/:(\w+)/g, (_, key) => {
             if (!(key in params)) throw new Error(`Paramètre "${key}" manquant pour la route "${name}"`)
             return params[key]
         })
+        console.log('path', path)
 
-        return `#/${path}`
+        return `#${path}`
     }
 
 
