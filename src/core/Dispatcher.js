@@ -18,6 +18,7 @@ export class Dispatcher {
     async _dispatch() {
         try {
             const route = this.router.getMatch()
+            console.log('route', !route)
             if (!route) return await this._errors(new Error('404'))
 
             this._cleanup()
@@ -61,13 +62,15 @@ export class Dispatcher {
             console.error("Critical Error: Erreur de chargement", e.message)
         }
         try {
-            const instance = await this._resolveController('ErrorController')
-            const view = await instance.error(e)
+            const instance = await this._resolveController('ErrorsController')
+            const view = await instance.error(e.message)
             this._render(view)
         } catch (fallbackError) {
             // Le contrôleur d'erreur lui-même a échoué (fichier manquant, etc.)
             // — dernier filet, sans dépendance à quoi que ce soit d'autre.
-            this.appContainer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
+            if (this.configuration.debug) {
+                this.appContainer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
+            }
         }
     }
 
