@@ -7,10 +7,9 @@ export default class ProjectsController extends Controller {
         super()
     }
 
-    async project_view(id, slug) {
+    async project(id, slug) {
         // const project = await this.api.getProject(id)
         // console.log(project)
-        console.log(id, slug)
         return this.render('projects/project', { id, slug })
     }
 }
