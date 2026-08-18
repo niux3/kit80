@@ -39,7 +39,6 @@ export class Router {
                     route,
                     controller,
                     action,
-                    // match.groups contiendra : { id: "1", slug: "un-slug" }
                     params: match.groups ?? {}
                 }
             }
