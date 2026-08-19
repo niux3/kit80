@@ -20,7 +20,17 @@ export class Kit80 {
     }
 
     _registerServices() {
-        this.container.set('templates', () => import.meta.glob('../views/**/*.html', { query: '?raw', import: 'default' }))
+        this.container.set('views', () => import.meta.glob('../templates/views/**/*.html', { query: '?raw', import: 'default' }))
+        this.container.set('partials', () => import.meta.glob(
+            '../templates/partials/**/*.html',
+            { query: '?raw', import: 'default', eager: true }
+        ))
+
+        this.container.set('layouts', () => import.meta.glob(
+            '../templates/layouts/**/*.html',
+            { query: '?raw', import: 'default', eager: true }
+        ))
+
         this.container.set('templateEngine', () => new TemplateEngine()
             .use(LayoutPlugin)
             .use(PartialsPlugin)
