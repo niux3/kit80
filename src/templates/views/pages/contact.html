@@ -1,4 +1,13 @@
-[[> header ]]
+[[extends:base]]
+
+[[block:content]]
 <h1>contact</h1>
-<img src="https://picsum.photos/id/25/200/300" width="200" height="300">
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime illum, autem dignissimos. Est saepe consectetur itaque repellendus ab eum eveniet modi temporibus, minima maiores, veniam optio doloremque. Possimus dolore, iure.</p>
+<form action="/contact" method="post">
+  <label for="name">
+    <span>Nom</span>
+    <input type="text" id="name" name="name">
+  </label>
+  <button class="button">Envoyer</button>
+</form>
+<p>Un jour Chuck Norris a donné un coup de pied retourné dans le cou d'un cheval...aujourd'hui ses descendants sont connus sous le nom de girafes. Quand Chuck Norris fait le Tour de France, il passe par les DOM TOM sinon c'est trop facile. Chuck Norris peut se faire lui-même la courte échelle. Chuck Norris a eu 20/20 au bac philo 2009 en répondant "pas pour moi" à la question "est il absurde de désirer l'impossible ?". Chuck Norris m'a baisée il y a 3 ans, il m'arrive encore de jouir par moment. Même les sourds connaissent le générique de Walker Texas Ranger. Chuck Norris arrive a faire des bulles avec un carambar. Quand Chuck Norris joue à Nintendogs, il a automatiquement armes et munitions infines.</p>
+[[/block]]
