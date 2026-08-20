@@ -50,17 +50,16 @@ export class View {
     }
 
     urlFor(name, params = {}) {
-        const route = this.routes.find(r => r.name === name)
-        if (!route) throw new Error(`Route "${name}" introuvable`)
+        const route = this.routes.find(r => r.name === name) //[cite: 1]
+        if (!route) throw new Error(`Route "${name}" introuvable`) //[cite: 1]
 
-        // On remplace les paramètres :key par leurs valeurs transmises dans params
-        const path = route.path.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => {
-            if (!(key in params)) {
-                throw new Error(`Paramètre "${key}" manquant pour la route "${name}"`)
+        const path = route.path.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => { //[cite: 1]
+            if (!(key in params)) { //[cite: 1]
+                throw new Error(`Paramètre "${key}" manquant pour la route "${name}"`) //[cite: 1]
             }
-            return params[key]
+            return params[key] //[cite: 1]
         })
 
-        return `#${path}`
+        return path // Ex: /project/12/mon-projet (au lieu de #/project/12/mon-projet)
     }
 }

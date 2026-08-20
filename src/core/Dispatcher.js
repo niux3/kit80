@@ -10,9 +10,29 @@ export class Dispatcher {
     }
 
     run() {
-        ['load', 'hashchange'].forEach(event => {
-            window.addEventListener(event, this._dispatch.bind(this))
+        // 1. Charger la vue initiale
+        window.addEventListener('DOMContentLoaded', () => this._dispatch())
+
+        // 2. Gérer les boutons Précédent / Suivant du navigateur
+        window.addEventListener('popstate', () => this._dispatch())
+
+        // 3. Intercepter globalement tous les clics sur les liens <a> internes
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a')
+
+            // On vérifie que c'est un lien interne (même origine)
+            if (link && link.origin === window.location.origin && !link.hasAttribute('data-native')) {
+                e.preventDefault()
+                this.navigateTo(link.getAttribute('href'))
+            }
         })
+    }
+
+    navigateTo(path) {
+        // Modifie l'URL sans rechargement
+        window.history.pushState({}, '', path)
+        // Déclenche le rendu de la nouvelle vue
+        this._dispatch()
     }
 
     async _dispatch() {
