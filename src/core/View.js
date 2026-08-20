@@ -16,7 +16,6 @@ export class View {
 
     async render(template, ctx = {}) {
         const templateContent = await this._loadViews(template)
-        // console.log(this.templateEngine.render(templateContent, ctx))
         return this.templateEngine.render(templateContent, ctx)
     }
 
