@@ -10,6 +10,7 @@ import { Container } from './Container'
 import { View } from './View'
 import { Configuration } from './Configuration'
 import { Dispatcher } from './Dispatcher'
+import { ApiService } from './ApiService'
 
 export class Kit80 {
     constructor(idSelector = 'app') {
@@ -38,6 +39,7 @@ export class Kit80 {
             .use(I18nPlugin)
             .use(HelpersPlugin))
         this._container.set('view', (container) => new View(container))
+        this._container.set('api', (container) => new ApiService())
     }
 
     run() {

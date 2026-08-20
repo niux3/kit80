@@ -16,10 +16,8 @@ export class Router {
         const rawPath = hash.substring(1).split('#')[0].split('?')[0]
 
         for (const route of this._routes) {
-            // 1. Vérification de la méthode HTTP
-            if ((route.method ?? 'GET').toUpperCase() !== method.toUpperCase()) continue
 
-            // 2. Transformer le pattern de route en RegExp
+            // 1. Transformer le pattern de route en RegExp
             // On remplace d'abord les paires spécifiques comme :id-:slug
             let pattern = route.path
                 // Si un paramètre est suivi d'un tiret (ex: :id-), il ne doit pas capturer le tiret
@@ -29,7 +27,7 @@ export class Router {
 
             const regex = new RegExp(`^${pattern}$`, 'i')
 
-            // 3. Test du path
+            // 2. Test du path
             const match = rawPath.match(regex)
 
             if (match) {
