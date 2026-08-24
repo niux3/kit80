@@ -1,7 +1,7 @@
-import { Controller } from '../core/Controller'
+import { AppController } from './AppController'
 
 
-export default class PagesController extends Controller {
+export default class PagesController extends AppController {
     constructor() {
         super()
     }
