@@ -1,12 +1,12 @@
 :root{
-  --color-primary: #7675c0;
+  --color-primary: #474673;
   --color-secondary: #6c757d;
   --color-success: #82b499;
   --color-info: #17a2b8;
   --color-warning: #dfca86;
   --color-danger: #bf8f9a;
   --color-light: #cccc99;
-  --color-dark: #45423b;
+  --color-dark: #262626;
   --font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
@@ -40,5 +40,9 @@ a{
 .button{
   background-color: var(--color-primary);
   border-radius: 6px;
+
+  &:hover{
+    background-color: #474673;
+  }
 
 }
