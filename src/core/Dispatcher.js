@@ -49,12 +49,12 @@ export class Dispatcher {
 
         document.addEventListener('submit', (e) => {
             const form = e.target.closest('form')
-            console.log('form', form)
             if (!form) return
+            console.log('submit Dispatcher >>>', form.action)
 
             e.preventDefault()
             const formData = new FormData(form)
-            this.navigateTo(formData.get('action'))
+            this.navigateTo(form.action, formData)
         })
     }
 
@@ -77,7 +77,6 @@ export class Dispatcher {
 
             this._render(view)
             this.activePage = instance
-            if (route.anchor) this._scrollToAnchor(route.anchor)
 
         } catch (e) {
             await this._errors(e)
