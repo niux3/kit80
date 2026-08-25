@@ -50,34 +50,47 @@ export class Dispatcher {
         document.addEventListener('submit', (e) => {
             const form = e.target.closest('form')
             if (!form) return
-            console.log('submit Dispatcher >>>', form.action)
 
             e.preventDefault()
+
+            const action = form.getAttribute('action') || window.location.pathname
+            const method = (form.method || 'GET').toUpperCase()
             const formData = new FormData(form)
-            this.navigateTo(form.action, formData)
+
+            this.navigateTo(action, {
+                method: method,
+                body: formData
+            })
         })
     }
 
-    navigateTo(path) {
+    navigateTo(path, options = {}) {
         // Modifie l'URL sans rechargement
         window.history.pushState({}, '', path)
         // Déclenche le rendu de la nouvelle vue
-        this._dispatch()
+        this._dispatch(options)
     }
 
-    async _dispatch() {
+    async _dispatch(options = {}) {
         try {
             const route = this.router.getMatch()
             if (!route) return await this._errors(new Error('404'))
 
             const instance = await this._resolveController(route.controller)
-            const view = await instance[route.action](...Object.values(route.params))
+
+            // request centralise tout proprement :
+            const request = {
+                params: route.params ?? {},
+                method: options.method || route.method || 'GET',
+                body: options.body || null,
+                query: Object.fromEntries(new URLSearchParams(window.location.search))
+            }
+
+            const view = await instance[route.action](request);
 
             this._cleanup()
-
             this._render(view)
             this.activePage = instance
-
         } catch (e) {
             await this._errors(e)
         }
@@ -124,12 +137,5 @@ export class Dispatcher {
                 this._render(view)
             }
         }
-    }
-
-    _scrollToAnchor(id) {
-        requestAnimationFrame(() => {
-            const el = document.getElementById(id)
-            if (el) el.scrollIntoView({ behavior: 'smooth' })
-        })
     }
 }

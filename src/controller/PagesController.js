@@ -14,12 +14,10 @@ export default class PagesController extends AppController {
         return this.render('pages/about')
     }
 
-    contact() {
-        return this.render('pages/contact')
-    }
-
-    contactSubmit(formData) {
-        console.log('submit >>', formData)
-        return this.render('pages/contact')
+    contact(req) {
+        let ctx = {
+            name: req.body !== null ? req.body.get('name') : 'Chuck Norris'
+        }
+        return this.render('pages/contact', ctx)
     }
 }
