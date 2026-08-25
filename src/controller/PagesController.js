@@ -2,10 +2,6 @@ import { AppController } from './AppController'
 
 
 export default class PagesController extends AppController {
-    constructor() {
-        super()
-    }
-
     home() {
         return this.render('pages/home')
     }

@@ -2,11 +2,6 @@ import { AppController } from './AppController'
 
 
 export default class ProjectsController extends AppController {
-
-    constructor() {
-        super()
-    }
-
     async project(req) {
         // const project = await this.api.getProject(id)
         const { id, slug } = req.params

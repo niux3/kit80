@@ -1,10 +1,7 @@
-import kit80 from '../main'
-
-
 export class Controller {
-    constructor() {
+    constructor(container) {
         this._ctx = {}
-        this._view = kit80.container.get('view')
+        this._view = container.get('view')
     }
 
     async load() {

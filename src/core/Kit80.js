@@ -17,7 +17,7 @@ export class Kit80 {
         Configuration.init(idSelector)
         this._container = new Container()
         this._registerServices()
-        this._dispatcher = new Dispatcher(Configuration)
+        this._dispatcher = new Dispatcher(Configuration, this._container)
     }
 
     _registerServices() {

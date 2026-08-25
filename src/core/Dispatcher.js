@@ -2,9 +2,10 @@
 import { Router } from './Router'
 
 export class Dispatcher {
-    constructor(configuration) {
+    constructor(configuration, container) {
         this.router = new Router()
         this.activePage = null
+        this._container = container
         this.configuration = configuration
         this.appContainer = configuration.appContainer
     }
@@ -99,7 +100,7 @@ export class Dispatcher {
     async _resolveController(name) {
         const module = await import(`../controller/${name}.js`)
         const ControllerClass = module.default
-        return new ControllerClass()
+        return new ControllerClass(this._container)
     }
 
     _render(view) {

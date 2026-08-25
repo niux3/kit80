@@ -2,8 +2,8 @@ import { Controller } from '../core/Controller'
 
 
 export class AppController extends Controller {
-    constructor() {
-        super()
+    constructor(container) {
+        super(container)
         this._ctxDate()
     }
 
