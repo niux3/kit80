@@ -1,13 +1,20 @@
 // core/Dispatcher.js
 import { Router } from './Router'
+import { Middleware } from './Middleware'
 
 export class Dispatcher {
     constructor(configuration, container) {
         this.router = new Router()
         this.activePage = null
+        this._middleware = new Middleware()
         this._container = container
         this.configuration = configuration
         this.appContainer = configuration.appContainer
+    }
+
+    use(event, fn) {
+        this._middleware.register(event, fn)
+        return this
     }
 
     run() {
@@ -73,27 +80,66 @@ export class Dispatcher {
     }
 
     async _dispatch(options = {}) {
+        const route = this.router.getMatch()
+
+        const context = {
+            route,
+            params: route?.params ?? {},
+            method: options.method || route?.method || 'GET',
+            query: Object.fromEntries(new URLSearchParams(window.location.search)),
+            body: options.body || null,
+            view: null,
+            error: null
+        }
+
         try {
-            const route = this.router.getMatch()
-            if (!route) return await this._errors(new Error('404'))
+            if (!route) throw new Error('404')
+
+            // -------------------------------------------------------------
+            // 1. LOAD (beforeLoad -> création controller -> afterLoad)
+            // -------------------------------------------------------------
+            if (await this._middleware.trigger('beforeLoad', context) === false) return
 
             const instance = await this._resolveController(route.controller)
+            context.controller = instance
 
-            // request centralise tout proprement :
-            const request = {
-                params: route.params ?? {},
-                method: options.method || route.method || 'GET',
-                body: options.body || null,
-                query: Object.fromEntries(new URLSearchParams(window.location.search))
+            if (await this._middleware.trigger('afterLoad', context, instance) === false) return
+
+            // -------------------------------------------------------------
+            // 2. DESTROY de l'ancienne page (avant de basculer sur la nouvelle)
+            // -------------------------------------------------------------
+            if (this.activePage) {
+                const oldContext = { controller: this.activePage }
+                await this._middleware.trigger('beforeDestroy', oldContext, this.activePage)
+
+                this._cleanup() // Nettoyage DOM / Events
+
+                await this._middleware.trigger('afterDestroy', oldContext, this.activePage)
             }
 
-            const view = await instance[route.action](request);
+            // -------------------------------------------------------------
+            // 3. RENDER (beforeRender -> action + render -> afterRender)
+            // -------------------------------------------------------------
+            if (await this._middleware.trigger('beforeRender', context, instance) === false) return
 
-            this._cleanup()
-            this._render(view)
+            // Appel de l'action du contrôleur (ex: index(context))
+            context.view = await instance[route.action](context)
+
+            this._render(context.view)
             this.activePage = instance
-        } catch (e) {
-            await this._errors(e)
+
+            await this._middleware.trigger('afterRender', context, instance)
+
+        } catch (error) {
+            // -------------------------------------------------------------
+            // 4. ERROR (beforeError -> gestion erreur -> afterError)
+            // -------------------------------------------------------------
+            context.error = error
+
+            if (await this._middleware.trigger('beforeError', context, this.activePage) !== false) {
+                await this._errors(error)
+                await this._middleware.trigger('afterError', context, this.activePage)
+            }
         }
     }
 

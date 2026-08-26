@@ -10,4 +10,12 @@ export class AppController extends Controller {
     _ctxDate() {
         this.setCtx('date', new Date())
     }
+
+    async beforeRender(ctx) {
+        console.log('beforeRender', ctx)
+    }
+
+    async afterRender(ctx) {
+        console.log('afterRender', ctx)
+    }
 }
