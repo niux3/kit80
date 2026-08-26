@@ -1,6 +1,6 @@
 # TODO
 
- - middleware (beforeLoad / afterLoad) -> controller
+ - middleware (beforeLoad / afterLoad) -> création controller
  - middleware (beforeRender / afterRender)
  - middleware (beforeDestroy / afterDestroy)
  - middleware (beforeError / afterError)
