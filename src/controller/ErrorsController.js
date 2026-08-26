@@ -1,11 +1,7 @@
-import { Controller } from '../core/Controller'
+import { AppController } from '../core/Controller'
 
 
-export default class ErrorsController extends Controller {
-    constructor() {
-        super()
-    }
-
+export default class ErrorsController extends AppController {
     error(status) {
         return this.render(`errors/${status}`)
     }
