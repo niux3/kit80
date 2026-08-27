@@ -16,4 +16,9 @@ export default class PagesController extends AppController {
         }
         return this.render('pages/contact', ctx)
     }
+
+    adminHome(req) {
+        console.log('admin home')
+        return 'admin home'
+    }
 }

@@ -70,6 +70,10 @@ export class Dispatcher {
                 body: formData
             })
         })
+
+        window.addEventListener('spa:navigate', (e) => {
+            this.navigateTo(e.detail.url)
+        })
     }
 
     navigateTo(path, options = {}) {

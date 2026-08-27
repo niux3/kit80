@@ -26,7 +26,11 @@ export class Controller {
     }
 
     redirect(url) {
-        window.location.href = url
-        return ''
+        window.dispatchEvent(new CustomEvent('spa:navigate', { detail: { url } }))
+        return false
+    }
+
+    urlFor(name) {
+        return this._view.urlFor(name)
     }
 }

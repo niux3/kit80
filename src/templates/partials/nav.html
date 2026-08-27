@@ -1,7 +1,22 @@
 <nav>
-  <a href="[[= helpers.urlFor('home') ]]">accueil</a>
-  <a href="[[= helpers.urlFor('about') ]]">about</a>
-  <a href="[[= helpers.urlFor('contact') ]]">contact</a>
-  <a href="[[= helpers.urlFor('project', { id: 1, slug: 'un-slug' }) ]]">project</a>
-  <a href="[[= helpers.urlFor('project', { id: 2, slug: 'un-autre-slug' }) ]]">project</a>
+  <ul>
+    <li>
+      <a href="[[= helpers.urlFor('admin_home') ]]">accueil admin</a>
+    </li>
+    <li>
+      <a href="[[= helpers.urlFor('home') ]]">accueil</a>
+    </li>
+    <li>
+      <a href="[[= helpers.urlFor('about') ]]">about</a>
+    </li>
+    <li>
+      <a href="[[= helpers.urlFor('contact') ]]">contact</a>
+    </li>
+    <li>
+      <a href="[[= helpers.urlFor('project', { id: 1, slug: 'un-slug' }) ]]">project</a>
+    </li>
+    <li>
+      <a href="[[= helpers.urlFor('project', { id: 2, slug: 'un-autre-slug' }) ]]">project</a>
+    </li>
+  </ul>
 </nav>
