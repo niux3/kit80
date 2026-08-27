@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-    // Ta config Vite existante...
     test: {
-        environment: 'node', // Ou 'happy-dom' plus tard si tu testes le DOM
+        environment: 'happy-dom', // Active la simulation de l'objet window
         globals: true
     }
 })
