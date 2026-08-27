@@ -4,10 +4,12 @@
 - [x] middleware (beforeRender / afterRender)
 - [x] middleware (beforeDestroy / afterDestroy)
 - [x] middleware (beforeError / afterError)
-- [ ] auth
+- [x] auth
 - [ ] store
-- [ ] test unitaire
+- [x] test unitaire
 - [ ] jsdoc
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
 - [ ] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
 - [ ] Gestion du cycle de vie des requêtes (AbortController / Annulation)
+- [ ] landing page (~/www/divers/landing-page-kit80/index.html)
+- [ ] binaire à créer pour installer le package
