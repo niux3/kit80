@@ -42,11 +42,11 @@ describe('Kit80', () => {
         app = new Kit80('app')
     })
 
-    it('doit s\'instancier correctement et exposer le container', () => {
+    it("doit s'instancier correctement et exposer le container", () => {
         expect(app.container).toBeDefined()
     })
 
-    it('doit enregistrer tous les services par defaut dans le container', () => {
+    it("doit enregistrer tous les services par defaut dans le container", () => {
         const container = app.container
 
         expect(container.has('views')).toBe(true)
@@ -57,18 +57,18 @@ describe('Kit80', () => {
         expect(container.has('api')).toBe(true)
     })
 
-    it('doit configurer le moteur de rendu avec ses plugins', () => {
+    it("doit configurer le moteur de rendu avec ses plugins", () => {
         const templateEngine = app.container.get('templateEngine')
 
         expect(templateEngine.use).toHaveBeenCalledTimes(5)
     })
 
-    it('doit instancier les services dependants du container (ex: View)', () => {
+    it("doit instancier les services dependants du container (ex: View)", () => {
         const viewService = app.container.get('view')
         expect(viewService).toBeDefined()
     })
 
-    it('doit appeler la methode run() du Dispatcher lors de l\'appel a app.run()', () => {
+    it("doit appeler la methode run() du Dispatcher lors de l'appel a app.run()", () => {
         const runSpy = vi.spyOn(app['_dispatcher'], 'run')
 
         const result = app.run()

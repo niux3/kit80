@@ -28,7 +28,7 @@ describe('Dispatcher', () => {
         }
     })
 
-    it('doit exécuter le cycle complet (resolve, action, render) pour une route valide', async () => {
+    it("doit exécuter le cycle complet (resolve, action, render) pour une route valide", async () => {
         // 1. Mock de la route trouvée par le Router
         dispatcher.router.getMatch.mockReturnValue({
             route: { name: 'home', path: '/' },
@@ -52,7 +52,7 @@ describe('Dispatcher', () => {
         expect(dispatcher.activePage).toBe(fakeController)
     })
 
-    it('doit appeler destroy sur l\'ancienne page lors d\'un changement de route', async () => {
+    it("doit appeler destroy sur l'ancienne page lors d'un changement de route", async () => {
         const oldController = { destroy: vi.fn() }
         dispatcher.activePage = oldController
 
@@ -74,7 +74,7 @@ describe('Dispatcher', () => {
         expect(appContainer.innerHTML).toBe('<h2>A propos</h2>')
     })
 
-    it('doit interrompre le dispatch si un middleware de beforeLoad retourne false', async () => {
+    it("doit interrompre le dispatch si un middleware de beforeLoad retourne false", async () => {
         dispatcher.router.getMatch.mockReturnValue({
             route: { name: 'admin', path: '/admin' },
             controller: 'AdminController',
@@ -94,7 +94,7 @@ describe('Dispatcher', () => {
         expect(appContainer.innerHTML).toBe('')
     })
 
-    it('doit intercepter l\'événement custom "spa:navigate" pour naviguer', () => {
+    it("doit intercepter l'événement custom 'spa:navigate' pour naviguer", () => {
         const navigateSpy = vi.spyOn(dispatcher, 'navigateTo').mockImplementation(() => { })
 
         dispatcher.run()

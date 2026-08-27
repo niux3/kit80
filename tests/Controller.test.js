@@ -25,11 +25,11 @@ describe('Controller', () => {
         controller = new Controller(containerMock)
     })
 
-    it('doit récupérer le service view depuis le container à l\'instanciation', () => {
+    it("doit récupérer le service view depuis le container à l'instanciation", () => {
         expect(containerMock.get).toHaveBeenCalledWith('view')
     })
 
-    it('doit gérer le contexte (_ctx) avec setCtx et getCtx', () => {
+    it("doit gérer le contexte (_ctx) avec setCtx et getCtx", () => {
         controller.setCtx('title', 'Mon Titre')
         controller.setCtx('user', { name: 'Alex' })
 
@@ -39,7 +39,7 @@ describe('Controller', () => {
         })
     })
 
-    it('doit combiner le contexte interne (_ctx) et le contexte passe a render()', () => {
+    it("doit combiner le contexte interne (_ctx) et le contexte passe a render()", () => {
         controller.setCtx('globalData', '123')
 
         controller.render('home', { localData: '456' })
@@ -50,14 +50,14 @@ describe('Controller', () => {
         })
     })
 
-    it('doit appeler urlFor sur le service de vue', () => {
+    it("doit appeler urlFor sur le service de vue", () => {
         const url = controller.urlFor('contact')
 
         expect(viewMock.urlFor).toHaveBeenCalledWith('contact')
         expect(url).toBe('/mock-url/contact')
     })
 
-    it('doit emettre un CustomEvent "spa:navigate" et retourner false lors d\'une redirection', () => {
+    it("doit emettre un CustomEvent 'spa:navigate' et retourner false lors d'une redirection", () => {
         const dispatchSpy = vi.spyOn(window, 'dispatchEvent')
 
         const result = controller.redirect('/dashboard')
