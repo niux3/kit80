@@ -15,7 +15,7 @@ export class AppController extends Controller {
         console.log('afterLoad', ctx.route.route.name)
         const condition = false
         if (!condition && ctx.route.route.name.startsWith('admin')) {
-            this.redirect(this.urlFor('home'))
+            this.redirect(this.urlFor('about'))
         }
     }
 
