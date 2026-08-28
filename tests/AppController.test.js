@@ -29,7 +29,7 @@ describe('AppController', () => {
     let containerMock
     let viewMock
     let controller
-    // Mock minimal du contexte de route requis par AppController
+    // Minimal mock for the route context required by AppController
     let mockCtx
 
     beforeEach(() => {
@@ -52,16 +52,16 @@ describe('AppController', () => {
         }
     })
 
-    it('doit fournir des hooks par défaut qui s\'exécutent sans erreur avec un contexte valide', async () => {
+    it('should provide default hooks that execute without error with a valid context', async () => {
         const baseController = new AppController(containerMock)
 
-        // On passe mockCtx au lieu de {} pour satisfaire ctx.route.route.name
+        // Pass mockCtx instead of {} to satisfy ctx.route.route.name
         await expect(baseController.afterLoad(mockCtx)).resolves.not.toThrow()
         await expect(baseController.beforeRender(mockCtx)).resolves.not.toThrow()
         await expect(baseController.afterRender(mockCtx)).resolves.not.toThrow()
     })
 
-    it('doit exécuter afterLoad et alimenter le contexte', async () => {
+    it('should execute afterLoad and populate context', async () => {
         const result = await controller.afterLoad(mockCtx)
 
         expect(result).toBe(true)
@@ -73,7 +73,7 @@ describe('AppController', () => {
         )
     })
 
-    it('doit exécuter beforeRender, alimenter le contexte et stopper le flux si non autorisé', async () => {
+    it('should execute beforeRender, populate context, and halt execution if unauthorized', async () => {
         const success = await controller.beforeRender({ ...mockCtx, user: 'Alice' })
 
         expect(success).toBe(true)
@@ -87,7 +87,7 @@ describe('AppController', () => {
         expect(failure).toBe(false)
     })
 
-    it('doit exécuter afterRender et marquer la fin du rendu', async () => {
+    it('should execute afterRender and mark the rendering phase as completed', async () => {
         const result = await controller.afterRender(mockCtx)
 
         expect(result).toBe(true)
@@ -98,13 +98,13 @@ describe('AppController', () => {
         )
     })
 
-    it('doit accumuler les modifications de contexte des 3 hooks et de setDate lors du render()', async () => {
+    it('should accumulate context modifications from all 3 hooks and setDate upon render()', async () => {
         await controller.afterLoad(mockCtx)
         await controller.beforeRender({ ...mockCtx, user: 'Bob' })
         await controller.afterRender(mockCtx)
         controller.setDate('2026-08-28')
 
-        controller.render('dashboard', { title: 'Tableau de bord' })
+        controller.render('dashboard', { title: 'Dashboard' })
 
         expect(viewMock.render).toHaveBeenCalledWith(
             'dashboard',
@@ -113,7 +113,7 @@ describe('AppController', () => {
                 user: 'Bob',
                 renderedAt: 'done',
                 currentDate: '2026-08-28',
-                title: 'Tableau de bord',
+                title: 'Dashboard',
                 date: expect.any(Date)
             })
         )

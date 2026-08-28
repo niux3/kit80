@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-// Mock explicite du moteur avec chaining fluent
+// Explicit mock of the template engine using fluent chaining
 vi.mock('@niuxe/template-engine', () => {
     return {
         TemplateEngine: vi.fn().mockImplementation(function () {
@@ -37,16 +37,14 @@ describe('Kit80', () => {
 
     beforeEach(() => {
         document.body.innerHTML = '<div id="app"></div>'
-        // On remplace vi.clearAllMocks() par un reset ciblé si besoin,
-        // ou on instancie Kit80 directement après :
         app = new Kit80('app')
     })
 
-    it("doit s'instancier correctement et exposer le container", () => {
+    it('should instantiate correctly and expose the container', () => {
         expect(app.container).toBeDefined()
     })
 
-    it("doit enregistrer tous les services par defaut dans le container", () => {
+    it('should register all default services in the container', () => {
         const container = app.container
 
         expect(container.has('views')).toBe(true)
@@ -57,18 +55,18 @@ describe('Kit80', () => {
         expect(container.has('api')).toBe(true)
     })
 
-    it("doit configurer le moteur de rendu avec ses plugins", () => {
+    it('should configure the template engine with its plugins', () => {
         const templateEngine = app.container.get('templateEngine')
 
         expect(templateEngine.use).toHaveBeenCalledTimes(5)
     })
 
-    it("doit instancier les services dependants du container (ex: View)", () => {
+    it('should instantiate container-dependent services (e.g., View)', () => {
         const viewService = app.container.get('view')
         expect(viewService).toBeDefined()
     })
 
-    it("doit appeler la methode run() du Dispatcher lors de l'appel a app.run()", () => {
+    it('should invoke the Dispatcher run() method when calling app.run()', () => {
         const runSpy = vi.spyOn(app['_dispatcher'], 'run')
 
         const result = app.run()

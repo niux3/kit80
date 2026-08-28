@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-// Mock du fichier de routes charge par le Router
+// Mock of the routes file loaded by the Router
 vi.mock('../src/core/routes', () => ({
     default: [
         { path: '/', name: 'home', action: 'index@HomeController' },
@@ -20,7 +20,7 @@ describe('Router', () => {
         router = new Router()
     })
 
-    it('doit matcher la route racine "/"', () => {
+    it('should match the root path "/"', () => {
         window.history.pushState({}, '', '/')
 
         const match = router.getMatch()
@@ -31,7 +31,7 @@ describe('Router', () => {
         expect(match.params).toEqual({})
     })
 
-    it('doit matcher une route simple et extraire le controller et l\'action', () => {
+    it('should match a simple route and extract controller and action', () => {
         window.history.pushState({}, '', '/about')
 
         const match = router.getMatch()
@@ -44,7 +44,7 @@ describe('Router', () => {
         })
     })
 
-    it('doit extraire un parametre simple (:id)', () => {
+    it('should extract a single route parameter (:id)', () => {
         window.history.pushState({}, '', '/user/42')
 
         const match = router.getMatch()
@@ -54,7 +54,7 @@ describe('Router', () => {
         expect(match.params).toEqual({ id: '42' })
     })
 
-    it('doit extraire des parametres multiples separes par des tirets (:id-:slug)', () => {
+    it('should extract multiple hyphen-separated parameters (:id-:slug)', () => {
         window.history.pushState({}, '', '/project-12-mon-super-projet')
 
         const match = router.getMatch()
@@ -67,7 +67,7 @@ describe('Router', () => {
         })
     })
 
-    it('doit ignorer les query parameters lors du matching', () => {
+    it('should ignore query parameters during route matching', () => {
         window.history.pushState({}, '', '/about?ref=twitter&sort=asc')
 
         const match = router.getMatch()
@@ -76,7 +76,7 @@ describe('Router', () => {
         expect(match.controller).toBe('AboutController')
     })
 
-    it('doit retourner null pour une route inconnue (404)', () => {
+    it('should return null for an unknown route (404)', () => {
         window.history.pushState({}, '', '/route-inexistante')
 
         const match = router.getMatch()

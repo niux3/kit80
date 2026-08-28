@@ -22,14 +22,14 @@ describe('Dispatcher', () => {
 
         dispatcher = new Dispatcher(configuration, containerMock)
 
-        // Mock du Router interne
+        // Mock internal Router
         dispatcher.router = {
             getMatch: vi.fn()
         }
     })
 
-    it("doit exécuter le cycle complet (resolve, action, render) pour une route valide", async () => {
-        // 1. Mock de la route trouvée par le Router
+    it('should execute the full lifecycle (resolve, action, render) for a valid route', async () => {
+        // 1. Mock matched route from Router
         dispatcher.router.getMatch.mockReturnValue({
             route: { name: 'home', path: '/' },
             controller: 'HomeController',
@@ -37,22 +37,22 @@ describe('Dispatcher', () => {
             params: {}
         })
 
-        // 2. Mock du Controller résolu
+        // 2. Mock resolved Controller instance
         const fakeController = {
-            index: vi.fn().mockResolvedValue('<h1>Bienvenue</h1>'),
+            index: vi.fn().mockResolvedValue('<h1>Welcome</h1>'),
             destroy: vi.fn()
         }
         vi.spyOn(dispatcher, '_resolveController').mockResolvedValue(fakeController)
 
-        // 3. Exécution du dispatch
+        // 3. Execute dispatch execution
         await dispatcher._dispatch()
 
         expect(fakeController.index).toHaveBeenCalledOnce()
-        expect(appContainer.innerHTML).toBe('<h1>Bienvenue</h1>')
+        expect(appContainer.innerHTML).toBe('<h1>Welcome</h1>')
         expect(dispatcher.activePage).toBe(fakeController)
     })
 
-    it("doit appeler destroy sur l'ancienne page lors d'un changement de route", async () => {
+    it('should call destroy on the previous page instance during route transition', async () => {
         const oldController = { destroy: vi.fn() }
         dispatcher.activePage = oldController
 
@@ -64,17 +64,17 @@ describe('Dispatcher', () => {
         })
 
         const newController = {
-            index: vi.fn().mockResolvedValue('<h2>A propos</h2>')
+            index: vi.fn().mockResolvedValue('<h2>About Us</h2>')
         }
         vi.spyOn(dispatcher, '_resolveController').mockResolvedValue(newController)
 
         await dispatcher._dispatch()
 
         expect(oldController.destroy).toHaveBeenCalledOnce()
-        expect(appContainer.innerHTML).toBe('<h2>A propos</h2>')
+        expect(appContainer.innerHTML).toBe('<h2>About Us</h2>')
     })
 
-    it("doit interrompre le dispatch si un middleware de beforeLoad retourne false", async () => {
+    it('should halt dispatch if a beforeLoad middleware returns false', async () => {
         dispatcher.router.getMatch.mockReturnValue({
             route: { name: 'admin', path: '/admin' },
             controller: 'AdminController',
@@ -84,17 +84,17 @@ describe('Dispatcher', () => {
 
         const resolveSpy = vi.spyOn(dispatcher, '_resolveController')
 
-        // On enregistre un middleware qui bloque l'accès
+        // Register middleware blocking execution
         dispatcher.use('beforeLoad', () => false)
 
         await dispatcher._dispatch()
 
-        // Le contrôleur ne doit jamais être instancié ni rendu
+        // Controller should neither be resolved nor rendered
         expect(resolveSpy).not.toHaveBeenCalled()
         expect(appContainer.innerHTML).toBe('')
     })
 
-    it("doit intercepter l'événement custom 'spa:navigate' pour naviguer", () => {
+    it('should intercept the "spa:navigate" CustomEvent to perform navigation', () => {
         const navigateSpy = vi.spyOn(dispatcher, 'navigateTo').mockImplementation(() => { })
 
         dispatcher.run()

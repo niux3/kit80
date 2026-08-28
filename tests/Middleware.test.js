@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { Middleware } from '../src/core/Middleware'
 
 describe('Middleware', () => {
-    it("doit exécuter les hooks enregistrés", async () => {
+    it('should execute registered hooks', async () => {
         const middleware = new Middleware()
         let executed = false
 
@@ -14,7 +14,7 @@ describe('Middleware', () => {
         expect(executed).toBe(true)
     })
 
-    it("doit stopper la chaîne si un hook retourne false", async () => {
+    it('should short-circuit the execution chain if a hook returns false', async () => {
         const middleware = new Middleware()
         let secondExecuted = false
 
@@ -26,7 +26,7 @@ describe('Middleware', () => {
         expect(secondExecuted).toBe(false)
     })
 
-    it("doit exécuter le hook local sur l'instance du contrôleur", async () => {
+    it('should execute the local hook defined on the controller instance', async () => {
         const middleware = new Middleware()
         const fakeController = {
             beforeRender: vi.fn()
@@ -36,7 +36,7 @@ describe('Middleware', () => {
         expect(fakeController.beforeRender).toHaveBeenCalledOnce()
     })
 
-    it("doit stopper si le hook local du contrôleur retourne false", async () => {
+    it('should halt execution if the controller local hook returns false', async () => {
         const middleware = new Middleware()
         const fakeController = {
             beforeRender: () => false
@@ -46,7 +46,7 @@ describe('Middleware', () => {
         expect(result).toBe(false)
     })
 
-    it("doit passer le contexte correctement aux callbacks et au contrôleur", async () => {
+    it('should pass the context object correctly to callbacks and controller hooks', async () => {
         const middleware = new Middleware()
         const context = { route: '/admin' }
         let receivedContext = null

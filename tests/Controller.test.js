@@ -8,13 +8,13 @@ describe('Controller', () => {
     let controller
 
     beforeEach(() => {
-        // Mock du service de vue
+        // Mock of the view service
         viewMock = {
             render: vi.fn((template, ctx) => `<h1>Rendered ${template}</h1>`),
             urlFor: vi.fn((name) => `/mock-url/${name}`)
         }
 
-        // Mock du Container IoC
+        // Mock of the IoC Container
         containerMock = {
             get: vi.fn((service) => {
                 if (service === 'view') return viewMock
@@ -25,21 +25,21 @@ describe('Controller', () => {
         controller = new Controller(containerMock)
     })
 
-    it("doit récupérer le service view depuis le container à l'instanciation", () => {
+    it('should retrieve the view service from the container upon instantiation', () => {
         expect(containerMock.get).toHaveBeenCalledWith('view')
     })
 
-    it("doit gérer le contexte (_ctx) avec setCtx et getCtx", () => {
-        controller.setCtx('title', 'Mon Titre')
+    it('should manage the internal context (_ctx) using setCtx and getCtx', () => {
+        controller.setCtx('title', 'My Title')
         controller.setCtx('user', { name: 'Alex' })
 
         expect(controller.getCtx()).toEqual({
-            title: 'Mon Titre',
+            title: 'My Title',
             user: { name: 'Alex' }
         })
     })
 
-    it("doit combiner le contexte interne (_ctx) et le contexte passe a render()", () => {
+    it('should merge internal context (_ctx) with local context passed to render()', () => {
         controller.setCtx('globalData', '123')
 
         controller.render('home', { localData: '456' })
@@ -50,14 +50,14 @@ describe('Controller', () => {
         })
     })
 
-    it("doit appeler urlFor sur le service de vue", () => {
+    it('should delegate urlFor calls to the view service', () => {
         const url = controller.urlFor('contact')
 
         expect(viewMock.urlFor).toHaveBeenCalledWith('contact')
         expect(url).toBe('/mock-url/contact')
     })
 
-    it("doit emettre un CustomEvent 'spa:navigate' et retourner false lors d'une redirection", () => {
+    it('should dispatch a "spa:navigate" CustomEvent and return false on redirect', () => {
         const dispatchSpy = vi.spyOn(window, 'dispatchEvent')
 
         const result = controller.redirect('/dashboard')
@@ -65,7 +65,7 @@ describe('Controller', () => {
         expect(result).toBe(false)
         expect(dispatchSpy).toHaveBeenCalledOnce()
 
-        // Verification du contenu de l'evenement emis
+        // Verify emitted event payload
         const event = dispatchSpy.mock.calls[0][0]
         expect(event.type).toBe('spa:navigate')
         expect(event.detail).toEqual({ url: '/dashboard' })

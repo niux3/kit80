@@ -8,28 +8,28 @@ describe('Container', () => {
         container = new Container()
     })
 
-    it("doit enregistrer une factory et instancier le service", () => {
-        // Ta méthode attend une fonction factory : (c) => instance
+    it('should register a factory and instantiate the service', () => {
+        // Factory signature expectation: (c) => instance
         container.set('view', () => ({ name: 'ViewService' }))
 
         const service = container.get('view')
         expect(service).toEqual({ name: 'ViewService' })
     })
 
-    it("doit lever une erreur si un service n'est pas enregistre", () => {
+    it('should throw an error if a requested service is not registered', () => {
         expect(() => {
             container.get('serviceInexistant')
         }).toThrow('Container: service "serviceInexistant" non enregistré')
     })
 
-    it("doit écraser un service si la même clef est enregistrée deux fois", () => {
+    it('should overwrite a service if the same key is registered twice', () => {
         container.set('api', () => ({ version: 1 }))
         container.set('api', () => ({ version: 2 }))
 
         expect(container.get('api')).toEqual({ version: 2 })
     })
 
-    it("doit passer l'instance du container a la factory", () => {
+    it('should pass the container instance to the factory function', () => {
         container.set('config', () => ({ env: 'test' }))
         container.set('app', (c) => ({
             config: c.get('config')
@@ -39,7 +39,7 @@ describe('Container', () => {
         expect(app.config).toEqual({ env: 'test' })
     })
 
-    it("doit indiquer correctement si un service existe avec has()", () => {
+    it('should correctly report whether a service exists using has()', () => {
         container.set('auth', () => ({ user: null }))
 
         expect(container.has('auth')).toBe(true)
