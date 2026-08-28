@@ -2,22 +2,22 @@ import { AppController } from './AppController'
 
 
 export default class PagesController extends AppController {
-    home() {
+    async home() {
         return this.render('pages/home')
     }
 
-    about() {
+    async about() {
         return this.render('pages/about')
     }
 
-    contact(req) {
+    async contact(req) {
         let ctx = {
             name: req.body !== null ? req.body.get('name') : 'Chuck Norris'
         }
         return this.render('pages/contact', ctx)
     }
 
-    adminHome(req) {
+    async adminHome(req) {
         console.log('admin home')
         return 'admin home'
     }

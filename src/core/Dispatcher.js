@@ -234,7 +234,7 @@ export class Dispatcher {
         if (this.activePage && typeof this.activePage.destroy === 'function') {
             this.activePage.destroy()
         }
-        this.appContainer.innerHTML = ''
+        // this.appContainer.innerHTML = '' // TODO: à revoir - pour le moment flash blanc entre les vues qui ne sont pas en cache
         this.activePage = null
     }
 
