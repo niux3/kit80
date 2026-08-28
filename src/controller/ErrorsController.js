@@ -1,4 +1,4 @@
-import { AppController } from '../core/Controller'
+import { AppController } from './AppController'
 
 
 export default class ErrorsController extends AppController {
