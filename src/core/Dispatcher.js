@@ -1,22 +1,53 @@
-// core/Dispatcher.js
 import { Router } from './Router'
 import { Middleware } from './Middleware'
 
+
+/**
+ * Core dispatcher class responsible for managing client-side routing,
+ * page life cycle lifecycle hooks, DOM event interception, and error handling.
+ */
 export class Dispatcher {
+    /**
+     * Creates an instance of Dispatcher.
+     *
+     * @param {Object} configuration - Application configuration instance.
+     * @param {HTMLElement} configuration.appContainer - The target DOM element where views are rendered.
+     * @param {boolean} [configuration.debug] - Debug mode flag.
+     * @param {Container} container - Dependency injection container.
+     */
     constructor(configuration, container) {
+        /** @type {Router} */
         this.router = new Router()
+        /** @type {Object|null} */
         this.activePage = null
+        /** @private @type {Middleware} */
         this._middleware = new Middleware()
+        /** @private @type {Container} */
         this._container = container
+        /** @type {Object} */
         this.configuration = configuration
+        /** @type {HTMLElement} */
         this.appContainer = configuration.appContainer
     }
 
+    /**
+     * Registers a callback function for a specific lifecycle middleware event.
+     *
+     * @param {string} event - Lifecycle hook name (e.g., 'beforeLoad', 'afterRender').
+     * @param {Function} fn - Callback function to execute.
+     * @returns {this} The current Dispatcher instance for chaining.
+     */
     use(event, fn) {
         this._middleware.register(event, fn)
         return this
     }
 
+    /**
+     * Initializes global event listeners for navigation and boots the dispatcher.
+     * Listens for DOMContentLoaded, popstate, internal link clicks, form submissions, and custom SPA navigation events.
+     *
+     * @returns {void}
+     */
     run() {
         // 1. Charger la vue initiale
         window.addEventListener('DOMContentLoaded', () => this._dispatch())
@@ -76,6 +107,15 @@ export class Dispatcher {
         })
     }
 
+    /**
+     * Programmatically navigates to a new URL path and triggers view resolution.
+     *
+     * @param {string} path - Target URL path.
+     * @param {Object} [options={}] - Additional navigation options (e.g., HTTP method, request body).
+     * @param {string} [options.method] - Request HTTP method ('GET', 'POST', etc.).
+     * @param {FormData|Object|null} [options.body] - Request body data.
+     * @returns {void}
+     */
     navigateTo(path, options = {}) {
         // Modifie l'URL sans rechargement
         window.history.pushState({}, '', path)
@@ -83,6 +123,14 @@ export class Dispatcher {
         this._dispatch(options)
     }
 
+    /**
+     * Core lifecycle pipeline handler.
+     * Matches routes, triggers middleware hooks, manages controller instantiation, cleanup, rendering, and error handling.
+     *
+     * @private
+     * @param {Object} [options={}] - Navigation options.
+     * @returns {Promise<void>}
+     */
     async _dispatch(options = {}) {
         const route = this.router.getMatch()
 
@@ -147,12 +195,26 @@ export class Dispatcher {
         }
     }
 
+    /**
+     * Dynamically imports and instantiates a controller class by name.
+     *
+     * @private
+     * @param {string} name - Controller module file name (without extension).
+     * @returns {Promise<Object>} Instance of the resolved controller.
+     */
     async _resolveController(name) {
         const module = await import(`../controller/${name}.js`)
         const ControllerClass = module.default
         return new ControllerClass(this._container)
     }
 
+    /**
+     * Renders a DOM element or HTML string into the application container.
+     *
+     * @private
+     * @param {HTMLElement|string} view - The rendered template view or DOM element.
+     * @returns {void}
+     */
     _render(view) {
         if (view instanceof HTMLElement) {
             this.appContainer.replaceChildren(view)
@@ -161,6 +223,13 @@ export class Dispatcher {
         }
     }
 
+    /**
+     * Cleans up the active page controller and clears the container DOM.
+     * Calls the `destroy()` lifecycle method on the active controller if available.
+     *
+     * @private
+     * @returns {void}
+     */
     _cleanup() {
         if (this.activePage && typeof this.activePage.destroy === 'function') {
             this.activePage.destroy()
@@ -169,6 +238,13 @@ export class Dispatcher {
         this.activePage = null
     }
 
+    /**
+     * Handles exceptions caught during dispatching and renders fallback error views.
+     *
+     * @private
+     * @param {Error} e - Caught error instance.
+     * @returns {Promise<void>}
+     */
     async _errors(e) {
         if (this.configuration.debug) {
             console.error("Critical Error: Erreur de chargement", e.message)
