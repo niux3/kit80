@@ -52,7 +52,7 @@ A lightweight, zero-dependency JavaScript framework for Single Page Applications
 Clone the repository and install dependencies:
 
 ```bash
-git clone [https://github.com/niuxe/kit80.git](https://github.com/niuxe/kit80.git)
+git clone https://github.com/niux3/kit80.git
 cd kit80
 npm install
 ```
