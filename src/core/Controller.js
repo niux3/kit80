@@ -71,9 +71,10 @@ export class Controller {
      * Generates a URL string corresponding to a named route.
      *
      * @param {string} name - The target route name.
+     * @param {Object<string, any>} [params={}] - Optional route parameter key-value pairs.
      * @returns {string} The resolved URL path.
      */
-    urlFor(name) {
-        return this._view.urlFor(name)
+    urlFor(name, params = {}) {
+        return this._view.urlFor(name, params)
     }
 }

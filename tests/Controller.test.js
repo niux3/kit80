@@ -11,7 +11,7 @@ describe('Controller', () => {
         // Mock of the view service
         viewMock = {
             render: vi.fn((template, ctx) => `<h1>Rendered ${template}</h1>`),
-            urlFor: vi.fn((name) => `/mock-url/${name}`)
+            urlFor: vi.fn((name, params = {}) => `/mock-url/${name}`)
         }
 
         // Mock of the IoC Container
@@ -50,11 +50,14 @@ describe('Controller', () => {
         })
     })
 
-    it('should delegate urlFor calls to the view service', () => {
+    it('should delegate urlFor calls with params to the view service', () => {
         const url = controller.urlFor('contact')
 
-        expect(viewMock.urlFor).toHaveBeenCalledWith('contact')
+        expect(viewMock.urlFor).toHaveBeenCalledWith('contact', {})
         expect(url).toBe('/mock-url/contact')
+
+        controller.urlFor('user.show', { id: 42 })
+        expect(viewMock.urlFor).toHaveBeenCalledWith('user.show', { id: 42 })
     })
 
     it('should dispatch a "spa:navigate" CustomEvent and return false on redirect', () => {
