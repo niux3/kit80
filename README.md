@@ -17,6 +17,7 @@ A lightweight, zero-dependency JavaScript framework for Single Page Applications
 
 ## Architecture Overview
 
+```
 ┌─────────────────────────────────────────────────────────────────┐
 │                          kit80 Core                             │
 │   Router  •  Dispatcher  •  Middleware  •  IoC Container        │
@@ -36,7 +37,7 @@ A lightweight, zero-dependency JavaScript framework for Single Page Applications
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Native Custom Elements                       │
 └─────────────────────────────────────────────────────────────────┘
-
+```
 ---
 
 ## Getting Started
