@@ -12,18 +12,14 @@ export class AppController extends Controller {
     }
 
     async afterLoad(ctx) {
-        console.log('afterLoad', ctx.route.route.name)
-        const condition = false
-        if (!condition && ctx.route.route.name.startsWith('admin')) {
-            this.redirect(this.urlFor('about'))
-        }
+        console.log('afterLoad')
     }
 
     async beforeRender(ctx) {
-        console.log('beforeRender', ctx.route.route.name)
+        console.log('beforeRender')
     }
 
     async afterRender(ctx) {
-        console.log('afterRender', ctx.route.route.name)
+        console.log('afterRender')
     }
 }
