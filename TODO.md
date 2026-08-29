@@ -9,6 +9,7 @@
 - [x] test unitaire (general)
 - [ ] test unitaire (auth, api)
 - [x] jsdoc
+- [ ] créer http referer
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
 - [ ] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
 - [ ] Gestion du cycle de vie des requêtes (AbortController / Annulation)
