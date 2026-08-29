@@ -4,7 +4,7 @@ import { AppController } from './AppController'
 export default class PagesController extends AppController {
     async home() {
         const ctx = {
-            title: 'Welcome to kit80',
+            title: "Bienvenue",
             features: [
                 { label: 'IoC Container', status: 'Ready' },
                 { label: 'Router & Dispatcher', status: 'Active' },
@@ -17,8 +17,8 @@ export default class PagesController extends AppController {
 
     async about() {
         const ctx = {
-            title: 'Spécifications kit80',
-            description: "kit80 est un framework SPA ultra-léger conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components (sans la lourdeur d'un Virtual DOM).",
+            title: "Spécifications",
+            description: "kit80 est un framework SPA ultra-léger conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components (sans un Virtual DOM).",
             specs: [
                 { name: 'Architecture', value: 'IoC / Dispatcher / Pipeline' },
                 { name: 'Virtual DOM', value: 'Aucun (DOM Natif)' },

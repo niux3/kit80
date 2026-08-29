@@ -4,11 +4,6 @@ import { Controller } from '../core/Controller'
 export class AppController extends Controller {
     constructor(container) {
         super(container)
-        this._ctxDate()
-    }
-
-    _ctxDate() {
-        this.setCtx('date', new Date())
     }
 
     async afterLoad(ctx) {
@@ -17,6 +12,7 @@ export class AppController extends Controller {
 
     async beforeRender(ctx) {
         console.log('beforeRender')
+        this.setCtx('currentPath', window.location.pathname)
     }
 
     async afterRender(ctx) {

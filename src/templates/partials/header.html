@@ -1,6 +1,7 @@
 <header class="app-header">
+  <p>KIT 80</p>
   <nav>
-    <a href="[[= helpers.urlFor('home') ]]">Accueil</a> |
-    <a href="[[= helpers.urlFor('about') ]]">À propos</a>
+    <a href="[[= helpers.urlFor('home') ]]" aria-current="[[= currentPath === helpers.urlFor('home') ? 'page' : 'false' ]]">Accueil</a> |
+    <a href="[[= helpers.urlFor('about') ]]" aria-current="[[= currentPath === helpers.urlFor('about') ? 'page' : 'false' ]]">À propos</a>
   </nav>
 </header>

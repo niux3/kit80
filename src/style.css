@@ -40,13 +40,15 @@ body {
   line-height: 1.6;
   /* Effet trame industrielle subtile en fond */
   background-image:
-    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+    radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
   background-size: 24px 24px;
   min-height: 100vh;
 }
 
 main{
-  margin: 50px;
+  margin: 0 auto;
+  padding: 25px;
+  max-width: 800px;
 }
 
 /* Layout App / Custom Scroll
@@ -64,17 +66,15 @@ main{
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-.app-header h1 {
+.app-header p {
   font-family: var(--font-mono);
   font-size: 1.25rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+  margin-bottom: 0;
+  line-height: 1.25rem;
   color: var(--color-polini-white);
-}
-
-.app-header h1 span {
-  color: var(--color-polini-yellow);
 }
 
 /* Navigation SPA
@@ -92,8 +92,12 @@ nav a {
   font-weight: 700;
   text-transform: uppercase;
   padding: 0.25rem 0.5rem;
-  border: 1px solid transparent;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.4s ease-in-out;
+
+  &[aria-current="page"] {
+    color: var(--color-polini-yellow);
+    text-decoration: none;
+  }
 }
 
 nav a:hover {
