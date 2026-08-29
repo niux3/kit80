@@ -1,7 +1,17 @@
 [[extends:base]]
-
 [[block:content]]
-<h1>Accueil</h1>
-<img src="https://picsum.photos/id/10/200/300" width="200" height="300">
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime illum, autem dignissimos. Est saepe consectetur itaque repellendus ab eum eveniet modi temporibus, minima maiores, veniam optio doloremque. Possimus dolore, iure.</p>
+  <h1>[[= title ]]</h1>
+  <p>Framework SPA ultra-léger basé sur les standards W3C.</p>
+
+  <section class="features-list">
+    <h2>État des modules core</h2>
+    <ul>
+    [[for(const feature of features){]]
+      <li>
+        <span class="label">[[= feature.label ]]</span>
+        <span class="status">[[= feature.status ]]</span>
+      </li>
+    [[}]]
+    </ul>
+  </section>
 [[/block]]
