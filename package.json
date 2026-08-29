@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "bin": {
+    "create-kit80": "./bin/create-kit80.js"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
