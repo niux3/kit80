@@ -67,8 +67,7 @@ describe('AppController', () => {
         expect(result).toBe(true)
         expect(controller.getCtx()).toEqual(
             expect.objectContaining({
-                loaded: true,
-                date: expect.any(Date)
+                loaded: true
             })
         )
     })
@@ -113,8 +112,7 @@ describe('AppController', () => {
                 user: 'Bob',
                 renderedAt: 'done',
                 currentDate: '2026-08-28',
-                title: 'Dashboard',
-                date: expect.any(Date)
+                title: 'Dashboard'
             })
         )
     })
