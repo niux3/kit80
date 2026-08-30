@@ -15,3 +15,10 @@
 - [ ] Gestion du cycle de vie des requêtes (AbortController / Annulation)
 - [ ] landing page (~/www/divers/landing-page-kit80/index.html)
 - [ ] binaire à créer pour installer le package
+- [ ] **Benchmark de perf `kit80` (Liste 25 véhicules vs Web Components)**
+- [ ] Préparer un dataset JSON réaliste (25 objets véhicules dénormalisés).
+- [ ] Implémenter des marqueurs `performance.mark()` / `performance.measure()` dans le lifecyle du contrôleur et du Custom Element.
+- [ ] Capturer le temps d'injection initiale + premier rendu (DOM Ready).
+- [ ] Mesurer l'INP (*Interaction to Next Paint*) sur le toggle favori / actions carte.
+- [ ] Profiler la mémoire (Heap JS) sur 10 cycles de destruction / réinjection de la liste (recherche de fuites mémoire).
+- [ ] Auditer sous CPU Throttling 4x/6x (profiling mobile) via Remote Debugging USB.
