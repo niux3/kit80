@@ -11,23 +11,23 @@ export class Dispatcher {
      * Creates an instance of Dispatcher.
      *
      * @param {Object} configuration - Application configuration instance.
-     * @param {HTMLElement} configuration.appContainer - The target DOM element where views are rendered.
-     * @param {boolean} [configuration.debug] - Debug mode flag.
      * @param {Container} container - Dependency injection container.
      */
     constructor(configuration, container) {
         /** @type {Router} */
-        this.router = new Router()
+        this._router = new Router()
         /** @type {Object|null} */
-        this.activePage = null
+        this._activePage = null
+        /** @type {Object|null} */
+        this._activeContext = null
         /** @private @type {Middleware} */
         this._middleware = new Middleware()
         /** @private @type {Container} */
         this._container = container
         /** @type {Object} */
-        this.configuration = configuration
+        this._configuration = configuration
         /** @type {HTMLElement} */
-        this.appContainer = configuration.appContainer
+        this._appContianer = configuration.appContainer
     }
 
     /**
@@ -132,7 +132,7 @@ export class Dispatcher {
      * @returns {Promise<void>}
      */
     async _dispatch(options = {}) {
-        const route = this.router.getMatch()
+        const route = this._router.getMatch()
 
         const context = {
             route,
@@ -141,7 +141,14 @@ export class Dispatcher {
             query: Object.fromEntries(new URLSearchParams(window.location.search)),
             body: options.body || null,
             view: null,
-            error: null
+            error: null,
+            // Référence directe au contexte de la page qu'on quitte
+            from: this._activeContext ? {
+                route: this._activeContext.route,
+                params: this._activeContext.params,
+                query: this._activeContext.query,
+                controller: this._activePage
+            } : null
         }
 
         try {
@@ -160,13 +167,13 @@ export class Dispatcher {
             // -------------------------------------------------------------
             // 2. DESTROY de l'ancienne page (avant de basculer sur la nouvelle)
             // -------------------------------------------------------------
-            if (this.activePage) {
-                const oldContext = { controller: this.activePage }
-                await this._middleware.trigger('beforeDestroy', oldContext, this.activePage)
+            if (this._activePage) {
+                const oldContext = { controller: this._activePage }
+                await this._middleware.trigger('beforeDestroy', oldContext, this._activePage)
 
                 this._cleanup() // Nettoyage DOM / Events
 
-                await this._middleware.trigger('afterDestroy', oldContext, this.activePage)
+                await this._middleware.trigger('afterDestroy', oldContext, this._activePage)
             }
 
             // -------------------------------------------------------------
@@ -178,7 +185,8 @@ export class Dispatcher {
             context.view = await instance[route.action](context)
 
             this._render(context.view)
-            this.activePage = instance
+            this._activePage = instance
+            this._activeContext = context // stocke le contexte de la page actuelle pour le prochain dispatch
 
             await this._middleware.trigger('afterRender', context, instance)
 
@@ -188,9 +196,9 @@ export class Dispatcher {
             // -------------------------------------------------------------
             context.error = error
 
-            if (await this._middleware.trigger('beforeError', context, this.activePage) !== false) {
+            if (await this._middleware.trigger('beforeError', context, this._activePage) !== false) {
                 await this._errors(error)
-                await this._middleware.trigger('afterError', context, this.activePage)
+                await this._middleware.trigger('afterError', context, this._activePage)
             }
         }
     }
@@ -217,9 +225,9 @@ export class Dispatcher {
      */
     _render(view) {
         if (view instanceof HTMLElement) {
-            this.appContainer.replaceChildren(view)
+            this._appContianer.replaceChildren(view)
         } else {
-            this.appContainer.innerHTML = view
+            this._appContianer.innerHTML = view
         }
     }
 
@@ -231,11 +239,11 @@ export class Dispatcher {
      * @returns {void}
      */
     _cleanup() {
-        if (this.activePage && typeof this.activePage.destroy === 'function') {
-            this.activePage.destroy()
+        if (this._activePage && typeof this._activePage.destroy === 'function') {
+            this._activePage.destroy()
         }
-        // this.appContainer.innerHTML = '' // TODO: à revoir - pour le moment flash blanc entre les vues qui ne sont pas en cache
-        this.activePage = null
+        // this._appContianer.innerHTML = '' // TODO: à revoir - pour le moment flash blanc entre les vues qui ne sont pas en cache
+        this._activePage = null
     }
 
     /**
@@ -246,7 +254,7 @@ export class Dispatcher {
      * @returns {Promise<void>}
      */
     async _errors(e) {
-        if (this.configuration.debug) {
+        if (this._configuration.debug) {
             console.error("Critical Error: Erreur de chargement", e.message)
         }
         try {
@@ -256,8 +264,8 @@ export class Dispatcher {
         } catch (fallbackError) {
             // Le contrôleur d'erreur lui-même a échoué (fichier manquant, etc.)
             // — dernier filet, sans dépendance à quoi que ce soit d'autre.
-            if (this.configuration.debug) {
-                this.appContainer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
+            if (this._configuration.debug) {
+                this._appContianer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
             } else {
                 const instance = await this._resolveController('ErrorsController')
                 const view = await instance.error('500')
