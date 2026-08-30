@@ -114,6 +114,26 @@ nav a {
       color: var(--color-text);
     }
   }
+  &[target="_blank"] {
+    padding-right: 1.25rem; /* Espace pour accueillir la flèche */
+
+    /* Flèche sortante ↗ générée en UTF-8 / CSS */
+    &::before {
+      content: '↗';
+      display: inline-block;
+      position: absolute;
+      right: 0.2rem;
+      top: 0.15rem;
+      font-size: 0.75rem;
+      color: var(--color-text);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    &:hover::before {
+      color: var(--color-polini-yellow);
+      transform: translate(2px, -2px);
+    }
+  }
 }
 
 nav a:hover {
@@ -208,4 +228,17 @@ a {
 
 a:hover {
   color: var(--color-polini-yellow);
+}
+
+/* class utilitaires*/
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
