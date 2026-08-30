@@ -11,17 +11,25 @@ export class Controller {
     constructor(container) {
         /**
          * Internal controller context data store.
-         * @private
+         * @protected
          * @type {Object<string, any>}
          */
         this._ctx = {}
 
         /**
          * View renderer service resolved from the container.
-         * @private
+         * @protected
          * @type {View}
          */
         this._view = container.get('view')
+
+        /**
+         * Page title string for browser tab document title management.
+         * @protected
+         * @type {string}
+         */
+        this._title = ''
+        this._title = ''
     }
 
     /**
@@ -42,6 +50,26 @@ export class Controller {
      */
     getCtx() {
         return this._ctx
+    }
+
+    /**
+     * Sets the page document title for the current controller view context.
+     *
+     * @param {string} value - The page title text to assign.
+     * @returns {this} The current Controller instance for method chaining.
+     */
+    setTitle(value) {
+        this._title = value
+        return this
+    }
+
+    /**
+     * Gets the page document title defined for this controller instance.
+     *
+     * @returns {string} The current controller page title.
+     */
+    getTitle() {
+        return this._title
     }
 
     /**

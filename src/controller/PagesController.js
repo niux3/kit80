@@ -3,6 +3,7 @@ import { AppController } from './AppController'
 
 export default class PagesController extends AppController {
     async home() {
+        this.setTitle('Accueil')
         const ctx = {
             title: "Bienvenue",
             features: [
@@ -16,6 +17,7 @@ export default class PagesController extends AppController {
     }
 
     async about() {
+        this.setTitle('À propos')
         const ctx = {
             title: "Spécifications",
             description: "kit80 est un framework SPA ultra-léger conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components (sans un Virtual DOM).",

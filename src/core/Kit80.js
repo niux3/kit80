@@ -69,6 +69,13 @@ export class Kit80 {
      * @returns {this} The current Kit80 instance for method chaining.
      */
     run() {
+        this._dispatcher.use('afterRender', (context) => {
+            const controller = context?.controller || context?.instance
+            const pageTitle = controller?.getTitle()
+            const appTitle = Configuration.appTitle
+
+            document.title = pageTitle ? `${pageTitle} - ${appTitle}` : appTitle
+        })
         this._dispatcher.run()
         return this
     }

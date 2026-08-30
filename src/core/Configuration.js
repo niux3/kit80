@@ -32,6 +32,12 @@ export class Configuration {
     static appContainer = null
 
     /**
+     * The application title to display in the browser tab.
+     * @type {string}
+     */
+    static appTitle = import.meta.env.TITLE || 'Kit80 - SPA Framework'
+
+    /**
      * Resolves DOM-dependent configuration elements (specifically `appContainer`).
      * Must be called once during application bootstrap after the DOM is ready.
      *
