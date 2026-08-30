@@ -8,71 +8,70 @@ describe('Controller', () => {
     let controller
 
     beforeEach(() => {
-        // Mock of the view service
         viewMock = {
-            render: vi.fn((template, ctx) => `<h1>Rendered ${template}</h1>`),
-            urlFor: vi.fn((name, params = {}) => `/mock-url/${name}`)
+            render: vi.fn((template, ctx) => `<div>${template}</div>`),
+            urlFor: vi.fn((name, params) => `/mocked/${name}`)
         }
 
-        // Mock of the IoC Container
         containerMock = {
-            get: vi.fn((service) => {
-                if (service === 'view') return viewMock
-                return null
-            })
+            get: vi.fn((service) => (service === 'view' ? viewMock : null))
         }
 
         controller = new Controller(containerMock)
     })
 
-    it('should retrieve the view service from the container upon instantiation', () => {
-        expect(containerMock.get).toHaveBeenCalledWith('view')
+    it('should initialize with default properties', () => {
+        expect(controller.getCtx()).toEqual({})
+        expect(controller.getTitle()).toBe('')
     })
 
-    it('should manage the internal context (_ctx) using setCtx and getCtx', () => {
-        controller.setCtx('title', 'My Title')
-        controller.setCtx('user', { name: 'Alex' })
+    it('should allow setting and getting title with fluid chaining', () => {
+        const instance = controller.setTitle('Dashboard')
+
+        expect(controller.getTitle()).toBe('Dashboard')
+        expect(instance).toBe(controller) // Vérifie le chainage (return this)
+    })
+
+    it('should manage internal context store via setCtx and getCtx', () => {
+        controller.setCtx('user', 'Alice')
+        controller.setCtx('role', 'admin')
 
         expect(controller.getCtx()).toEqual({
-            title: 'My Title',
-            user: { name: 'Alex' }
+            user: 'Alice',
+            role: 'admin'
         })
     })
 
-    it('should merge internal context (_ctx) with local context passed to render()', () => {
-        controller.setCtx('globalData', '123')
+    it('should merge internal context with render context when calling render()', () => {
+        controller.setCtx('globalData', 'foo')
 
-        controller.render('home', { localData: '456' })
+        const output = controller.render('pages/home', { localData: 'bar' })
 
-        expect(viewMock.render).toHaveBeenCalledWith('home', {
-            globalData: '123',
-            localData: '456'
+        expect(viewMock.render).toHaveBeenCalledWith('pages/home', {
+            globalData: 'foo',
+            localData: 'bar'
         })
+        expect(output).toBe('<div>pages/home</div>')
     })
 
-    it('should delegate urlFor calls with params to the view service', () => {
-        const url = controller.urlFor('contact')
-
-        expect(viewMock.urlFor).toHaveBeenCalledWith('contact', {})
-        expect(url).toBe('/mock-url/contact')
-
-        controller.urlFor('user.show', { id: 42 })
-        expect(viewMock.urlFor).toHaveBeenCalledWith('user.show', { id: 42 })
-    })
-
-    it('should dispatch a "spa:navigate" CustomEvent and return false on redirect', () => {
+    it('should dispatch "spa:navigate" CustomEvent and return false on redirect()', () => {
         const dispatchSpy = vi.spyOn(window, 'dispatchEvent')
 
-        const result = controller.redirect('/dashboard')
+        const result = controller.redirect('/login')
 
         expect(result).toBe(false)
         expect(dispatchSpy).toHaveBeenCalledOnce()
 
-        // Verify emitted event payload
-        const event = dispatchSpy.mock.calls[0][0]
-        expect(event.type).toBe('spa:navigate')
-        expect(event.detail).toEqual({ url: '/dashboard' })
+        const eventArg = dispatchSpy.mock.calls[0][0]
+        expect(eventArg).toBeInstanceOf(CustomEvent)
+        expect(eventArg.type).toBe('spa:navigate')
+        expect(eventArg.detail).toEqual({ url: '/login' })
+    })
 
-        dispatchSpy.mockRestore()
+    it('should delegate urlFor calls to the view service', () => {
+        const url = controller.urlFor('user.profile', { id: 42 })
+
+        expect(viewMock.urlFor).toHaveBeenCalledWith('user.profile', { id: 42 })
+        expect(url).toBe('/mocked/user.profile')
     })
 })

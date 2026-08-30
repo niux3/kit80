@@ -26,6 +26,7 @@ vi.mock('../src/core/Dispatcher', () => {
     return {
         Dispatcher: vi.fn().mockImplementation(function () {
             this.run = vi.fn()
+            this.use = vi.fn().mockReturnThis()
         })
     }
 })
@@ -68,9 +69,11 @@ describe('Kit80', () => {
 
     it('should invoke the Dispatcher run() method when calling app.run()', () => {
         const runSpy = vi.spyOn(app['_dispatcher'], 'run')
+        const useSpy = vi.spyOn(app['_dispatcher'], 'use')
 
         const result = app.run()
 
+        expect(useSpy).toHaveBeenCalledWith('afterRender', expect.any(Function))
         expect(runSpy).toHaveBeenCalledOnce()
         expect(result).toBe(app)
     })
