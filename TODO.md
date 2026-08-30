@@ -11,7 +11,8 @@
 - [x] jsdoc
 - [x] créer http referer
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
-- [ ] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
+- [x] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
+- [ ] Revoir peut être l'affichage de title. Actuellement, il s'affiche avec le nom de l'application (ex : Accueil - Kit80)
 - [ ] Gestion du cycle de vie des requêtes (AbortController / Annulation)
 - [ ] landing page (~/www/divers/landing-page-kit80/index.html)
 - [ ] binaire à créer pour installer le package
