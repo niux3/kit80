@@ -27,7 +27,7 @@ export class Dispatcher {
         /** @type {Object} */
         this._configuration = configuration
         /** @type {HTMLElement} */
-        this._appContianer = configuration.appContainer
+        this._appContainer = configuration.appContainer
     }
 
     /**
@@ -225,9 +225,9 @@ export class Dispatcher {
      */
     _render(view) {
         if (view instanceof HTMLElement) {
-            this._appContianer.replaceChildren(view)
+            this._appContainer.replaceChildren(view)
         } else {
-            this._appContianer.innerHTML = view
+            this._appContainer.innerHTML = view
         }
     }
 
@@ -242,7 +242,7 @@ export class Dispatcher {
         if (this._activePage && typeof this._activePage.destroy === 'function') {
             this._activePage.destroy()
         }
-        // this._appContianer.innerHTML = '' // TODO: à revoir - pour le moment flash blanc entre les vues qui ne sont pas en cache
+        // this._appContainer.innerHTML = '' // TODO: à revoir - pour le moment flash blanc entre les vues qui ne sont pas en cache
         this._activePage = null
     }
 
@@ -265,7 +265,7 @@ export class Dispatcher {
             // Le contrôleur d'erreur lui-même a échoué (fichier manquant, etc.)
             // — dernier filet, sans dépendance à quoi que ce soit d'autre.
             if (this._configuration.debug) {
-                this._appContianer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
+                this._appContainer.innerHTML = `<h1>Erreur de chargement</h1><p>${e.message}</p>`
             } else {
                 const instance = await this._resolveController('ErrorsController')
                 const view = await instance.error('500')
