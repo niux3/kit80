@@ -1,6 +1,6 @@
 {
     "fr": {
-        "title": "Spécifications",
+        "title": "À propos",
         "title2": "Spécifications Techniques",
         "description": "kit80 est un framework SPA ultra-léger conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components (sans Virtual DOM).",
         "specs": [
@@ -13,7 +13,7 @@
         "text_link": "retour à l'accueil"
     },
     "en": {
-        "title": "Specifications",
+        "title": "About",
         "title2": "Technical Specifications",
         "description": "kit80 is an ultra-lightweight SPA framework built around W3C native standards, dependency injection, and Web Components (without a Virtual DOM).",
         "specs": [
