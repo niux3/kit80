@@ -1,0 +1,28 @@
+{
+    "fr": {
+        "title": "Spécifications",
+        "title2": "Spécifications Techniques",
+        "description": "kit80 est un framework SPA ultra-léger conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components (sans Virtual DOM).",
+        "specs": [
+            { "name": "Architecture", "value": "IoC / Dispatcher / Pipeline" },
+            { "name": "Virtual DOM", "value": "Aucun (DOM natif)" },
+            { "name": "Interactivité UI", "value": "Custom Elements (v1)" },
+            { "name": "Moteur de rendu", "value": "@niuxe/template-engine" },
+            { "name": "Suite de tests", "value": "Vitest + Happy DOM" }
+        ],
+        "text_link": "retour à l'accueil"
+    },
+    "en": {
+        "title": "Specifications",
+        "title2": "Technical Specifications",
+        "description": "kit80 is an ultra-lightweight SPA framework built around W3C native standards, dependency injection, and Web Components (without a Virtual DOM).",
+        "specs": [
+            { "name": "Architecture", "value": "IoC / Dispatcher / Pipeline" },
+            { "name": "Virtual DOM", "value": "None (Native DOM)" },
+            { "name": "UI Interactivity", "value": "Custom Elements (v1)" },
+            { "name": "Templating Engine", "value": "@niuxe/template-engine" },
+            { "name": "Test Suite", "value": "Vitest + Happy DOM" }
+        ],
+        "text_link": "Back to home"
+    }
+}

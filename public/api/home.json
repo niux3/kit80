@@ -1,0 +1,22 @@
+{
+    "fr": {
+        "title": "Bienvenue",
+        "description": "Framework SPA ultra-léger basé sur les standards W3C.",
+        "title2": "État des modules core",
+        "features": [
+            { "label": "IoC Container", "status": "Prêt" },
+            { "label": "Router & Dispatcher", "status": "Actif" },
+            { "label": "Native Web Components", "status": "Chargé" }
+        ]
+    },
+    "en": {
+        "title": "Welcome",
+        "description": "Ultra-lightweight SPA framework based on W3C standards.",
+        "title2": "Core modules status",
+        "features": [
+            { "label": "IoC Container", "status": "Ready" },
+            { "label": "Router & Dispatcher", "status": "Active" },
+            { "label": "Native Web Components", "status": "Loaded" }
+        ]
+    }
+}

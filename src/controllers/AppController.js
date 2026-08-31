@@ -17,10 +17,22 @@ export class AppController extends Controller {
         this.setCtx('currentLanguage', localStorage.getItem('lang') || 'en')
         this.setCtx('currentRouteName', ctx.route.route.name)
         this.setCtx('currentUrlsLanguages', this.#getCurrentUrlsLanguages())
+
+        this.setCtx('menu', {
+            "fr": {
+                "home": "Accueil",
+                "about": "À propos"
+            },
+            "en": {
+                "home": "Home",
+                "about": "About"
+            }
+        })
     }
 
     async afterRender(ctx) {
         console.log('afterRender')
+        document.querySelector('html').setAttribute('lang', this.getCtx('currentLanguage'))
     }
 
     #getCurrentUrlsLanguages() {

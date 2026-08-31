@@ -4,7 +4,7 @@
   <h1>[[= title ]]</h1>
   <p class="lead">[[= description ]]</p>
   <section class="features-list">
-    <h2>Spécifications Techniques</h2>
+    <h2>[[= title2 ]]</h2>
     <ul>
     [[for(const spec of specs){]]
         <li>
@@ -15,12 +15,7 @@
     </ul>
   </section>
 
-  <div style="margin-top: 2rem;">
-    <!-- Le Web Component interactif de démo -->
-    <ui-counter count="80" label="Tours / min"></ui-counter>
-  </div>
-
   <p style="margin-top: 2rem;">
-    <a href="/">← Retour à l'accueil</a>
+    <a href="/">← [[= text_link ]]</a>
   </p>
 [[/block]]

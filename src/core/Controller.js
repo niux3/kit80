@@ -24,6 +24,13 @@ export class Controller {
         this._view = container.get('view')
 
         /**
+         * API service resolved from the container.
+         * @public
+         * @type {ApiService}
+         */
+        this.api = container.get('api')
+
+        /**
          * Page title string for browser tab document title management.
          * @protected
          * @type {string}

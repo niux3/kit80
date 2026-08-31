@@ -22,7 +22,7 @@ export class Configuration {
      * Evaluates to local server in development or environment variable in production.
      * @type {string}
      */
-    static baseUrlApi = import.meta.env.MODE === 'development' ? 'http://localhost:3000/api' : import.meta.env.VITE_API_URL
+    static baseUrlApi = import.meta.env.MODE === 'development' ? 'http://localhost:5173/api' : import.meta.env.BASE_API_URL
 
     /**
      * The root DOM container element where the SPA mounts views.
