@@ -26,9 +26,13 @@ export class Kit80 {
      */
     constructor(idSelector = 'app') {
         Configuration.init(idSelector)
+
         /** @private @type {Container} */
         this._container = new Container()
+
         this._registerServices()
+        this._registerComponents()
+
         /** @private @type {Dispatcher} */
         this._dispatcher = new Dispatcher(Configuration, this._container)
     }
@@ -61,6 +65,29 @@ export class Kit80 {
             .use(HelpersPlugin))
         this._container.set('view', (container) => new View(container))
         this._container.set('api', (container) => new ApiService())
+    }
+
+    /**
+    * Dynamically register all Web Components from the `composants/` folder.
+    */
+    _registerComponents() {
+        const components = import.meta.glob('../controllers/components/**/*.js', { eager: true })
+
+        for (const path in components) {
+            const fileName = path.split('/').pop().replace(/\.js$/, '')
+            const tagName = fileName.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+
+            // Guard W3C : on ne charge et n'enregistre que si la balise n'est pas encore définie
+            if (!customElements.get(tagName)) {
+                // Avec { eager: true }, components[path] contient directement le module importé
+                const module = components[path]
+                const ComponentClass = module[fileName] || module.default
+
+                if (ComponentClass) {
+                    customElements.define(tagName, ComponentClass)
+                }
+            }
+        }
     }
 
     /**
