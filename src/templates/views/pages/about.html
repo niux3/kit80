@@ -1,15 +1,15 @@
 [[extends:base]]
 
 [[block:content]]
-  <h1>[[=title ]]</h1>
-  <p class="lead">[[=description ]]</p>
+  <h1>[[= title ]]</h1>
+  <p class="lead">[[= description ]]</p>
   <section class="features-list">
     <h2>Spécifications Techniques</h2>
     <ul>
     [[for(const spec of specs){]]
         <li>
-          <span>[[=spec.name ]]</span>
-          <strong>[[=spec.value ]]</strong>
+          <span>[[= spec.name ]]</span>
+          <strong>[[= spec.value ]]</strong>
         </li>
     [[}]]
     </ul>
@@ -21,6 +21,6 @@
   </div>
 
   <p style="margin-top: 2rem;">
-    <a href="/">← Retour au Dashboard</a>
+    <a href="/">← Retour à l'accueil</a>
   </p>
 [[/block]]
