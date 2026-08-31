@@ -12,9 +12,9 @@ export class AppController extends Controller {
     }
 
     async beforeRender(ctx) {
-        console.log('beforeRender', ctx)
+        console.log('beforeRender')
         this.setCtx('currentPath', window.location.pathname)
-        this.setCtx('currentLanguage', 'en')
+        this.setCtx('currentLanguage', localStorage.getItem('lang') || 'en')
         this.setCtx('currentRouteName', ctx.route.route.name)
         this.setCtx('currentUrlsLanguages', this.#getCurrentUrlsLanguages())
     }

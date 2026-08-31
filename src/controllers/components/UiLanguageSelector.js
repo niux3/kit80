@@ -19,21 +19,31 @@ export class UiLanguageSelector extends HTMLElement {
             this.appendChild(fragment)
             this.button = this.querySelector('button')
             this.menu = this.querySelector('ul')
-            console.log(this.button)
-            console.log(this.menu)
 
-            this.button?.addEventListener('click', this.handleClick.bind(this))
+            this.button?.addEventListener('click', this.handleButtonClick.bind(this))
+            this.menu?.addEventListener('click', this.handleMenuClick.bind(this))
+
         }
     }
 
     disconnectedCallback() {
-        this.button?.removeEventListener('click', this.handleClick.bind(this))
+        this.button?.removeEventListener('click', this.handleButtonClick.bind(this))
+        this.menu?.removeEventListener('click', this.handleMenuClick.bind(this))
     }
 
-    handleClick(e) {
+    handleButtonClick(e) {
         e.preventDefault()
         this._opened = !this._opened
         this.button.setAttribute('aria-expanded', this._opened ? 'true' : 'false')
         this.button.nextElementSibling.setAttribute('aria-hidden', this._opened ? 'false' : 'true')
+    }
+
+    handleMenuClick(e) {
+        // Retrouve l'élément <a> même si l'utilisateur a cliqué sur un élément enfant
+        const link = e.target.closest('a')
+        if (!link) return
+
+        const lang = link.textContent.trim().toLowerCase()
+        localStorage.setItem('lang', lang)
     }
 }
