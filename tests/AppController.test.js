@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { AppController } from '../src/controller/AppController'
+import { AppController } from '../src/controllers/AppController'
 
 class CustomChildController extends AppController {
     setDate(dateString) {
