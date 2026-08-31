@@ -77,4 +77,58 @@ describe('Kit80', () => {
         expect(runSpy).toHaveBeenCalledOnce()
         expect(result).toBe(app)
     })
+
+    describe('_registerComponents', () => {
+        beforeEach(() => {
+            vi.restoreAllMocks()
+        })
+
+        it('should dynamically register custom elements in W3C registry', () => {
+            class DummyComponent extends HTMLElement { }
+
+            vi.spyOn(app, '_getGlobComponents').mockReturnValue({
+                '../controllers/components/UiTestBadge.js': {
+                    UiTestBadge: DummyComponent
+                }
+            })
+
+            app['_registerComponents']()
+
+            expect(customElements.get('ui-test-badge')).toBe(DummyComponent)
+        })
+
+        it('should handle default export when named export is missing', () => {
+            class DefaultComponent extends HTMLElement { }
+
+            vi.spyOn(app, '_getGlobComponents').mockReturnValue({
+                '../controllers/components/UiDefaultWidget.js': {
+                    default: DefaultComponent
+                }
+            })
+
+            app['_registerComponents']()
+
+            expect(customElements.get('ui-default-widget')).toBe(DefaultComponent)
+        })
+
+        it('should not throw or re-define an already registered custom element', () => {
+            class AlreadyDefinedComponent extends HTMLElement { }
+
+            if (!customElements.get('ui-already-defined')) {
+                customElements.define('ui-already-defined', AlreadyDefinedComponent)
+            }
+
+            const defineSpy = vi.spyOn(customElements, 'define')
+
+            vi.spyOn(app, '_getGlobComponents').mockReturnValue({
+                '../controllers/components/UiAlreadyDefined.js': {
+                    UiAlreadyDefined: AlreadyDefinedComponent
+                }
+            })
+
+            app['_registerComponents']()
+
+            expect(defineSpy).not.toHaveBeenCalledWith('ui-already-defined', expect.any(Function))
+        })
+    })
 })

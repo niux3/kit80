@@ -68,10 +68,17 @@ export class Kit80 {
     }
 
     /**
+    * import all Web Components from the `composants/` folder.
+    */
+    _getGlobComponents() {
+        return import.meta.glob('../controllers/components/**/*.js', { eager: true })
+    }
+
+    /**
     * Dynamically register all Web Components from the `composants/` folder.
     */
     _registerComponents() {
-        const components = import.meta.glob('../controllers/components/**/*.js', { eager: true })
+        const components = this._getGlobComponents()
 
         for (const path in components) {
             const fileName = path.split('/').pop().replace(/\.js$/, '')
