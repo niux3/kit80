@@ -47,8 +47,9 @@ export class Controller {
      *
      * @returns {Object<string, any>} The current internal context object.
      */
-    getCtx(name) {
-        return this._ctx[name]
+    getCtx(name = null) {
+        if (name === null) return this._ctx
+        return this._ctx[name] || {}
     }
 
     /**

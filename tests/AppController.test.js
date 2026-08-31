@@ -34,7 +34,8 @@ describe('AppController', () => {
 
     beforeEach(() => {
         viewMock = {
-            render: vi.fn((template, ctx) => `<div>${template}</div>`)
+            render: vi.fn((template, ctx) => `<div>${template}</div>`),
+            urlFor: vi.fn((name, params) => `/${params?.lang || 'fr'}/${name}`) // <-- Ajout de la méthode mockée
         }
 
         containerMock = {
