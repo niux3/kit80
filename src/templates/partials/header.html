@@ -1,9 +1,9 @@
 <header class="app-header">
   <p>KIT 80</p>
   <nav>
-    <a href="[[= helpers.urlFor('home') ]]" aria-current="[[= currentPath === helpers.urlFor('home') ? 'page' : 'false' ]]">Accueil</a>
-    <a href="[[= helpers.urlFor('about') ]]" aria-current="[[= currentPath === helpers.urlFor('about') ? 'page' : 'false' ]]">À propos</a>
+    <a href="[[= helpers.urlFor('home', { lang: currentLanguage }) ]]" aria-current="[[= currentPath === helpers.urlFor('home', { lang: currentLanguage }) ? 'page' : 'false' ]]">Accueil</a>
+    <a href="[[= helpers.urlFor('about', {lang: currentLanguage}) ]]" aria-current="[[= currentPath === helpers.urlFor('about', { lang: currentLanguage }) ? 'page' : 'false' ]]">À propos</a>
     <a href="https://alsacreations.com" target="_blank" rel="noopener noreferrer">Documentation <span class="sr-only">(s'ouvre dans un nouvel onglet)</span></a>
-    <ui-language-selector data="fr;en" />
+    <ui-language-selector data="[[= JSON.stringify(currentUrlsLanguages) ]]" current-language="[[= currentLanguage ]]" />
   </nav>
 </header>

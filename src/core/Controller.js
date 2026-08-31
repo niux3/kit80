@@ -29,7 +29,6 @@ export class Controller {
          * @type {string}
          */
         this._title = ''
-        this._title = ''
     }
 
     /**
@@ -48,8 +47,8 @@ export class Controller {
      *
      * @returns {Object<string, any>} The current internal context object.
      */
-    getCtx() {
-        return this._ctx
+    getCtx(name) {
+        return this._ctx[name]
     }
 
     /**

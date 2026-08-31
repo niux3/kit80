@@ -2,9 +2,15 @@ import { AppController } from './AppController'
 
 
 export default class PagesController extends AppController {
-    async home() {
+    async index(req) {
+        return this.redirect(this.urlFor('home', { lang: 'fr' }))
+    }
+
+    async home(req) {
+        console.log(req.params)
         this.setTitle('Accueil')
         const ctx = {
+            lang: 'de',
             title: "Bienvenue",
             features: [
                 { label: 'IoC Container', status: 'Ready' },
@@ -16,7 +22,7 @@ export default class PagesController extends AppController {
         return this.render('pages/home', ctx)
     }
 
-    async about() {
+    async about(req) {
         this.setTitle('À propos')
         const ctx = {
             title: "Spécifications",

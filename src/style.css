@@ -48,7 +48,7 @@ body {
 main{
   margin: 0 auto;
   padding: 25px;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 /* Layout App / Custom Scroll
@@ -172,34 +172,69 @@ p {
 /* Web Components & Widgets Interactifs
    ========================================================================== */
 
-/* Exemple <ui-counter> */
-ui-counter button {
-  background-color: var(--color-polini-blue);
+ui-language-selector{
+  position: relative;
+}
+ui-language-selector button {
+  background-color: transparent;
+  border: none;
   color: var(--color-polini-white);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  text-transform: uppercase;
-  border: 2px solid var(--color-polini-white);
-  padding: 0.75rem 1.25rem;
+  padding: 0.25rem 0.5rem;
   cursor: pointer;
-  box-shadow: 3px 3px 0px var(--color-polini-yellow);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem; /* Réduit pour éviter le double espace avec margin-left */
+
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 0.4em;
+    height: 0.4em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+
+    /* Correctifs d'alignement */
+    margin-left: 0.25rem;
+    margin-top: -0.25em; /* Remonte légèrement la flèche pour compenser la rotation */
+    transform-origin: center center; /* Garantit que la rotation se fait sur l'axe central */
+
+    /* Orientation initiale vers le bas */
+    transform: rotate(45deg);
+    transition: transform 0.2s ease-in-out;
+  }
 }
 
-ui-counter button:hover {
-  background-color: var(--color-polini-blue-hover);
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px var(--color-polini-yellow);
-}
-
-ui-counter button:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px var(--color-polini-yellow);
-}
-
-ui-counter strong {
+ui-language-selector button[aria-expanded="true"] {
   color: var(--color-polini-yellow);
-  margin-left: 0.25rem;
+
+  &:after {
+    /* Maintien du margin-top pendant la rotation */
+    transform: rotate(-135deg);
+  }
+}
+
+ui-language-selector button + ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-surface-border);
+  padding: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  list-style: none;
+  padding: 1rem;
+}
+
+ui-language-selector button:hover {
+  color: var(--color-polini-yellow);
+}
+
+ui-language-selector button[aria-expanded="true"] + ul {
+  display: block;
 }
 
 /* Listes de modules / specs */
