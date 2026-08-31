@@ -220,6 +220,10 @@ ui-counter strong {
   font-size: 0.9rem;
 }
 
+.features-list li .status{
+  color: var(--color-polini-yellow);
+}
+
 /* Liens génériques */
 a {
   color: var(--color-polini-blue);
