@@ -211,7 +211,8 @@ export class Dispatcher {
      * @returns {Promise<Object>} Instance of the resolved controller.
      */
     async _resolveController(name) {
-        const module = await import(`../controllers/${name}.js`)
+        const path = name === 'ErrorsController' ? `./${name}.js` : `../controllers/${name}.js`
+        const module = await import(path)
         const ControllerClass = module.default
         return new ControllerClass(this._container)
     }
