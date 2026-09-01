@@ -67,7 +67,6 @@ export class Kit80 {
             .use(HelpersPlugin))
         this._container.set('view', (container) => new View(container))
         this._container.set('api', (container) => new ApiService())
-        this._container.set('globalState', (container) => new GlobalState())
     }
 
     /**
