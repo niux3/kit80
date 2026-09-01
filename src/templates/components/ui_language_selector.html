@@ -1,8 +1,6 @@
-<p>[[= helpers.urlFor('about', { lang: 'fr' }) ]]</p>
 <button type="button" aria-expanded="false" aria-controls="language-menu" aria-haspopup="true">[[= currentLanguage.toUpperCase() ]]</button>
-</ul>
 <ul id="language-menu">
-  [[for(const row of data){]]
-  <li><a href="[[= row.url ]]">[[= row.lang ]]</a></li>
+  [[for(const lang of languages){]]
+  <li><a href="[[= helpers.urlFor(currentRouteName, { lang: lang }) ]]">[[= lang ]]</a></li>
   [[}]]
 </ul>

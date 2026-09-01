@@ -44,16 +44,13 @@ export const withKit80 = (BaseClass) => {
                 this._api = null
                 this._container = null
             }
-
-            // État interne
-            this._ctx = {}
         }
 
         /**
          * Méthode pour mettre à jour le contexte
          */
         setCtx(key, value) {
-            this._ctx[key] = value
+            this._container.get('globalState').set(key, value)
             return this
         }
 
@@ -61,8 +58,7 @@ export const withKit80 = (BaseClass) => {
          * Récupère une valeur du contexte
          */
         getCtx(key = null) {
-            if (key === null) return this._ctx
-            return this._ctx[key] || null
+            return this._container.get('globalState').get(key)
         }
 
         /**
@@ -87,26 +83,8 @@ export const withKit80 = (BaseClass) => {
          * Rendu avec le template engine du framework
          */
         render(template, ctx = {}) {
-            const mergedCtx = { ...this._ctx, ...ctx }
+            const mergedCtx = { ...this.getCtx(), ...ctx }
             return this._templateEngine.render(template, mergedCtx)
-        }
-
-        /**
-         * Récupère le contexte du contrôleur parent
-         */
-        updateFromController(controllerCtx) {
-            this._ctx = { ...this._ctx, ...controllerCtx }
-            if (typeof this._onContextUpdate === 'function') {
-                this._onContextUpdate(this._ctx)
-            }
-            return this
-        }
-
-        /**
-         * Raccourci pour les helpers
-         */
-        get helpers() {
-            return this._templateEngine.helpers || {}
         }
     }
 }

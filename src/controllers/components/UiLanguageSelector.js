@@ -7,16 +7,17 @@ export class UiLanguageSelector extends withKit80(HTMLElement) {
 
     constructor() {
         super()
-        console.log('UiLanguageSelector >>>>', this.render('<p>bla == [[=data]]</p>', { data: 'bla' }))
-        console.log('UiLanguageSelector >>>>', this.getCtx())
-        this._engine = new TemplateEngine()
         this._opened = false
-        this._data = JSON.parse(this.getAttribute('data'))
-        this._currentLanguage = this.getAttribute('current-language')
+        this._languages = this.getAttribute('languages')
     }
 
     connectedCallback() {
-        const html = this.render(templateHTML, { data: this._data, currentLanguage: this._currentLanguage })
+        const ctx = {
+            languages: this._languages.split(';'),
+            currentRouteName: this.getCtx('currentRouteName'),
+            currentLanguage: this.getCtx('currentLanguage'),
+        }
+        const html = this.render(templateHTML, ctx)
         const fragment = document.createRange().createContextualFragment(html)
         if (fragment) {
             this.appendChild(fragment)

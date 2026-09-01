@@ -14,7 +14,7 @@ export class Controller {
          * @protected
          * @type {Object<string, any>}
          */
-        this._ctx = {}
+        this._ctx = container.get('globalState')
 
         /**
          * View renderer service resolved from the container.
@@ -46,7 +46,7 @@ export class Controller {
      * @returns {void}
      */
     setCtx(key, value) {
-        this._ctx[key] = value
+        this._ctx.set(key, value)
     }
 
     /**
@@ -55,8 +55,7 @@ export class Controller {
      * @returns {Object<string, any>} The current internal context object.
      */
     getCtx(name = null) {
-        if (name === null) return this._ctx
-        return this._ctx[name] || {}
+        return this._ctx.get(name)
     }
 
     /**
@@ -87,7 +86,7 @@ export class Controller {
      * @returns {HTMLElement|string} The rendered view output (DOM element or HTML string).
      */
     render(template, ctx) {
-        ctx = { ...this._ctx, ...ctx }
+        ctx = { ...this.getCtx(), ...ctx }
         return this._view.render(template, ctx)
     }
 

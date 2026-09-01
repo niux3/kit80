@@ -47,6 +47,7 @@ export class Kit80 {
      * @returns {void}
      */
     _registerServices() {
+        this._container.set('globalState', (container) => new GlobalState())
         this._container.set('views', () => import.meta.glob('../templates/views/**/*.html', { query: '?raw', import: 'default' }))
         this._container.set('partials', () => import.meta.glob(
             '../templates/partials/**/*.html',

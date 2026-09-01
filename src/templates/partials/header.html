@@ -5,6 +5,6 @@
     <a href="[[= helpers.urlFor(routeName, { lang: currentLanguage }) ]]" aria-current="[[= currentPath === helpers.urlFor(routeName, { lang: currentLanguage }) ? 'page' : 'false' ]]">[[= text]]</a>
     [[}]]
     <a href="https://alsacreations.com" target="_blank" rel="noopener noreferrer">Documentation</a>
-    <ui-language-selector data="[[= JSON.stringify(currentUrlsLanguages) ]]" current-language="[[= currentLanguage ]]" />
+    <ui-language-selector languages="en;fr" />
   </nav>
 </header>
