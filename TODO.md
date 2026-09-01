@@ -11,6 +11,7 @@
 - [x] jsdoc
 - [x] créer http referer
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
+- [ ] BUG ! Lors du build l'ajax sur un fichier json ne fonctione pas. Les pages renvoient erreur 500 !
 - [ ] darkmode
 - [ ] selecteur de langue
 - [x] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
