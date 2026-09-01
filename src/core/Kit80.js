@@ -8,7 +8,7 @@ import {
 } from '@niuxe/template-engine/plugins'
 import { Container } from './Container'
 import { View } from './View'
-import { Configuration } from './Configuration'
+import { Configuration } from '../Configuration'
 import { Dispatcher } from './Dispatcher'
 import { GlobalState } from './GlobalState'
 import { ApiService } from './ApiService'

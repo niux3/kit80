@@ -1,5 +1,5 @@
 // services/ApiService.js
-import { Configuration } from './Configuration'
+import { Configuration } from '../Configuration'
 
 export class ApiService {
     constructor() {
