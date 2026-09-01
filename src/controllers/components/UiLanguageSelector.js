@@ -1,11 +1,14 @@
 import templateHTML from '../../templates/components/ui_language_selector.html?raw'
 import { TemplateEngine } from '@niuxe/template-engine'
+import { withKit80 } from '../../core/ComponentMixin.js'
 
 
-export class UiLanguageSelector extends HTMLElement {
+export class UiLanguageSelector extends withKit80(HTMLElement) {
 
     constructor() {
         super()
+        console.log('UiLanguageSelector >>>>', this.render('<p>bla == [[=data]]</p>', { data: 'bla' }))
+        console.log('UiLanguageSelector >>>>', this.getCtx())
         this._engine = new TemplateEngine()
         this._opened = false
         this._data = JSON.parse(this.getAttribute('data'))
@@ -13,7 +16,7 @@ export class UiLanguageSelector extends HTMLElement {
     }
 
     connectedCallback() {
-        const html = this._engine.render(templateHTML, { data: this._data, currentLanguage: this._currentLanguage })
+        const html = this.render(templateHTML, { data: this._data, currentLanguage: this._currentLanguage })
         const fragment = document.createRange().createContextualFragment(html)
         if (fragment) {
             this.appendChild(fragment)
