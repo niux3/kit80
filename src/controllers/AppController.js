@@ -13,7 +13,11 @@ export class AppController extends Controller {
 
     async beforeRender(ctx) {
         console.log('beforeRender')
+        // console.log('🔵 AppController: avant setCtx')
         this.setCtx('currentPath', window.location.pathname)
+        // console.log('🔵 AppController: après setCtx, getCtx currentPath =', this.getCtx('currentPath'))
+        // console.log('🔵 AppController: état global complet =', this._ctx.get())
+
         this.setCtx('currentLanguage', localStorage.getItem('lang') || 'en')
         this.setCtx('currentRouteName', ctx.route.route.name)
         this.setCtx('currentUrlsLanguages', this.#getCurrentUrlsLanguages())

@@ -10,6 +10,7 @@ import { Container } from './Container'
 import { View } from './View'
 import { Configuration } from './Configuration'
 import { Dispatcher } from './Dispatcher'
+import { GlobalState } from './GlobalState'
 import { ApiService } from './ApiService'
 
 
@@ -27,13 +28,13 @@ export class Kit80 {
     constructor(idSelector = 'app') {
         Configuration.init(idSelector)
 
-        /** @private @type {Container} */
+        /** @protected @type {Container} */
         this._container = new Container()
 
         this._registerServices()
         this._registerComponents()
 
-        /** @private @type {Dispatcher} */
+        /** @protected @type {Dispatcher} */
         this._dispatcher = new Dispatcher(Configuration, this._container)
     }
 
@@ -46,18 +47,18 @@ export class Kit80 {
      * @returns {void}
      */
     _registerServices() {
-        this.container.set('views', () => import.meta.glob('../templates/views/**/*.html', { query: '?raw', import: 'default' }))
-        this.container.set('partials', () => import.meta.glob(
+        this._container.set('views', () => import.meta.glob('../templates/views/**/*.html', { query: '?raw', import: 'default' }))
+        this._container.set('partials', () => import.meta.glob(
             '../templates/partials/**/*.html',
             { query: '?raw', import: 'default', eager: true }
         ))
 
-        this.container.set('layouts', () => import.meta.glob(
+        this._container.set('layouts', () => import.meta.glob(
             '../templates/layouts/**/*.html',
             { query: '?raw', import: 'default', eager: true }
         ))
 
-        this.container.set('templateEngine', () => new TemplateEngine()
+        this._container.set('templateEngine', () => new TemplateEngine()
             .use(LayoutPlugin)
             .use(PartialsPlugin)
             .use(StrictModePlugin)
@@ -65,6 +66,7 @@ export class Kit80 {
             .use(HelpersPlugin))
         this._container.set('view', (container) => new View(container))
         this._container.set('api', (container) => new ApiService())
+        this._container.set('globalState', (container) => new GlobalState())
     }
 
     /**
@@ -90,7 +92,16 @@ export class Kit80 {
                 const module = components[path]
                 const ComponentClass = module[fileName] || module.default
 
+
                 if (ComponentClass) {
+                    if (typeof ComponentClass.setContainer === 'function') {
+                        ComponentClass.setContainer(this._container)
+                    }
+
+                    // Alternative : si la classe utilise le mixin withKit80
+                    if (ComponentClass._container === undefined) {
+                        ComponentClass._container = this._container
+                    }
                     customElements.define(tagName, ComponentClass)
                 }
             }
