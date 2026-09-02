@@ -2,11 +2,6 @@ import { Controller } from '../core/Controller'
 
 
 export class AppController extends Controller {
-    constructor(container) {
-        super(container)
-        this._languages = ['fr', 'en']
-    }
-
     async afterLoad(ctx) {
         console.log('afterLoad')
     }
