@@ -2,12 +2,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock of the routes file loaded by the Router
-vi.mock('../src/core/routes', () => ({
+vi.mock('../src/routes', () => ({
     default: [
         { path: '/', name: 'home', action: 'index@HomeController' },
         { path: '/about', name: 'about', action: 'show@AboutController' },
         { path: '/user/:id', name: 'user.show', action: 'show@UserController' },
-        { path: '/project-:id-:slug', name: 'project.show', action: 'view@ProjectController' }
+        { path: '/project-:id-:slug', name: 'project.show', action: 'view@ProjectController' },
     ]
 }))
 

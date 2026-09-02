@@ -1,11 +1,13 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { Controller } from '../src/core/Controller'
+import { GlobalState } from '../src/core/GlobalState.js'
 
 describe('Controller', () => {
     let containerMock
     let viewMock
     let controller
+    let globalState
 
     beforeEach(() => {
         viewMock = {
@@ -13,8 +15,16 @@ describe('Controller', () => {
             urlFor: vi.fn((name, params) => `/mocked/${name}`)
         }
 
+        // On instancie la dépendance contextuelle
+        globalState = new GlobalState()
+
         containerMock = {
-            get: vi.fn((service) => (service === 'view' ? viewMock : null))
+            has: vi.fn((service) => ['view', 'globalState'].includes(service)),
+            get: vi.fn((service) => {
+                if (service === 'view') return viewMock
+                if (service === 'globalState') return globalState
+                return null
+            })
         }
 
         controller = new Controller(containerMock)

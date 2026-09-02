@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { View } from '../src/core/View'
-import { Configuration } from '../src/core/Configuration'
+import { Configuration } from '../src/Configuration'
 
 // Mock de Configuration.routes
-vi.mock('../src/core/Configuration', () => ({
+vi.mock('../src/Configuration', () => ({
     Configuration: {
         routes: [
             { name: 'home', path: '/' },

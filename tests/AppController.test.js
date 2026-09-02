@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AppController } from '../src/controllers/AppController'
+import { GlobalState } from '../src/core/GlobalState.js'
 
 class CustomChildController extends AppController {
     setDate(dateString) {
@@ -29,6 +30,7 @@ describe('AppController', () => {
     let containerMock
     let viewMock
     let controller
+    let globalState
     // Minimal mock for the route context required by AppController
     let mockCtx
 
@@ -38,8 +40,15 @@ describe('AppController', () => {
             urlFor: vi.fn((name, params) => `/${params?.lang || 'fr'}/${name}`) // <-- Ajout de la méthode mockée
         }
 
+        globalState = new GlobalState()
+
         containerMock = {
-            get: vi.fn((service) => (service === 'view' ? viewMock : null))
+            has: vi.fn((service) => ['view', 'globalState'].includes(service)),
+            get: vi.fn((service) => {
+                if (service === 'view') return viewMock
+                if (service === 'globalState') return globalState
+                return null
+            })
         }
 
         controller = new CustomChildController(containerMock)
