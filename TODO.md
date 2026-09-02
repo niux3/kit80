@@ -12,6 +12,7 @@
 - [ ] test unitaire (auth, api)
 - [ ] test unitaire WithKit80
 - [ ] test unitaire GlobalState
+- [ ] Dans la class Controller, ajouter une méthode init() qui sera appelée dans le constructeur.
 - [x] selecteur de langue
 - [ ] améliorer ui_language_selector : Il faut garder la mécanique. Mais toutes les données  doivent être en dehors. **Il faut que le composant soit réutilisable**.
 - [ ] sur Chrome le menu contextuel des langues ne s'affiche pas correctement.
