@@ -12,7 +12,7 @@ import { HelpersPlugin } from '@niuxe/template-engine/plugins'
  */
 export const withKit80 = (BaseClass) => {
     // Avoid double-wrapping if the class has already been enhanced
-    if (BaseClass.prototype._isKit80Component) {
+    if (BaseClass._isKit80Component) {
         return BaseClass
     }
 
