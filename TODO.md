@@ -34,9 +34,9 @@
 - [ ] Auditer sous CPU Throttling 4x/6x (profiling mobile) via Remote Debugging USB.
 
 
+## discussion
 
-
-## Evolution du routing
+### Evolution du routing
 
 route avec params
 ```Javascript
@@ -47,7 +47,7 @@ Non, il n'y aura aucune difficulté majeure. L'architecture actuelle du Router e
 
 Cependant, ton analyse est juste : il y a trois points d'attention bien précis à anticiper.
 
-## 1. getMatch : la compilation dynamique des Regex
+### 1. getMatch : la compilation dynamique des Regex
 
 Actuellement, tu reconstruis la RegExp à la volée à chaque itération dans la boucle for de getMatch(). Avec l'ajout de règles spécifiques par paramètre, le coût d'exécution dans la boucle va légèrement augmenter.
 
@@ -99,7 +99,7 @@ export class Router {
 }
 ```
 
-## 2. urlFor : le contrôle à la génération des URLs
+### 2. urlFor : le contrôle à la génération des URLs
 
 C'est là que réside le vrai piège. Quand tu appelles urlFor('project.show', { id: 'abc', slug: 'mon-projet' }), la méthode doit vérifier si les valeurs transmises respectent les contraintes regex définies dans route.params.
 
@@ -126,7 +126,7 @@ urlFor(name, params = {}) {
 }
 ```
 
-# 3. Impact réel sur les performances
+### 3. Impact réel sur les performances
 
 L'impact sera en réalité négligeable si tu respectes la pré-compilation :
 
@@ -135,3 +135,141 @@ L'impact sera en réalité négligeable si tu respectes la pré-compilation :
     Sens Route → URL (urlFor) : Un simple .test() sur chaque clé d'objet transmise, ce qui prend quelques nanosecondes.
 
 Cette évolution va fiabiliser ton routage (notamment en débloquant des routes ambiguës comme /:lang vs /about) sans alourdir l'exécution.
+
+
+## AbortController
+
+### scénario
+
+1. L'utilisateur clique sur la page "Projets" (/projects).
+2. Ton ProjectsController lance un fetch('/api/projects') qui prend 2 secondes à répondre.
+3. Après 500 ms, l'utilisateur s'impatiente et clique immédiatement sur "À propos" (/about).
+4. Le Router charge la vue "À propos".
+5. Problème : 1,5 seconde plus tard, la promesse de la première requête (/api/projects) se résout enfin. Si ton contrôleur met à jour la vue ou le state à la réception, il écrase la page "À propos" avec les données des projets.
+
+
+### Dans le Dispatcher
+
+C'est exactement le bon endroit. Placer la gestion de l'annulation au cœur du pipeline de Dispatcher est le choix d'architecture le plus propre et le plus centralisé pour une SPA sans framework lourd.
+
+En le mettant dans Dispatcher, tu évites de dupliquer la moindre ligne de code dans tes contrôleurs ou dans tes services. C'est le chef d'orchestre qui coupe l'activité de l'ancienne page avant de lancer la nouvelle.
+
+Voici comment intégrer AbortController proprement dans ton Dispatcher :
+
+### 1. Modifie Dispatcher.js
+
+Tu ajoutes une propriété this._activeAbortController dans le constructeur et tu déclenches l'annulation tout au début de la méthode _dispatch :
+
+```Javascript
+export class Dispatcher {
+    constructor(configuration, container) {
+        // ... tes propriétés existantes
+        /** @private @type {AbortController|null} */
+        this._activeAbortController = null
+    }
+
+    async _dispatch(options = {}) {
+        // -------------------------------------------------------------
+        // 0. CANCEL PREVIOUS REQUESTS (si une navigation était déjà en cours)
+        // -------------------------------------------------------------
+        if (this._activeAbortController) {
+            this._activeAbortController.abort()
+        }
+
+        // On crée un nouveau contrôleur pour cette nouvelle navigation
+        this._activeAbortController = new AbortController()
+
+        const route = this._router.getMatch()
+
+        const context = {
+            route,
+            params: route?.params ?? {},
+            method: options.method || route?.method || 'GET',
+            query: Object.fromEntries(new URLSearchParams(window.location.search)),
+            body: options.body || null,
+            view: null,
+            error: null,
+            // On injecte le signal d'annulation dans le contexte !
+            signal: this._activeAbortController.signal,
+            from: this._activeContext ? {
+                route: this._activeContext.route,
+                params: this._activeContext.params,
+                query: this._activeContext.query,
+                controller: this._activePage
+            } : null
+        }
+
+        try {
+            // ... le reste de ton try/catch inchangé
+
+        } catch (error) {
+            // Ignorer silencieusement si l'erreur est juste une annulation volontaire
+            if (error.name === 'AbortError') {
+                return
+            }
+
+            // -------------------------------------------------------------
+            // 4. ERROR
+            // -------------------------------------------------------------
+            context.error = error
+
+            if (await this._middleware.trigger('beforeError', context, this._activePage) !== false) {
+                await this._errors(error)
+                await this._middleware.trigger('afterError', context, this._activePage)
+            }
+        }
+    }
+
+    _cleanup() {
+        // Annule les requêtes en cours du contrôleur qu'on quitte
+        if (this._activeAbortController) {
+            this._activeAbortController.abort()
+            this._activeAbortController = null
+        }
+
+        if (this._activePage && typeof this._activePage.destroy === 'function') {
+            this._activePage.destroy()
+        }
+        this._activePage = null
+    }
+}
+```
+
+### 2. Comment l'utiliser côté Contrôleur / Service
+
+Puisque tu as passé signal: this._activeAbortController.signal dans le context transmis aux hooks et actions, l'accès devient d'une simplicité enfantine.
+
+```Javascript
+export class ProjectsController extends Controller {
+    // Reçoit le contexte assemblé par le Dispatcher
+    async index(context) {
+        // Tu transmets context.signal directement à ton ApiService
+        const projects = await this._apiService.get('/projects', {
+            signal: context.signal
+        })
+
+        return this.render('projects/index', { projects })
+    }
+}
+```
+
+Et dans ton ApiService.js, il te suffit de t'assurer que config.signal = options.signal est bien transmis au fetch natif :
+
+
+```Javascript
+// Dans ApiService.js
+const config = {
+    method: options.method || 'GET',
+    headers,
+    signal: options.signal, // Transmis au fetch natif
+    ...options
+}
+```
+
+### Le résultat
+
+1. L'utilisateur clique sur /projets, un fetch est lancé avec le signal A.
+2. L'utilisateur clique immédiatement sur /about avant la réponse.
+3. Le Dispatcher exécute _dispatch(), repère le signal A, appelle .abort().
+4. La requête réseau /projets est coupée par le navigateur, l'exception AbortError est attrapée et ignorée proprement.
+5. La page /about se charge avec le signal B sans aucune interférence.
