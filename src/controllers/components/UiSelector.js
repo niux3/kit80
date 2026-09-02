@@ -1,6 +1,7 @@
 import template from '../../templates/components/ui_selector.html?raw'
 import { withKit80 } from '../../core/ComponentMixin.js'
 
+
 export class UiSelector extends withKit80(HTMLElement) {
     constructor() {
         super()
@@ -10,34 +11,42 @@ export class UiSelector extends withKit80(HTMLElement) {
     }
 
     connectedCallback() {
-        const ctx = {
-            label: this.getAttribute('label') || ''
-        }
+        queueMicrotask(() => {
+            if (this.querySelector('button[aria-haspopup]')) return
 
-        const html = this.render(template, ctx)
-        const fragment = document.createRange().createContextualFragment(html)
-        const existingChildren = Array.from(this.childNodes)
-        if (fragment) {
-            // Insère le bouton + conteneur de menu autour/au-dessus du slot existant
-            this.prepend(fragment)
+            const ctx = {
+                label: this.getAttribute('label') || ''
+            }
 
-            this.button = this.querySelector('button')
-            this.menu = this.querySelector('#ui-selector-menu')
+            const html = this.render(template, ctx)
+            const fragment = document.createRange().createContextualFragment(html)
+            const existingChildren = Array.from(this.childNodes)
 
-            existingChildren.forEach(n => this.menu.appendChild(n))
+            if (fragment) {
+                this.prepend(fragment)
 
-            this.button?.addEventListener('click', this._onButtonClick.bind(this))
-            this.menu?.addEventListener('click', this._onMenuClick.bind(this))
-        }
+                this.button = this.querySelector('button')
+                this.menu = this.querySelector('#ui-selector-menu') || this.querySelector('.selector-menu')
+
+                if (this.menu) {
+                    existingChildren.forEach(n => this.menu.appendChild(n))
+                }
+
+                // Binding des événements
+                this.button?.addEventListener('click', this._onButtonClick)
+                this.addEventListener('click', this._onMenuClick)
+            }
+        })
     }
 
     disconnectedCallback() {
-        this.button?.removeEventListener('click', this._onButtonClick.bind(this))
-        this.menu?.removeEventListener('click', this._onMenuClick.bind(this))
+        this.button?.removeEventListener('click', this._onButtonClick)
+        this.removeEventListener('click', this._onMenuClick)
     }
 
     handleButtonClick(e) {
         e.preventDefault()
+        e.stopPropagation()
         this._opened = !this._opened
         this.button.setAttribute('aria-expanded', this._opened ? 'true' : 'false')
         if (this.menu) {
@@ -47,8 +56,8 @@ export class UiSelector extends withKit80(HTMLElement) {
 
     handleMenuClick(e) {
         const target = e.target.closest('a, button')
-        console.log('target', target)
-        if (!target) return
+        // Si le clic vient du bouton principal de toggle, on l'ignore dans ce handler
+        if (!target || target === this.button) return
 
         this._opened = false
         this.button.setAttribute('aria-expanded', 'false')
