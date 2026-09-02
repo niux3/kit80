@@ -1,8 +1,10 @@
 {
     "fr": {
         "title": "À propos",
-        "title2": "Spécifications Techniques",
-        "description": "kit80 est un framework SPA ultra-léger conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components (sans Virtual DOM).",
+        "title_spec": "Spécifications Techniques",
+        "lead": "<strong>kit80</strong> est un framework SPA Vanilla JS conçu autour des standards natifs W3C, de l'injection de dépendances et des Web Components.",
+        "title_why": "Pourquoi ce nom ?",
+        "description_name": "<p>En mécanique, monter un kit 80cc sur une Peugeot 103, c'était le moyen ultime de débrider le moteur et d'obtenir un rendement maximal sans s'encombrer de pièces superflues. </p><p>Le projet applique exactement la même philosophie au Web : éliminer le Virtual DOM et les surcouches lourdes pour retrouver la nervosité et les performances brutes du navigateur.</p>",
         "specs": [
             { "name": "Architecture", "value": "IoC / Dispatcher / Pipeline" },
             { "name": "Virtual DOM", "value": "Aucun (DOM natif)" },
@@ -14,8 +16,10 @@
     },
     "en": {
         "title": "About",
-        "title2": "Technical Specifications",
-        "description": "kit80 is an ultra-lightweight SPA framework built around W3C native standards, dependency injection, and Web Components (without a Virtual DOM).",
+        "title_spec": "Technical Specifications",
+        "lead": "kit80 is an ultra-lightweight SPA framework built around W3C native standards, dependency injection, and Web Components (without a Virtual DOM).",
+        "title_why": "Why this name?",
+        "description_name": "<p>In mechanics, fitting an 80cc kit to a Peugeot 103 was the ultimate way to unrestrict the engine and get maximum output without dragging along unnecessary parts.</p><p>This project brings that exact same philosophy to the Web: stripping away the Virtual DOM and heavy abstractions to restore the raw responsiveness and performance of the browser.</p>",
         "specs": [
             { "name": "Architecture", "value": "IoC / Dispatcher / Pipeline" },
             { "name": "Virtual DOM", "value": "None (Native DOM)" },

@@ -2,9 +2,13 @@
 
 [[block:content]]
   <h1>[[= title ]]</h1>
-  <p class="lead">[[= description ]]</p>
+  <p class="lead">[[- lead ]]</p>
+  <section class="about-origin">
+    <h2>[[= title_why ]]</h2>
+    <div>[[- description_name ]]</div>
+  </section>
   <section class="features-list">
-    <h2>[[= title2 ]]</h2>
+    <h2>[[= title_spec ]]</h2>
     <ul>
     [[ for(const spec of specs){ ]]
         <li>
