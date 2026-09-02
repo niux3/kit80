@@ -5,6 +5,12 @@
     <a href="[[= helpers.urlFor(routeName, { lang: currentLanguage }) ]]" aria-current="[[= currentPath === helpers.urlFor(routeName, { lang: currentLanguage }) ? 'page' : 'false' ]]">[[= text]]</a>
     [[ } ]]
     <a href="https://alsacreations.com" target="_blank" rel="noopener noreferrer">Documentation</a>
-    <ui-language-selector languages="en;fr" />
+    <ui-selector label="[[= currentLanguage.toUpperCase() ]]">
+      <ul class="lang-list">
+        [[ for(const lang of languages){ ]]
+        <li><a href="[[= helpers.urlFor(currentRouteName, { lang }) ]]" data-value="[[= lang ]]">[[= lang.toUpperCase() ]]</a></li>
+        [[ } ]]
+      </ul>
+    </ui-selector>
   </nav>
 </header>

@@ -2,16 +2,31 @@ import { Controller } from '../core/Controller'
 
 
 export class AppController extends Controller {
+    constructor(options) {
+        super(options)
+
+        window.addEventListener('ui_selector:select', e => {
+            if (e.detail?.value) {
+                this.#setCurrentLanguage(e.detail.value)
+            }
+        })
+    }
+
     async afterLoad(ctx) {
         console.log('afterLoad')
     }
 
     async beforeRender(ctx) {
         console.log('beforeRender')
-        this.setCtx('currentPath', window.location.pathname)
 
-        this.setCtx('currentLanguage', localStorage.getItem('lang') || 'en')
-        this.setCtx('currentRouteName', ctx.route.route.name)
+        const lang = this.#setCurrentLanguage(
+            ctx?.params?.lang || localStorage.getItem('lang') || 'en'
+        )
+
+        this.setCtx('currentPath', window.location.pathname)
+        this.setCtx('languages', ['fr', 'en'])
+        this.setCtx('currentLanguage', lang)
+        this.setCtx('currentRouteName', ctx?.route?.route?.name)
 
         this.setCtx('menu', {
             "fr": {
@@ -27,6 +42,11 @@ export class AppController extends Controller {
 
     async afterRender(ctx) {
         console.log('afterRender')
-        document.querySelector('html').setAttribute('lang', this.getCtx('currentLanguage'))
+    }
+
+    #setCurrentLanguage(lang) {
+        localStorage.setItem('lang', lang)
+        document.documentElement.setAttribute('lang', lang)
+        return lang
     }
 }

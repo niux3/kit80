@@ -141,6 +141,11 @@ nav a:hover {
   text-decoration: none;
 }
 
+.lang-list a{
+  margin: 0;
+  padding: 0;
+}
+
 /* Sections & Cartes
    ========================================================================== */
 .app-content {
@@ -172,10 +177,10 @@ p {
 /* Web Components & Widgets Interactifs
    ========================================================================== */
 
-ui-language-selector{
+ui-selector{
   position: relative;
 }
-ui-language-selector button {
+ui-selector button {
   background-color: transparent;
   border: none;
   color: var(--color-polini-white);
@@ -207,7 +212,7 @@ ui-language-selector button {
   }
 }
 
-ui-language-selector button[aria-expanded="true"] {
+ui-selector button[aria-expanded="true"] {
   color: var(--color-polini-yellow);
 
   &:after {
@@ -216,7 +221,7 @@ ui-language-selector button[aria-expanded="true"] {
   }
 }
 
-ui-language-selector button + ul {
+ui-selector #ui-selector-menu {
   display: none;
   position: absolute;
   top: 100%;
@@ -227,13 +232,19 @@ ui-language-selector button + ul {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   list-style: none;
   padding: 1rem;
+
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 }
 
-ui-language-selector button:hover {
+ui-selector button:hover {
   color: var(--color-polini-yellow);
 }
 
-ui-language-selector button[aria-expanded="true"] + ul {
+ui-selector button[aria-expanded="true"] + #ui-selector-menu {
   display: block;
 }
 
