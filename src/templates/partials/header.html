@@ -1,9 +1,9 @@
 <header class="app-header">
   <p>KIT 80</p>
   <nav>
-    [[for(const [routeName, text] of Object.entries(menu[currentLanguage])){]]
+    [[ for(const [routeName, text] of Object.entries(menu[currentLanguage])){ ]]
     <a href="[[= helpers.urlFor(routeName, { lang: currentLanguage }) ]]" aria-current="[[= currentPath === helpers.urlFor(routeName, { lang: currentLanguage }) ? 'page' : 'false' ]]">[[= text]]</a>
-    [[}]]
+    [[ } ]]
     <a href="https://alsacreations.com" target="_blank" rel="noopener noreferrer">Documentation</a>
     <ui-language-selector languages="en;fr" />
   </nav>

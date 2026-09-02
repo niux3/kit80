@@ -6,16 +6,16 @@
   <section class="features-list">
     <h2>[[= title2 ]]</h2>
     <ul>
-    [[for(const spec of specs){]]
+    [[ for(const spec of specs){ ]]
         <li>
           <span>[[= spec.name ]]</span>
           <strong>[[= spec.value ]]</strong>
         </li>
-    [[}]]
+    [[ } ]]
     </ul>
   </section>
 
   <p style="margin-top: 2rem;">
-    <a href="/">← [[= text_link ]]</a>
+  <a href="[[= helpers.urlFor('home', {lang: currentLanguage}) ]]">← [[= text_link ]]</a>
   </p>
 [[/block]]
