@@ -12,17 +12,18 @@
 - [ ] test unitaire (auth, api)
 - [ ] test unitaire WithKit80
 - [ ] test unitaire GlobalState
+- [x] selecteur de langue
+- [ ] améliorer ui_language_selector : Il faut garder la mécanique. Mais toutes les données  doivent être en dehors. **Il faut que le composant soit réutilisable**.
 - [ ] sur Chrome le menu contextuel des langues ne s'affiche pas correctement.
-- [ ] améliorer le routing. Il y a des routes ambiguës comme /:lang vs /about (insérer des paramètres). Voir évolution du routing
+- [ ] améliorer le routing. Il y a des routes ambiguës comme /:lang vs /about (insérer des paramètres). Voir discussion plus bas : évolution du routing
 - [x] jsdoc
 - [x] créer http referer
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
 - [ ] BUG ! Lors du build l'ajax sur un fichier json ne fonctione pas. Les pages renvoient erreur 500 !
 - [ ] darkmode
-- [x] selecteur de langue
 - [x] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
 - [ ] Revoir peut être l'affichage de title. Actuellement, il s'affiche avec le nom de l'application (ex : Accueil - Kit80)
-- [ ] Gestion du cycle de vie des requêtes (AbortController / Annulation)
+- [ ] Gestion du cycle de vie des requêtes (AbortController / Annulation). Voir discussion plus bas
 - [ ] landing page (~/www/divers/landing-page-kit80/index.html)
 - [ ] binaire à créer pour installer le package
 - [ ] Benchmark de perf `kit80` (Liste 25 véhicules vs Web Components)
