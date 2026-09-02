@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { Configuration } from '../src/core/Configuration'
+import { Configuration } from '../src/Configuration'
 
 describe('Configuration', () => {
     beforeEach(() => {
