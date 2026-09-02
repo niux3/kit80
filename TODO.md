@@ -12,6 +12,7 @@
 - [ ] test unitaire (auth, api)
 - [ ] test unitaire WithKit80
 - [ ] test unitaire GlobalState
+- [ ] sur Chrome le menu contextuel des langues ne s'affiche pas correctement.
 - [ ] améliorer le routing. Il y a des routes ambiguës comme /:lang vs /about (insérer des paramètres). Voir évolution du routing
 - [x] jsdoc
 - [x] créer http referer
