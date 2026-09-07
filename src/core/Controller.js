@@ -43,6 +43,8 @@ export class Controller {
          * @type {Array}
          */
         this._subscriptions = []
+
+        this.init()
     }
 
     /**
@@ -131,5 +133,9 @@ export class Controller {
      */
     urlFor(name, params = {}) {
         return this._view.urlFor(name, params)
+    }
+
+    init() {
+        // ....
     }
 }

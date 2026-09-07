@@ -2,9 +2,7 @@ import { Controller } from '../core/Controller'
 
 
 export class AppController extends Controller {
-    constructor(options) {
-        super(options)
-
+    init() {
         const unsubscribe = this.subscribeAll((fullState, key, oldValue) => {
             // console.log(`${key} changed: ${oldValue} → ${fullState[key]}`)
             if (key === 'theme') {
