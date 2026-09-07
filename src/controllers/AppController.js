@@ -10,38 +10,48 @@ export class AppController extends Controller {
                 this.#setCurrentLanguage(e.detail.value)
             }
         })
+
+        window.addEventListener('ui_toggle:change', e => {
+            const theme = e.detail.checked ? 'dark' : 'light'
+            this.setCtx('theme', theme)
+            localStorage.setItem('theme', theme)
+            document.documentElement.dataset.theme = theme
+        })
     }
 
     async afterLoad(ctx) {
-        console.log('afterLoad')
+        const saved = localStorage.getItem('theme')
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        const theme = saved || (systemDark ? 'dark' : 'light')
+        document.documentElement.dataset.theme = theme
     }
 
     async beforeRender(ctx) {
-        console.log('beforeRender')
-
         const lang = this.#setCurrentLanguage(
             ctx?.params?.lang || localStorage.getItem('lang') || 'en'
         )
 
-        this.setCtx('currentPath', window.location.pathname)
-        this.setCtx('languages', ['fr', 'en'])
-        this.setCtx('currentLanguage', lang)
-        this.setCtx('currentRouteName', ctx?.route?.route?.name)
-
-        this.setCtx('menu', {
-            "fr": {
-                "home": "Accueil",
-                "about": "À propos"
+        this.setMultipleCtx({
+            'currentPath': window.location.pathname,
+            'languages': ['fr', 'en'],
+            'currentLanguage': lang,
+            'currentRouteName': ctx?.route?.route?.name,
+            'menu': {
+                "fr": {
+                    "home": "Accueil",
+                    "about": "À propos"
+                },
+                "en": {
+                    "home": "Home",
+                    "about": "About"
+                }
             },
-            "en": {
-                "home": "Home",
-                "about": "About"
-            }
+            'theme': localStorage.getItem('theme') || 'dark'
         })
     }
 
     async afterRender(ctx) {
-        console.log('afterRender')
+        // ...
     }
 
     #setCurrentLanguage(lang) {

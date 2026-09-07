@@ -36,6 +36,13 @@ export class Controller {
          * @type {string}
          */
         this._title = ''
+
+        /**
+         * clean up subscriptions
+         * @protected
+         * @type {Array}
+         */
+        this._subscriptions = []
     }
 
     /**
@@ -79,6 +86,18 @@ export class Controller {
      */
     getTitle() {
         return this._title
+    }
+
+    setMultipleCtx(updates) {
+        if (this._ctx) {
+            this._ctx.setMultiple(updates)
+        }
+        return this
+    }
+
+    destroy() {
+        this._subscriptions.forEach(unsubscribe => unsubscribe())
+        this._subscriptions = []
     }
 
     /**
