@@ -95,9 +95,8 @@ export class Controller {
         return this
     }
 
-    destroy() {
-        this._subscriptions.forEach(unsubscribe => unsubscribe())
-        this._subscriptions = []
+    subscribeAll(callback) {
+        return this._ctx.subscribeAll(callback)
     }
 
     /**

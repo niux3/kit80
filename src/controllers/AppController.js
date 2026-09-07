@@ -5,6 +5,21 @@ export class AppController extends Controller {
     constructor(options) {
         super(options)
 
+        const unsubscribe = this.subscribeAll((fullState, key, oldValue) => {
+            // console.log(`${key} changed: ${oldValue} → ${fullState[key]}`)
+            if (key === 'theme') {
+                document.documentElement.dataset.theme = fullState[key]
+                localStorage.setItem('theme', fullState[key])
+            }
+        })
+    }
+
+    async afterLoad(ctx) {
+        const saved = localStorage.getItem('theme')
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        const theme = saved || (systemDark ? 'dark' : 'light')
+        this.setCtx('theme', theme)
+
         window.addEventListener('ui_selector:select', e => {
             if (e.detail?.value) {
                 this.#setCurrentLanguage(e.detail.value)
@@ -14,16 +29,7 @@ export class AppController extends Controller {
         window.addEventListener('ui_toggle:change', e => {
             const theme = e.detail.checked ? 'dark' : 'light'
             this.setCtx('theme', theme)
-            localStorage.setItem('theme', theme)
-            document.documentElement.dataset.theme = theme
         })
-    }
-
-    async afterLoad(ctx) {
-        const saved = localStorage.getItem('theme')
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        const theme = saved || (systemDark ? 'dark' : 'light')
-        document.documentElement.dataset.theme = theme
     }
 
     async beforeRender(ctx) {
