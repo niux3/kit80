@@ -35,6 +35,15 @@ describe('Controller', () => {
         expect(controller.getTitle()).toBe('')
     })
 
+    it('should execute init() hook automatically upon instantiation', () => {
+        const initSpy = vi.spyOn(Controller.prototype, 'init')
+
+        class TestController extends Controller { }
+        new TestController(containerMock)
+
+        expect(initSpy).toHaveBeenCalledOnce()
+    })
+
     it('should allow setting and getting title with fluid chaining', () => {
         const instance = controller.setTitle('Dashboard')
 
@@ -43,13 +52,42 @@ describe('Controller', () => {
     })
 
     it('should manage internal context store via setCtx and getCtx', () => {
-        controller.setCtx('user', 'Alice')
+        const instance = controller.setCtx('user', 'Alice')
         controller.setCtx('role', 'admin')
 
         expect(controller.getCtx()).toEqual({
             user: 'Alice',
             role: 'admin'
         })
+        expect(instance).toBe(controller) // Vérifie le chaînage
+    })
+
+    it('should update multiple context values simultaneously via setMultipleCtx()', () => {
+        const instance = controller.setMultipleCtx({
+            theme: 'dark',
+            sidebarOpen: true
+        })
+
+        expect(controller.getCtx()).toEqual({
+            theme: 'dark',
+            sidebarOpen: true
+        })
+        expect(instance).toBe(controller) // Vérifie le chaînage
+    })
+
+    it('should delegate subscribeAll() to internal context store', () => {
+        const callback = vi.fn()
+        const unsubscribe = controller.subscribeAll(callback)
+
+        controller.setCtx('theme', 'dark')
+
+        expect(callback).toHaveBeenCalledOnce()
+        expect(callback).toHaveBeenCalledWith(
+            { theme: 'dark' },
+            'theme',
+            undefined
+        )
+        expect(typeof unsubscribe).toBe('function')
     })
 
     it('should merge internal context with render context when calling render()', () => {
