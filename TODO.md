@@ -21,7 +21,7 @@
 - [x] jsdoc
 - [x] créer http referer
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
-- [ ] BUG ! Lors du build l'ajax sur un fichier json ne fonctione pas. Les pages renvoient erreur 500 !
+- [x] BUG ! Lors du build l'ajax sur un fichier json ne fonctione pas. Les pages renvoient erreur 500 !
 - [x] darkmode
 - [x] Gestion des métadonnées et du Titre de page (<title>, OpenGraph)
 - [ ] Revoir peut être l'affichage de title. Actuellement, il s'affiche avec le nom de l'application (ex : Accueil - Kit80)
