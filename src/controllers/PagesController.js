@@ -6,7 +6,7 @@ export default class PagesController extends AppController {
         this.setTitle('Accueil')
 
         const lang = req.params.lang || this.getCtx('currentLanguage')
-        const data = await this.api.get('/home.json')
+        const data = await this.api.get('/api/home.json')
 
         return this.render('pages/home', data[lang])
     }
@@ -15,7 +15,7 @@ export default class PagesController extends AppController {
         this.setTitle('À propos')
 
         const lang = req.params.lang
-        const data = await this.api.get('/about.json')
+        const data = await this.api.get('/api/about.json')
 
         return this.render('pages/about', data[lang])
     }

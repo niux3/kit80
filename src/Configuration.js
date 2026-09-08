@@ -9,7 +9,7 @@ export class Configuration {
      * Flag indicating whether debug mode is enabled (true in development).
      * @type {boolean}
      */
-    static debug = import.meta.env.MODE === 'development'
+    static debug = true
 
     /**
      * Application route definitions collection.
@@ -22,7 +22,7 @@ export class Configuration {
      * Evaluates to local server in development or environment variable in production.
      * @type {string}
      */
-    static baseUrlApi = import.meta.env.MODE === 'development' ? 'http://localhost:5173/api' : import.meta.env.BASE_API_URL
+    static baseUrlApi = Configuration.debug ? 'http://localhost:5173' : 'http://localhost:8000'
 
     /**
      * The root DOM container element where the SPA mounts views.
@@ -35,7 +35,7 @@ export class Configuration {
      * The application title to display in the browser tab.
      * @type {string}
      */
-    static appTitle = import.meta.env.TITLE || 'Kit80 - SPA Framework'
+    static appTitle = 'Kit80 - SPA Framework'
 
     /**
      * Resolves DOM-dependent configuration elements (specifically `appContainer`).
