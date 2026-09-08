@@ -11,14 +11,15 @@ export class UiToggle extends withKit80(HTMLElement) {
 
     connectedCallback() {
         this.#children = Array.from(this.children)
+
         const label = this.getAttribute('label') || ''
-        this.innerHTML = this.render(template, { label })
+        this.innerHTML = this.render(template, { label, checked: this.checked })
         this.#updateIcon()
         this.addEventListener('click', this.#handleClick.bind(this))
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue && this.children.length === 0) {
+        if (oldValue !== newValue) {
             this.#updateIcon()
         }
     }
@@ -27,14 +28,22 @@ export class UiToggle extends withKit80(HTMLElement) {
         return this.hasAttribute('checked')
     }
 
-    #handleClick(e) {
-        if (this.checked) {
-            this.removeAttribute('checked')
-        } else {
+    set checked(value) {
+        if (value) {
             this.setAttribute('checked', '')
+        } else {
+            this.removeAttribute('checked')
         }
+    }
+
+    #handleClick(e) {
+        // 1. Mutation claire de l'état
+        this.checked = !this.checked
+
+        // 2. Mise à jour du rendu visuel
         this.#updateIcon()
 
+        // 3. Dispatch de l'événement avec l'état à jour
         this.dispatchEvent(new CustomEvent('ui_toggle:change', {
             bubbles: true,
             composed: true,
@@ -46,7 +55,12 @@ export class UiToggle extends withKit80(HTMLElement) {
 
     #updateIcon() {
         const button = this.querySelector('button')
-        if (!button || this.#children.length < 2) return
+        if (!button) return
+
+        // Mise à jour de l'accessibilité sur le bouton interne
+        button.setAttribute('aria-checked', String(this.checked))
+
+        if (this.#children.length < 2) return
 
         const [item0, item1] = this.#children
         const activeSvg = this.checked ? item1 : item0
