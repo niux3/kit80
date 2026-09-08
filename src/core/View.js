@@ -107,11 +107,16 @@ export class View {
         let url = route.path
 
         for (const [key, value] of Object.entries(params)) {
-            // Vérification de la contrainte si elle existe
             if (route.params?.[key] && !route.params[key].test(String(value))) {
-                throw new Error(`[Router] Paramètre "${key}" invalide pour la route "${name}" :`, value)
+                throw new Error(`[Router] Paramètre "${key}" invalide pour la route "${name}" : ${value}`)
             }
             url = url.replace(`:${key}`, value)
+        }
+
+        // Vérification des paramètres obligatoires restants
+        const missingParamMatch = url.match(/:([a-zA-Z0-9_]+)/)
+        if (missingParamMatch) {
+            throw new Error(`Paramètre "${missingParamMatch[1]}" manquant pour la route "${name}"`)
         }
 
         return url
