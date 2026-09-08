@@ -4,24 +4,28 @@
  */
 export class Controller {
     /**
+    * Internal controller context data store.
+    * @private
+    * @type {Object<string, any>}
+    */
+    #ctx = null
+
+
+    /**
+    * View renderer service resolved from the container.
+    * @private
+    * @type {View}
+    */
+    #view = null
+
+    /**
      * Creates an instance of Controller.
      *
      * @param {Container} container - Dependency injection container instance.
      */
     constructor(container) {
-        /**
-         * Internal controller context data store.
-         * @protected
-         * @type {Object<string, any>}
-         */
-        this._ctx = container?.has('globalState') ? container.get('globalState') : null
-
-        /**
-         * View renderer service resolved from the container.
-         * @protected
-         * @type {View}
-         */
-        this._view = container.get('view')
+        this.#ctx = container?.has('globalState') ? container.get('globalState') : null
+        this.#view = container.get('view')
 
         /**
          * API service resolved from the container.
@@ -42,7 +46,7 @@ export class Controller {
          * @protected
          * @type {Array}
          */
-        this._subscriptions = []
+        // this._subscriptions = []
 
         this.init()
     }
@@ -55,8 +59,8 @@ export class Controller {
      * @returns {void}
      */
     setCtx(key, value) {
-        if (this._ctx) {
-            this._ctx.set(key, value)
+        if (this.#ctx) {
+            this.#ctx.set(key, value)
         }
         return this
     }
@@ -67,7 +71,7 @@ export class Controller {
      * @returns {Object<string, any>} The current internal context object.
      */
     getCtx(key = null) {
-        return this._ctx ? this._ctx.get(key) : null
+        return this.#ctx ? this.#ctx.get(key) : null
     }
 
     /**
@@ -90,15 +94,27 @@ export class Controller {
         return this._title
     }
 
+    /**
+     * Sets multiple key-value pairs simultaneously in the controller's internal context store.
+     *
+     * @param {Object<string, any>} updates - Key-value pairs dictionary to update in the context.
+     * @returns {this} The current Controller instance for method chaining.
+     */
     setMultipleCtx(updates) {
-        if (this._ctx) {
-            this._ctx.setMultiple(updates)
+        if (this.#ctx) {
+            this.#ctx.setMultiple(updates)
         }
         return this
     }
 
+    /**
+     * Subscribes a callback function to all context store state changes.
+     *
+     * @param {Function} callback - Listener function invoked on any context state change.
+     * @returns {Function|void} Unsubscribe function to terminate the listener subscription, or `void` if context is unavailable.
+     */
     subscribeAll(callback) {
-        return this._ctx.subscribeAll(callback)
+        return this.#ctx.subscribeAll(callback)
     }
 
     /**
@@ -110,7 +126,7 @@ export class Controller {
      */
     render(template, ctx) {
         ctx = { ...this.getCtx(), ...ctx }
-        return this._view.render(template, ctx)
+        return this.#view.render(template, ctx)
     }
 
     /**
@@ -132,10 +148,17 @@ export class Controller {
      * @returns {string} The resolved URL path.
      */
     urlFor(name, params = {}) {
-        return this._view.urlFor(name, params)
+        return this.#view.urlFor(name, params)
     }
 
+    /**
+     * Life-cycle initialization hook intended to be overridden by child controllers.
+     * Called automatically at the end of the constructor execution.
+     *
+     * @ppublic
+     * @returns {void}
+     */
     init() {
-        // ....
+        // override this method
     }
 }
