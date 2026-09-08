@@ -37,13 +37,10 @@ export class UiToggle extends withKit80(HTMLElement) {
     }
 
     #handleClick(e) {
-        // 1. Mutation claire de l'état
         this.checked = !this.checked
 
-        // 2. Mise à jour du rendu visuel
         this.#updateIcon()
 
-        // 3. Dispatch de l'événement avec l'état à jour
         this.dispatchEvent(new CustomEvent('ui_toggle:change', {
             bubbles: true,
             composed: true,
@@ -57,7 +54,6 @@ export class UiToggle extends withKit80(HTMLElement) {
         const button = this.querySelector('button')
         if (!button) return
 
-        // Mise à jour de l'accessibilité sur le bouton interne
         button.setAttribute('aria-checked', String(this.checked))
 
         if (this.#children.length < 2) return
