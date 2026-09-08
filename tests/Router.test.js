@@ -37,7 +37,7 @@ describe('Router', () => {
         const match = router.getMatch()
 
         expect(match).toEqual({
-            route: { path: '/about', name: 'about', action: 'show@AboutController' },
+            route: expect.objectContaining({ path: '/about', name: 'about', action: 'show@AboutController' }),
             controller: 'AboutController',
             action: 'show',
             params: {}

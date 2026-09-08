@@ -115,5 +115,15 @@ describe('View', () => {
                 'Paramètre "id" manquant pour la route "user.show"'
             )
         })
+        it('should throw an error if a parameter fails regex constraint validation', () => {
+            const view = new View(mockContainer)
+            view.routes = [
+                { name: 'user.show', path: '/users/:id', params: { id: /^\d+$/ } }
+            ]
+
+            expect(() => view.urlFor('user.show', { id: 'abc' })).toThrow(
+                '[Router] Paramètre "id" invalide pour la route "user.show"'
+            )
+        })
     })
 })
