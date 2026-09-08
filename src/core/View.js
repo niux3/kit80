@@ -93,24 +93,27 @@ export class View {
     }
 
     /**
-     * Generates a relative path URL for a named route with parameter replacement.
+     * Generates a relative URL path string for a named route with parameter replacement and regex validation.
      *
      * @param {string} name - The target registered route name.
-     * @param {Object<string, string|number>} [params={}] - Parameters to bind into route path.
+     * @param {Object<string, string|number>} [params={}] - Key-value parameter object to bind into route path placeholders.
      * @returns {string} Interpolated URL path string.
-     * @throws {Error} Throws if route name is invalid or a required path parameter is omitted.
+     * @throws {Error} Throws if route name is not found or if a parameter fails its regex constraint validation (`route.params[key]`).
      */
     urlFor(name, params = {}) {
         const route = this.routes.find(r => r.name === name)
         if (!route) throw new Error(`Route "${name}" introuvable`)
 
-        const path = route.path.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => {
-            if (!(key in params)) {
-                throw new Error(`Paramètre "${key}" manquant pour la route "${name}"`)
-            }
-            return params[key]
-        })
+        let url = route.path
 
-        return path
+        for (const [key, value] of Object.entries(params)) {
+            // Vérification de la contrainte si elle existe
+            if (route.params?.[key] && !route.params[key].test(String(value))) {
+                throw new Error(`[Router] Paramètre "${key}" invalide pour la route "${name}" :`, value)
+            }
+            url = url.replace(`:${key}`, value)
+        }
+
+        return url
     }
 }

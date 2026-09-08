@@ -7,36 +7,59 @@ import routes from '../routes'
  */
 export class Router {
     /**
-     * Creates an instance of Router.
-     * Initializes the route collection from the application route definitions.
+     * Array of route objects augmented with compiled RegExp match patterns.
+     * @private
+     * @type {Array<Object>}
+     */
+    #routes = null
+
+    /**
+     * Creates an instance of Router and pre-compiles route URL patterns.
      */
     constructor() {
-        /** @private @type {Array<Object>} */
-        this._routes = routes
+        // Pré-compilation des regex à l'initialisation du Router
+        this.#routes = routes.map(route => ({
+            ...route,
+            compiledRegex: this.#compileRoutePattern(route)
+        }))
     }
 
     /**
-     * Matches the current URL pathname against registered routes.
-     * Converts route parameters into named regular expression capture groups.
+     * Compiles a route path pattern into a regular expression using named capturing groups
+     * and optional regex constraints defined in route parameter configurations.
      *
-     * @returns {{ route: Object, controller: string, action: string, params: Object<string, string> } | null}
-     * Object containing the route definition, resolved controller name, action method, and extracted route parameters, or null if no match is found.
+     * @private
+     * @param {Object} route - Route definition containing path and optional parameter constraints.
+     * @param {string} route.path - URL path pattern (e.g., "/:lang/about").
+     * @param {Object<string, RegExp>} [route.params] - Optional map of route parameter regex constraints.
+     * @returns {RegExp} Compiled case-insensitive regular expression with named capturing groups.
+     */
+    #compileRoutePattern(route) {
+        let pattern = route.path
+            .replace(/:([a-zA-Z0-9_]+)(?=-)/g, (match, param) => {
+                const constraint = route.params?.[param]?.source ?? '[^/-]+'
+                return `(?<${param}>${constraint})`
+            })
+            .replace(/:([a-zA-Z0-9_]+)/g, (match, param) => {
+                const constraint = route.params?.[param]?.source ?? '[^/]+'
+                return `(?<${param}>${constraint})`
+            })
+
+        return new RegExp(`^${pattern}$`, 'i')
+    }
+
+    /**
+     * Matches the current `window.location.pathname` against pre-compiled routes.
+     *
+     * @returns {RouteMatch|null} Match result containing controller, action, route object, and parameters, or `null` if no route matches.
      */
     getMatch() {
-        // Ex: '/about' ou '/project-12-mon-projet' (sans query params)
         const rawPath = window.location.pathname.split('?')[0]
 
-        for (const route of this._routes) {
-            let pattern = route.path
-                .replace(/:([a-zA-Z0-9_]+)(?=-)/g, '(?<$1>[^/-]+)')
-                .replace(/:([a-zA-Z0-9_]+)/g, '(?<$1>[^/]+)')
-
-            const regex = new RegExp(`^${pattern}$`, 'i')
-            const match = rawPath.match(regex)
-
+        for (const route of this.#routes) {
+            const match = rawPath.match(route.compiledRegex)
             if (match) {
                 const [action, controller] = route.action.split('@')
-
                 return {
                     route,
                     controller,
@@ -45,7 +68,6 @@ export class Router {
                 }
             }
         }
-
         return null
     }
 }
