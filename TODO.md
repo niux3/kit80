@@ -18,7 +18,7 @@
 - [x] améliorer ui_language_selector : Il faut garder la mécanique. Mais toutes les données  doivent être en dehors. **Il faut que le composant soit réutilisable**.
 - [x] sur Chrome le menu contextuel des langues ne s'affiche pas correctement.
 - [ ] améliorer le routing. Il y a des routes ambiguës comme /:lang vs /about (insérer des paramètres). Voir discussion plus bas : évolution du routing
-- [ ] jsdoc
+- [x] jsdoc
 - [x] créer http referer
 - [ ] la documentation (comment fonctionne ce truc -> ce sera même le build )
 - [ ] BUG ! Lors du build l'ajax sur un fichier json ne fonctione pas. Les pages renvoient erreur 500 !
