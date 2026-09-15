@@ -24,6 +24,8 @@ export class Controller {
      * @param {Container} container - Dependency injection container instance.
      */
     constructor(container) {
+        this.container = container
+
         this.#ctx = container?.has('globalState') ? container.get('globalState') : null
         this.#view = container.get('view')
 
