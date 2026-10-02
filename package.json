@@ -1,11 +1,23 @@
 {
-  "name": "js-route-5",
-  "private": true,
+  "name": "kit80",
   "version": "1.0.0",
   "type": "module",
   "bin": {
     "create-kit80": "./bin/create-kit80.js"
   },
+  "exports": {
+    ".": "./src/core/Kit80.js",
+    "./*": "./src/core/*.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "public",
+    "index.html",
+    "vite.config.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,7 +27,7 @@
   "devDependencies": {
     "@niuxe/template-engine": "^1.4.0",
     "happy-dom": "^20.11.12",
-    "vite": "^7.2.4",
+    "vite": "^7.3.6",
     "vitest": "^4.1.11"
   }
 }
