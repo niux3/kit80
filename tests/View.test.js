@@ -29,17 +29,17 @@ describe('View', () => {
         }
 
         mockViews = {
-            '../templates/views/home.html': vi.fn().mockResolvedValue('<h1>Home</h1>'),
-            '../templates/views/about.html': vi.fn().mockResolvedValue('<h1>About</h1>')
+            '/src/templates/views/home.html': vi.fn().mockResolvedValue('<h1>Home</h1>'),
+            '/src/templates/views/about.html': vi.fn().mockResolvedValue('<h1>About</h1>')
         }
 
         mockPartials = {
-            '../templates/partials/header.html': '<header>Header</header>',
-            '../templates/partials/footer.html': '<footer>Footer</footer>'
+            '/src/templates/partials/header.html': '<header>Header</header>',
+            '/src/templates/partials/footer.html': '<footer>Footer</footer>'
         }
 
         mockLayouts = {
-            '../templates/layouts/main.html': '<html><slot /></html>'
+            '/src/templates/layouts/main.html': '<html><slot /></html>'
         }
 
         mockContainer = {
@@ -73,7 +73,7 @@ describe('View', () => {
 
             const result = await view.render('home', context)
 
-            expect(mockViews['../templates/views/home.html']).toHaveBeenCalled()
+            expect(mockViews['/src/templates/views/home.html']).toHaveBeenCalled()
             expect(mockTemplateEngine.render).toHaveBeenCalledWith('<h1>Home</h1>', context)
             expect(result).toBe('<h1>Rendered Content</h1>')
         })
@@ -82,7 +82,7 @@ describe('View', () => {
             const view = new View(mockContainer)
 
             await expect(view.render('unknown')).rejects.toThrow(
-                'Template "unknown" introuvable (../templates/views/unknown.html)'
+                'Template "unknown" introuvable (/src/templates/views/unknown.html)'
             )
         })
     })

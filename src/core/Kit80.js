@@ -48,16 +48,15 @@ export class Kit80 {
      */
     _registerServices() {
         this._container.set('globalState', (container) => new GlobalState())
-        this._container.set('views', () => import.meta.glob('../templates/views/**/*.html', { query: '?raw', import: 'default' }))
-        this._container.set('partials', () => import.meta.glob(
-            '../templates/partials/**/*.html',
-            { query: '?raw', import: 'default', eager: true }
-        ))
 
-        this._container.set('layouts', () => import.meta.glob(
-            '../templates/layouts/**/*.html',
-            { query: '?raw', import: 'default', eager: true }
-        ))
+        // Chemins absolus par rapport à la racine Vite du projet client/hôte
+        const views = import.meta.glob('/src/templates/views/**/*.html', { query: '?raw', import: 'default' })
+        const partials = import.meta.glob('/src/templates/partials/**/*.html', { query: '?raw', import: 'default', eager: true })
+        const layouts = import.meta.glob('/src/templates/layouts/**/*.html', { query: '?raw', import: 'default', eager: true })
+
+        this._container.set('views', () => views)
+        this._container.set('partials', () => partials)
+        this._container.set('layouts', () => layouts)
 
         this._container.set('templateEngine', () => new TemplateEngine()
             .use(LayoutPlugin)
@@ -73,7 +72,7 @@ export class Kit80 {
     * import all Web Components from the `composants/` folder.
     */
     _getGlobComponents() {
-        return import.meta.glob('../controllers/components/**/*.js', { eager: true })
+        return import.meta.glob('/src/controllers/components/**/*.js', { eager: true })
     }
 
     /**

@@ -50,7 +50,7 @@ export class View {
      * @throws {Error} Throws if target view template is not registered.
      */
     async _loadViews(template) {
-        const path = `../templates/views/${template}.html`
+        const path = `/src/templates/views/${template}.html`
         const loader = this.views[path]
         if (!loader) {
             throw new Error(`Template "${template}" introuvable (${path})`)
