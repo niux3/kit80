@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "bin": {
-    "create-kit80": "./bin/create-kit80.js"
+    "create-kit80": "./bin/index.js"
   },
   "exports": {
     ".": "./src/core/Kit80.js",
