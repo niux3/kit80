@@ -1,4 +1,4 @@
-import routes from './routes.js'
+import routes from '/src/routes.js'
 
 /**
  * Global static configuration container for application setup, route definitions,
