@@ -79,7 +79,7 @@ const userPackageJson = {
     },
     dependencies: {
         // En dev local, pointe sur le dossier local de kit80
-        "kit80": `file:${packageRootDir}`,
+        "kit80": '1.0.0',
         "@niuxe/template-engine": "^1.4.0",
         "vite": "^7.3.6"
     }
